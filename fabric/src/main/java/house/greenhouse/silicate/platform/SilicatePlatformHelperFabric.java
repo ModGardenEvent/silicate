@@ -2,7 +2,7 @@ package house.greenhouse.silicate.platform;
 
 import net.fabricmc.loader.api.FabricLoader;
 
-public class SilicatePlatformHelperFabric implements ExamplePlatformHelper {
+public class SilicatePlatformHelperFabric implements SilicatePlatformHelper {
 
     @Override
     public Platform getPlatform() {

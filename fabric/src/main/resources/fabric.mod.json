@@ -23,7 +23,7 @@
 	 "house.greenhouse.silicate.SilicateFabric"
     ],
     "preLaunch": [
-      "house.greenhouse.silicate.ExampleModFabricPre"
+	 "house.greenhouse.silicate.SilicateFabricPre"
     ]
   },
   "mixins": [

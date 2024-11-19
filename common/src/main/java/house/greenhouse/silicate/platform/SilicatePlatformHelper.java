@@ -1,6 +1,6 @@
 package house.greenhouse.silicate.platform;
 
-public interface ExamplePlatformHelper {
+public interface SilicatePlatformHelper {
     /**
      * Gets the current platform
      *

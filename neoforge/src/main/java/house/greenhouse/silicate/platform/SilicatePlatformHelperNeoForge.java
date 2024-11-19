@@ -3,7 +3,7 @@ package house.greenhouse.silicate.platform;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 
-public class SilicatePlatformHelperNeoForge implements ExamplePlatformHelper {
+public class SilicatePlatformHelperNeoForge implements SilicatePlatformHelper {
     @Override
     public Platform getPlatform() {
         return Platform.NEOFORGE;
