@@ -7,8 +7,8 @@ import net.neoforged.fml.common.Mod;
 
 @Mod(Silicate.MOD_ID)
 public class SilicateNeoForge {
-    public SilicateNeoForge(IEventBus eventBus) {
-        Silicate.init();
-        Silicate.setHelper(new SilicatePlatformHelperNeoForge());
-    }
+	public SilicateNeoForge(IEventBus eventBus) {
+		Silicate.init();
+		Silicate.setHelper(new SilicatePlatformHelperNeoForge());
+	}
 }
