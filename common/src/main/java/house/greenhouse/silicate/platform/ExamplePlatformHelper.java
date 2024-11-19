@@ -1,7 +1,6 @@
-package house.greenhouse.examplemod.platform;
+package house.greenhouse.silicate.platform;
 
 public interface ExamplePlatformHelper {
-
     /**
      * Gets the current platform
      *

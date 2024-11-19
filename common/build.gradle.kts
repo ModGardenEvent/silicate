@@ -1,6 +1,5 @@
-import house.greenhouse.examplemod.gradle.Properties
-import house.greenhouse.examplemod.gradle.Versions
-import me.modmuss50.mpp.PublishModTask
+import house.greenhouse.silicate.gradle.Properties
+import house.greenhouse.silicate.gradle.Versions
 
 plugins {
     id("conventions.common")

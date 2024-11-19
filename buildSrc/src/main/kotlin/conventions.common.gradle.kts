@@ -1,5 +1,5 @@
-import house.greenhouse.examplemod.gradle.Properties
-import house.greenhouse.examplemod.gradle.Versions
+import house.greenhouse.silicate.gradle.Properties
+import house.greenhouse.silicate.gradle.Versions
 
 plugins {
     base
@@ -130,7 +130,7 @@ publishing {
     repositories {
         maven {
             name = "Greenhouse"
-            url = uri("https://maven.greenhouseteam.dev/releases")
+            url = uri("https://maven.greenhouse.house/releases")
             credentials {
                 username = System.getenv("MAVEN_USERNAME")
                 password = System.getenv("MAVEN_PASSWORD")

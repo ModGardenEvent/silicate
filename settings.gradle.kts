@@ -19,7 +19,7 @@ plugins {
 }
 
 // This should match the folder name of the project, or else IDEA may complain (see https://youtrack.jetbrains.com/issue/IDEA-317606)
-rootProject.name = "greenhouse-multiloader-template"
+rootProject.name = "silicate"
 include("common")
 include("fabric")
 include("neoforge")

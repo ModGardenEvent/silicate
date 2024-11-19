@@ -1,10 +1,10 @@
-package house.greenhouse.examplemod;
+package house.greenhouse.silicate;
 
-import house.greenhouse.examplemod.platform.ExamplePlatformHelper;
+import house.greenhouse.silicate.platform.ExamplePlatformHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExampleMod {
+public class Silicate {
     public static final String MOD_ID = "examplemod";
     public static final String MOD_NAME = "Example Mod";
     public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
@@ -20,6 +20,6 @@ public class ExampleMod {
     }
 
     public static void setHelper(ExamplePlatformHelper helper) {
-        ExampleMod.helper = helper;
+        Silicate.helper = helper;
     }
 }

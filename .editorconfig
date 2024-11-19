@@ -1,0 +1,11 @@
+root = true
+
+[*]
+charset = utf-8 # UTF-8 with no BOM is typically standard.
+end_of_line = lf # LF, Always. Gives better portability.
+indent_size = 1 # Only use one whitespace per Tab keypress.
+indent_style = tab # Accessibility: https://adamtuttle.codes/blog/2021/tabs-vs-spaces-its-an-accessibility-issue/
+insert_final_newline = false # Unix relic, but we don't care.
+max_line_length = 120
+tab_width = unset # Unset for personal choices and accessibility. Users may choose.
+trim_trailing_whitespace = false # Undecided

@@ -1,11 +1,11 @@
-package house.greenhouse.examplemod;
+package house.greenhouse.silicate;
 
-import house.greenhouse.examplemod.platform.ExamplePlatformHelperFabric;
+import house.greenhouse.silicate.platform.SilicatePlatformHelperFabric;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
 public class ExampleModFabricPre implements PreLaunchEntrypoint {
     @Override
     public void onPreLaunch() {
-        ExampleMod.setHelper(new ExamplePlatformHelperFabric());
+        Silicate.setHelper(new SilicatePlatformHelperFabric());
     }
 }

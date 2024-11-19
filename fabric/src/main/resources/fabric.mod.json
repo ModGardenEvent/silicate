@@ -20,10 +20,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "house.greenhouse.examplemod.ExampleModFabric"
+	 "house.greenhouse.silicate.SilicateFabric"
     ],
     "preLaunch": [
-      "house.greenhouse.examplemod.ExampleModFabricPre"
+      "house.greenhouse.silicate.ExampleModFabricPre"
     ]
   },
   "mixins": [

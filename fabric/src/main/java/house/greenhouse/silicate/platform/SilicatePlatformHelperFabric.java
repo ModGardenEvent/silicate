@@ -1,8 +1,8 @@
-package house.greenhouse.examplemod.platform;
+package house.greenhouse.silicate.platform;
 
 import net.fabricmc.loader.api.FabricLoader;
 
-public class ExamplePlatformHelperFabric implements ExamplePlatformHelper {
+public class SilicatePlatformHelperFabric implements ExamplePlatformHelper {
 
     @Override
     public Platform getPlatform() {
