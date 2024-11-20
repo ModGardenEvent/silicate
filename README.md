@@ -6,3 +6,6 @@ The goal of Silicate is to complete a context-aware predicate system on par with
 
 ## Features
 Silicate provides out-of-the-box Codec and datapack support, enabling developers and modpack designers to more easily implement and configure desired behavior. Silicate also comes with built-in predicates for Minecraft's various game interactions, easing the amount of boilerplate necessary.
+
+## Contributing
+Before you contribute, please read about [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). This repository uses Conventional Commits for all commit messages, and any non-conforming commit messages will be converted.
