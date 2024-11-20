@@ -2,7 +2,9 @@ package house.greenhouse.silicate.platform;
 
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Internal
 public class SilicatePlatformHelperNeoForge implements SilicatePlatformHelper {
 	@Override
 	public Platform getPlatform() {

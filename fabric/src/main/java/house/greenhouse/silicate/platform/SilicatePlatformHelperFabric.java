@@ -1,7 +1,9 @@
 package house.greenhouse.silicate.platform;
 
 import net.fabricmc.loader.api.FabricLoader;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Internal
 public class SilicatePlatformHelperFabric implements SilicatePlatformHelper {
 
 	@Override

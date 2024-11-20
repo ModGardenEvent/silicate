@@ -1,5 +1,8 @@
 package house.greenhouse.silicate.platform;
 
+import org.jetbrains.annotations.ApiStatus;
+
+@ApiStatus.Internal
 public interface SilicatePlatformHelper {
 	/**
 	 * Gets the current platform
