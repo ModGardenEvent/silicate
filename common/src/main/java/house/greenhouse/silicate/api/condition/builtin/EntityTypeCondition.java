@@ -32,12 +32,12 @@ public record EntityTypeCondition(
 	
 	public EntityTypeCondition of(
 			ContextParamType<Entity> paramType,
-			EntityType<?> entityTypes
+			EntityType<?> entityType
 	) {
 		//noinspection deprecation
 		return new EntityTypeCondition(
 				paramType,
-				HolderSet.direct(entityTypes.builtInRegistryHolder())
+				HolderSet.direct(entityType.builtInRegistryHolder())
 		);
 	}
 	
