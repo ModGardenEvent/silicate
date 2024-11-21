@@ -25,7 +25,7 @@ public record Vec3Condition(
 					.fieldOf("param_type")
 					.forGetter(Vec3Condition::paramType),
 			Vec3Comparison.CODEC
-					.fieldOf("operation")
+					.fieldOf("comparison")
 					.forGetter(Vec3Condition::comparison),
 			Vec3.CODEC
 					.fieldOf("latter_operand")
