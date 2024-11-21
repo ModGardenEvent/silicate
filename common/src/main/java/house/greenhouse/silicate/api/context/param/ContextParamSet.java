@@ -38,7 +38,16 @@ public final class ContextParamSet {
 	public Set<ContextParamType<?>> getAll() {
 		return all;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ContextParamSet set) {
+			return getRequired().equals(set.getRequired()) && getAll().equals(set.getAll());
+		} else {
+			return false;
+		}
+	}
+
 	public static final class Builder {
 		private final Set<ContextParamType<?>> required = new HashSet<>();
 		private final Set<ContextParamType<?>> optional = new HashSet<>();
