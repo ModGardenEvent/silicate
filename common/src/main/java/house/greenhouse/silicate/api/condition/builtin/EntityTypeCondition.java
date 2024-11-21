@@ -30,7 +30,7 @@ public record EntityTypeCondition(
 					.forGetter(EntityTypeCondition::entityTypes)
 	).apply(instance, EntityTypeCondition::new));
 	
-	public EntityTypeCondition of(
+	public static EntityTypeCondition of(
 			ContextParamType<Entity> paramType,
 			EntityType<?> entityType
 	) {
@@ -41,7 +41,7 @@ public record EntityTypeCondition(
 		);
 	}
 	
-	public EntityTypeCondition of(
+	public static EntityTypeCondition of(
 			ContextParamType<Entity> paramType,
 			TagKey<EntityType<?>> entityTag
 	) {
