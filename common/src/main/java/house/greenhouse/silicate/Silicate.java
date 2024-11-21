@@ -15,6 +15,7 @@ public class Silicate {
 	private static SilicatePlatformHelper helper;
 
 	public static void init() {
+		LOG.info("Initializing Silicate");
 	}
 
 	public static SilicatePlatformHelper getHelper() {
