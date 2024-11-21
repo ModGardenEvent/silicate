@@ -1,13 +1,15 @@
 package house.greenhouse.silicate;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.SharedConstants;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public class SilicateFabric implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		Silicate.LOG.info("Hello Fabric world!");
+		// Enabled for debug purposes.
+		SharedConstants.IS_RUNNING_IN_IDE = Silicate.getHelper().isDevelopmentEnvironment();
 		Silicate.init();
 	}
 }
