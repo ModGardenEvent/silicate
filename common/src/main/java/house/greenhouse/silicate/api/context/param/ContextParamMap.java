@@ -1,5 +1,7 @@
 package house.greenhouse.silicate.api.context.param;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,10 +38,14 @@ public final class ContextParamMap {
 		public static Builder of(ContextParamSet paramSet) {
 			return new Builder(paramSet);
 		}
-		
-		public <T> Builder withParameter(ContextParamType<T> type, ContextParam<T> param) {
+
+		public <T> Builder withParameter(ContextParamType<T> type, @NotNull ContextParam<T> param) {
 			params.put(type, param);
 			return this;
+		}
+
+		public <T> Builder withParameter(ContextParamType<T> type, T param) {
+			return withParameter(type, new ContextParam<>(param));
 		}
 		
 		/**
