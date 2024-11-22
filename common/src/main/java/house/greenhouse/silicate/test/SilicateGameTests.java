@@ -44,7 +44,7 @@ public class SilicateGameTests {
 				"ContextParamSet.getRequired() does not contain required"
 		);
 		helper.assertTrue(
-				paramSet.getRequired()
+				paramSet.getAll()
 						.containsAll(List.of(
 								ContextParamTypes.ORIGIN,
 								ContextParamTypes.BLOCK_STATE,
