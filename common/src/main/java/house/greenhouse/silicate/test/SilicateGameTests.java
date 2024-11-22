@@ -209,6 +209,6 @@ public class SilicateGameTests {
 	}
 	
 	private static BlockPos createOrigin() {
-		return new BlockPos(0, 0, 0);
+		return new BlockPos(1, 1, 1);
 	}
 }
