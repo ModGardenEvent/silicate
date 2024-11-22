@@ -14,6 +14,14 @@ import static house.greenhouse.silicate.Silicate.id;
  */
 public final class ContextParamTypes {
 	public static final ContextParamType<Entity> THIS_ENTITY = create("this_entity");
+	/**
+	 * The aggressor in an attacker-victim scenario.
+	 */
+	public static final ContextParamType<Entity> ATTACKING_ENTITY = create("attacking_entity");
+	/**
+	 * The victim in an attacker-victim scenario.
+	 */
+	public static final ContextParamType<Entity> VICTIM_ENTITY = create("victim_entity");
 	public static final ContextParamType<Vec3> ORIGIN = create("origin");
 	public static final ContextParamType<BlockState> BLOCK_STATE = create("block_state");
 	public static final ContextParamType<BlockEntity> BLOCK_ENTITY = create("block_entity");
