@@ -25,13 +25,7 @@ public record BlockStateCondition(
 	@Override
 	public boolean test(GameContext context) {
 		BlockState state = context.getParam(paramType);
-		boolean blocksEqual = state
-				.getBlock()
-				.equals(blockState.getBlock());
-		boolean propsEqual = state
-				.getProperties()
-				.equals(blockState.getProperties());
-		return blocksEqual && propsEqual;
+		return state.equals(blockState);
 	}
 	
 	@Override
