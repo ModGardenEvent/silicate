@@ -15,7 +15,7 @@ public record BlockStateCondition(
 ) implements GameCondition<BlockStateCondition> {
 	public static final MapCodec<BlockStateCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			ContextParamType.<BlockState>getCodec()
-					.fieldOf("param_state")
+					.fieldOf("param_type")
 					.forGetter(BlockStateCondition::paramType),
 			BlockState.CODEC
 					.fieldOf("block_state")
