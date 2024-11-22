@@ -42,7 +42,7 @@ public class CompoundCondition implements GameCondition<CompoundCondition> {
 
 	@Override
 	public GameConditionType<CompoundCondition> getType() {
-		return GameConditionTypes.COMPOUND_CONDITION;
+		return GameConditionTypes.COMPOUND;
 	}
 
 	public List<GameCondition<?>> getConditions() {

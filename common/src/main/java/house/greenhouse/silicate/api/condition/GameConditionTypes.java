@@ -12,7 +12,7 @@ import static house.greenhouse.silicate.Silicate.id;
  * Built-in {@link GameConditionType}s.
  */
 public final class GameConditionTypes {
-	public static final GameConditionType<CompoundCondition> COMPOUND_CONDITION = register("compound", CompoundCondition.CODEC);
+	public static final GameConditionType<CompoundCondition> COMPOUND = register("compound", CompoundCondition.CODEC);
 	public static final GameConditionType<EntityTypeCondition> ENTITY_TYPE = register("entity_type", EntityTypeCondition.CODEC);
 	public static final GameConditionType<BlockStateCondition> BLOCK_STATE = register("block_state", BlockStateCondition.CODEC);
 	public static final GameConditionType<Vec3Condition> VEC3 = register("vec3", Vec3Condition.CODEC);
