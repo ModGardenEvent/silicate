@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(AbstractClientPlayer.class)
 public interface Accessor_AbstractClientPlayer {
-	@Invoker("getPlayerInfo")
+	@Invoker
 	@Nullable
-	PlayerInfo getPlayerInfo();
+	PlayerInfo invokeGetPlayerInfo();
 }

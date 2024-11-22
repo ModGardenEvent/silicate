@@ -67,7 +67,7 @@ public record PlayerGameTypeCondition(
 					.stream()
 					.anyMatch(
 							Objects.requireNonNull(
-									player.getPlayerInfo(),
+									player.invokeGetPlayerInfo(),
 									"Player has no GameType"
 							).getGameMode()::equals
 					);
