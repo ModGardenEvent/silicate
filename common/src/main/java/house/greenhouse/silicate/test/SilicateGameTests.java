@@ -1,9 +1,8 @@
 package house.greenhouse.silicate.test;
 
+import house.greenhouse.silicate.Silicate;
 import house.greenhouse.silicate.api.condition.CompoundCondition;
-import house.greenhouse.silicate.api.condition.builtin.BlockStateCondition;
-import house.greenhouse.silicate.api.condition.builtin.EntityTypeCondition;
-import house.greenhouse.silicate.api.condition.builtin.Vec3Condition;
+import house.greenhouse.silicate.api.condition.builtin.*;
 import house.greenhouse.silicate.api.condition.builtin.math.Comparison;
 import house.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
 import house.greenhouse.silicate.api.context.GameContext;
@@ -11,15 +10,20 @@ import house.greenhouse.silicate.api.context.param.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FurnaceBlock;
 import net.minecraft.world.level.block.NoteBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -30,7 +34,10 @@ public class SilicateGameTests {
 		ContextParamSet paramSet = ContextParamSet.Builder.of()
 				.required(ContextParamTypes.ORIGIN)
 				.required(ContextParamTypes.BLOCK_STATE)
+				.optional(ContextParamTypes.BLOCK_ENTITY)
 				.optional(ContextParamTypes.THIS_ENTITY)
+				.optional(ContextParamTypes.ATTACKING_ENTITY)
+				.optional(ContextParamTypes.VICTIM_ENTITY)
 				.build();
 		helper.assertFalse(
 				paramSet.isRequired(ContextParamTypes.THIS_ENTITY),
@@ -65,9 +72,13 @@ public class SilicateGameTests {
 				paramSet.hasParam(ContextParamTypes.THIS_ENTITY),
 				"ContextParamSet.hasParam(ContextParamTypes.ORIGIN) != true"
 		);
-		helper.assertFalse(
+		helper.assertTrue(
 				paramSet.hasParam(ContextParamTypes.BLOCK_ENTITY),
-				"ContextParamSet.hasParam(ContextParamTypes.BLOCK_ENTITY) != false"
+				"ContextParamSet.hasParam(ContextParamTypes.BLOCK_ENTITY) != true"
+		);
+		helper.assertFalse(
+				paramSet.hasParam(ContextParamTypes.UNIT),
+				"ContextParamSet.hasParam(ContextParamTypes.UNIT) != false"
 		);
 		helper.succeed();
 	}
@@ -75,7 +86,7 @@ public class SilicateGameTests {
 	@GameTest(template = "silicate:test_template")
 	public static void contextParamMap(GameTestHelper helper) {
 		ContextParamSet paramSet = createParamSet();
-		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, helper);
+		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, null, null, helper);
 		helper.assertTrue(
 				paramMap.getParamSet().equals(paramSet),
 				"ContextParamMap.getParamSet() does not equal paramSet"
@@ -105,7 +116,7 @@ public class SilicateGameTests {
 	
 	@GameTest(template = "silicate:test_template")
 	public static void gameContext(GameTestHelper helper) {
-		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, helper);
+		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, null, null, helper);
 		GameContext context = GameContext.of(helper.getLevel(), paramMap);
 		helper.assertTrue(
 				context.getLevel() != null,
@@ -124,7 +135,14 @@ public class SilicateGameTests {
 	
 	@GameTest(template = "silicate:test_template")
 	public static void conditions(GameTestHelper helper) {
-		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), helper.getEntities(EntityType.CHICKEN).getFirst(), helper);
+		ContextParamMap paramMap = createParamMap(
+			createState(),
+			createOrigin(),
+			helper.getEntities(EntityType.CHICKEN).getFirst(),
+			createEntityBlock(),
+			createFakePlayer(helper),
+			helper
+		);
 		GameContext context = GameContext.of(helper.getLevel(), paramMap);
 		BlockStateCondition stateCondition = new BlockStateCondition(
 				ContextParamTypes.BLOCK_STATE,
@@ -163,11 +181,29 @@ public class SilicateGameTests {
 				vec3Condition.test(context),
 				"Vec3Condition test failed"
 		);
+		BlockEntityTypeCondition blockEntityTypeCondition = new BlockEntityTypeCondition(
+				ContextParamTypes.BLOCK_ENTITY,
+				BlockEntityType.FURNACE
+		);
+		helper.assertTrue(
+			blockEntityTypeCondition.test(context),
+			"BlockEntityTypeCondition test failed"
+		);
+		PlayerGameTypeCondition gameTypeCondition = new PlayerGameTypeCondition(
+			ContextParamTypes.ATTACKING_ENTITY,
+			PlayerGameTypeCondition.SURVIVAL_LIKE
+		);
+		helper.assertTrue(
+			gameTypeCondition.test(context),
+			"PlayerGameTypeCondition test failed"
+		);
 		CompoundCondition compoundCondition = CompoundCondition.of(
 			stateCondition,
 			entityTypeCondition,
 			entityTagCondition,
-			vec3Condition	
+			vec3Condition,
+			blockEntityTypeCondition,
+			gameTypeCondition
 		);
 		helper.assertTrue(
 				compoundCondition.test(context),
@@ -195,13 +231,24 @@ public class SilicateGameTests {
 				.build();
 	}
 	
-	private static ContextParamMap createParamMap(BlockState state, BlockPos origin, Entity entity, GameTestHelper helper) {
+	private static ContextParamMap createParamMap(BlockState state, BlockPos origin, Entity entity, @Nullable BlockState entityBlock, @Nullable ServerPlayer fakePlayer, GameTestHelper helper) {
 		ContextParamSet paramSet = createParamSet();
 		helper.setBlock(origin, state);
-		return ContextParamMap.Builder.of(paramSet)
+		ContextParamMap.Builder builder = ContextParamMap.Builder.of(paramSet)
 				.withParameter(ContextParamTypes.BLOCK_STATE, state)
 				.withParameter(ContextParamTypes.ORIGIN, origin.getCenter())
-				.withParameter(ContextParamTypes.THIS_ENTITY, entity)
+				.withParameter(ContextParamTypes.THIS_ENTITY, entity);
+		if (entityBlock != null) {
+			BlockPos entityBlockPos = origin.east();
+			helper.setBlock(entityBlockPos, entityBlock);
+			builder
+					.withParameter(ContextParamTypes.BLOCK_ENTITY, helper.getLevel().getBlockEntity(entityBlockPos));
+		}
+		if (fakePlayer != null) {
+			builder
+				.withParameter(ContextParamTypes.ATTACKING_ENTITY, fakePlayer);
+		}
+		return builder
 				.build();
 	}
 	
@@ -217,6 +264,19 @@ public class SilicateGameTests {
 		return Blocks.NOTE_BLOCK.defaultBlockState()
 				.setValue(NoteBlock.NOTE, 2)
 				.setValue(NoteBlock.INSTRUMENT, NoteBlockInstrument.BANJO);
+	}
+	
+	private static BlockState createEntityBlock() {
+		return Blocks.FURNACE
+				.defaultBlockState()
+				.setValue(FurnaceBlock.LIT, true);
+	}
+	
+	private static ServerPlayer createFakePlayer(GameTestHelper helper) {
+		ServerPlayer fakePlayer = Silicate.getHelper().createFakePlayer(helper.getLevel());
+		fakePlayer.setGameMode(GameType.ADVENTURE);
+		fakePlayer.setPos(createOrigin().getCenter());
+		return fakePlayer;
 	}
 	
 	private static BlockPos createOrigin() {
