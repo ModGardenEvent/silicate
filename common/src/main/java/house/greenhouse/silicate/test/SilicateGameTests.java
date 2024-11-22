@@ -24,7 +24,7 @@ import java.util.List;
 
 @ApiStatus.Internal
 public class SilicateGameTests {
-	@GameTest(template = "test_template")
+	@GameTest(template = "silicate:test_template")
 	public static void contextParam(GameTestHelper helper) {
 		ContextParamSet paramSet = ContextParamSet.Builder.of()
 				.required(ContextParamTypes.ORIGIN)
@@ -68,9 +68,10 @@ public class SilicateGameTests {
 				paramSet.hasParam(ContextParamTypes.BLOCK_ENTITY),
 				"ContextParamSet.hasParam(ContextParamTypes.BLOCK_ENTITY) != false"
 		);
+		helper.succeed();
 	}
 	
-	@GameTest(template = "test_template")
+	@GameTest(template = "silicate:test_template")
 	public static void contextParamMap(GameTestHelper helper) {
 		ContextParamSet paramSet = createParamSet();
 		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, helper);
@@ -98,9 +99,10 @@ public class SilicateGameTests {
 			helper.fail("Missing parameter allowed in ContextParamMap");
 		} catch (IllegalArgumentException ignored) {
 		}
+		helper.succeed();
 	}
 	
-	@GameTest(template = "test_template")
+	@GameTest(template = "silicate:test_template")
 	public static void gameContext(GameTestHelper helper) {
 		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, helper);
 		GameContext context = GameContext.of(helper.getLevel(), paramMap);
@@ -116,9 +118,10 @@ public class SilicateGameTests {
 				context.getParams().equals(paramMap),
 				"GameContext.getParams() is not equal to paramMap"
 		);
+		helper.succeed();
 	}
 	
-	@GameTest(template = "test_template")
+	@GameTest(template = "silicate:test_template")
 	public static void conditions(GameTestHelper helper) {
 		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), helper.getEntities(EntityType.CHICKEN).getFirst(), helper);
 		GameContext context = GameContext.of(helper.getLevel(), paramMap);
@@ -159,6 +162,7 @@ public class SilicateGameTests {
 				vec3Condition.test(context),
 				"Vec3Condition test failed"
 		);
+		helper.succeed();
 	}
 	
 	private static void createInvalidParamMap() throws IllegalArgumentException {

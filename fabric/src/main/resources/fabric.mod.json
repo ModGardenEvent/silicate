@@ -20,10 +20,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-		 "house.greenhouse.silicate.SilicateFabric"
+			"house.greenhouse.silicate.SilicateFabric"
 		],
 		"preLaunch": [
-		 "house.greenhouse.silicate.SilicateFabricPre"
+			"house.greenhouse.silicate.SilicateFabricPre"
+		],
+		"fabric-gametest": [
+			"house.greenhouse.silicate.test.SilicateGameTests"
 		]
 	},
 	"mixins": [
