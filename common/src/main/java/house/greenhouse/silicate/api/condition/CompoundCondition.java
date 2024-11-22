@@ -22,6 +22,14 @@ public class CompoundCondition implements GameCondition<CompoundCondition> {
 		this.conditions = List.copyOf(conditions);
 	}
 	
+	public static CompoundCondition of(List<GameCondition<?>> conditions) {
+		return new CompoundCondition(conditions);
+	}
+	
+	public static CompoundCondition of(GameCondition<?>... conditions) {
+		return of(List.of(conditions));
+	}
+	
 	@Override
 	public boolean test(GameContext context) {
 		return conditions.stream().allMatch(condition -> condition.test(context));
