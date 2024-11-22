@@ -1,5 +1,6 @@
 package house.greenhouse.silicate.test;
 
+import house.greenhouse.silicate.api.condition.CompoundCondition;
 import house.greenhouse.silicate.api.condition.builtin.BlockStateCondition;
 import house.greenhouse.silicate.api.condition.builtin.EntityTypeCondition;
 import house.greenhouse.silicate.api.condition.builtin.Vec3Condition;
@@ -161,6 +162,16 @@ public class SilicateGameTests {
 		helper.assertTrue(
 				vec3Condition.test(context),
 				"Vec3Condition test failed"
+		);
+		CompoundCondition compoundCondition = CompoundCondition.of(
+			stateCondition,
+			entityTypeCondition,
+			entityTagCondition,
+			vec3Condition	
+		);
+		helper.assertTrue(
+				compoundCondition.test(context),
+				"CompoundCondition test failed"
 		);
 		helper.succeed();
 	}
