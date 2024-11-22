@@ -26,7 +26,7 @@ public record EntityTypeCondition(
 					.fieldOf("param_type")
 					.forGetter(EntityTypeCondition::paramType),
 			SilicateCodecs.ENTITY_TYPE_HOLDER_SET
-					.fieldOf("entity_types")
+					.fieldOf("entity_type")
 					.forGetter(EntityTypeCondition::entityTypes)
 	).apply(instance, EntityTypeCondition::new));
 	
