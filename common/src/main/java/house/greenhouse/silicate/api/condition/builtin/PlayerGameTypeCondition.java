@@ -39,6 +39,7 @@ public record PlayerGameTypeCondition(
 			)
 					.forGetter(PlayerGameTypeCondition::eitherGameType)
 	).apply(instance, PlayerGameTypeCondition::of));
+	public static List<GameType> SURVIVAL_LIKE = List.of(GameType.SURVIVAL, GameType.ADVENTURE);
 	
 	private static PlayerGameTypeCondition of(ContextParamType<Entity> paramType, Either<List<GameType>, GameType> eitherGameType) {
 		if (eitherGameType.left().isPresent()) {
