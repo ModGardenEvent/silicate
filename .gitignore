@@ -22,3 +22,6 @@ eclipse
 run
 runs
 .cache
+
+# OS
+.DS_Store
