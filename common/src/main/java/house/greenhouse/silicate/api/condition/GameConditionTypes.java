@@ -1,6 +1,7 @@
 package house.greenhouse.silicate.api.condition;
 
 import com.mojang.serialization.MapCodec;
+import house.greenhouse.silicate.api.SilicateRegistries;
 import house.greenhouse.silicate.api.condition.builtin.BlockEntityTypeCondition;
 import house.greenhouse.silicate.api.condition.builtin.BlockStateCondition;
 import house.greenhouse.silicate.api.condition.builtin.EntityTypeCondition;
@@ -26,7 +27,7 @@ public final class GameConditionTypes {
 			MapCodec<T> codec
 	) {
 		return Registry.register(
-				GameConditionType.REGISTRY,
+				SilicateRegistries.GAME_CONDITION_TYPE,
 				id(name),
 				new GameConditionType<>(codec)
 		);

@@ -2,6 +2,7 @@ package house.greenhouse.silicate.api.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import house.greenhouse.silicate.api.SilicateRegistries;
 import house.greenhouse.silicate.api.context.GameContext;
 
 import java.util.function.Predicate;
@@ -12,7 +13,7 @@ import java.util.function.Predicate;
  * This is the main type in Silicate.
  */
 public interface GameCondition<T extends GameCondition<T>> extends Predicate<GameContext> {
-	Codec<GameCondition<?>> CODEC = GameConditionType.REGISTRY.byNameCodec()
+	Codec<GameCondition<?>> CODEC = SilicateRegistries.GAME_CONDITION_TYPE.byNameCodec()
 			.dispatch("type", GameCondition::getType, GameConditionType::codec);
 	
 	@Override
