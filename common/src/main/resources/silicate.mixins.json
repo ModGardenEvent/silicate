@@ -6,7 +6,7 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [],
 	"client": [
-		"client.Accessor_AbstractClientPlayer"
+		"client.Mixin_AbstractClientPlayer"
 	],
 	"server": [],
 	"injectors": {

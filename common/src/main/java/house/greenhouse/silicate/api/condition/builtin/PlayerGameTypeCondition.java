@@ -9,7 +9,7 @@ import house.greenhouse.silicate.api.condition.GameConditionType;
 import house.greenhouse.silicate.api.condition.GameConditionTypes;
 import house.greenhouse.silicate.api.context.GameContext;
 import house.greenhouse.silicate.api.context.param.ContextParamType;
-import house.greenhouse.silicate.mixin.client.Accessor_AbstractClientPlayer;
+import house.greenhouse.silicate.duck.Duck_AbstractClientPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.GameType;
@@ -62,12 +62,12 @@ public record PlayerGameTypeCondition(
 	@Override
 	public boolean test(GameContext context) {
 		Entity entity = context.getParam(paramType);
-		if (entity instanceof Accessor_AbstractClientPlayer player) {
+		if (entity instanceof Duck_AbstractClientPlayer player) {
 			return gameTypes
 					.stream()
 					.anyMatch(
 							Objects.requireNonNull(
-									player.invokeGetPlayerInfo(),
+									player.silicate$getPlayerInfo(),
 									"Player has no GameType"
 							).getGameMode()::equals
 					);
