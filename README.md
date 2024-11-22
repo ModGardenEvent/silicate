@@ -1,5 +1,8 @@
 # Silicate
 A library providing powerful client-server-agnostic predicates with a simple API.
+> [!IMPORTANT]
+> This library is **new; use it with caution.** The API may change frequently, and not all features have been implemented.
+> Check the issue tracker for updates.
 
 ## Goal
 The goal of Silicate is to complete a context-aware predicate system on par with Minecraft's Loot Context-aware predicates. Available for Fabric and NeoForge, Silicate provides a common API for interfacing advanced predicates between mods, across platforms. Silicate achieves this by implementing a clean-slate predicate architecture, initially independent of Minecraft.
