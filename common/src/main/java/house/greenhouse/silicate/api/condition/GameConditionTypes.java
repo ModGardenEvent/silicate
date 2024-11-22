@@ -1,6 +1,7 @@
 package house.greenhouse.silicate.api.condition;
 
 import com.mojang.serialization.MapCodec;
+import house.greenhouse.silicate.api.condition.builtin.BlockEntityTypeCondition;
 import house.greenhouse.silicate.api.condition.builtin.BlockStateCondition;
 import house.greenhouse.silicate.api.condition.builtin.EntityTypeCondition;
 import house.greenhouse.silicate.api.condition.builtin.Vec3Condition;
@@ -16,6 +17,7 @@ public final class GameConditionTypes {
 	public static final GameConditionType<EntityTypeCondition> ENTITY_TYPE = register("entity_type", EntityTypeCondition.CODEC);
 	public static final GameConditionType<BlockStateCondition> BLOCK_STATE = register("block_state", BlockStateCondition.CODEC);
 	public static final GameConditionType<Vec3Condition> VEC3 = register("vec3", Vec3Condition.CODEC);
+	public static final GameConditionType<BlockEntityTypeCondition> BLOCK_ENTITY_TYPE = register("block_entity_type", BlockEntityTypeCondition.CODEC);
 	
 	private GameConditionTypes() {}
 	
