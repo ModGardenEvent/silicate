@@ -37,8 +37,6 @@ public class SilicateGameTests {
 				.required(ContextParamTypes.BLOCK_STATE)
 				.optional(ContextParamTypes.BLOCK_ENTITY)
 				.optional(ContextParamTypes.THIS_ENTITY)
-				.optional(ContextParamTypes.ATTACKING_ENTITY)
-				.optional(ContextParamTypes.VICTIM_ENTITY)
 				.build();
 		helper.assertFalse(
 			paramSet.isRequired(ContextParamTypes.THIS_ENTITY),
@@ -243,7 +241,7 @@ public class SilicateGameTests {
 			BlockPos entityBlockPos = origin.east();
 			helper.setBlock(entityBlockPos, entityBlock);
 			builder
-				.withParameter(ContextParamTypes.BLOCK_ENTITY, helper.getLevel().getBlockEntity(entityBlockPos));
+				.withParameter(ContextParamTypes.BLOCK_ENTITY, helper.getBlockEntity(entityBlockPos));
 		}
 		if (fakePlayer != null) {
 			builder
@@ -255,10 +253,13 @@ public class SilicateGameTests {
 	
 	private static @NotNull ContextParamSet createParamSet() {
 		return ContextParamSet.Builder.of()
-				.required(ContextParamTypes.BLOCK_STATE)
-				.required(ContextParamTypes.ORIGIN)
-				.required(ContextParamTypes.THIS_ENTITY)
-				.build();
+			.required(ContextParamTypes.BLOCK_STATE)
+			.required(ContextParamTypes.ORIGIN)
+			.required(ContextParamTypes.THIS_ENTITY)
+			.optional(ContextParamTypes.BLOCK_ENTITY)
+			.optional(ContextParamTypes.ATTACKING_ENTITY)
+			.optional(ContextParamTypes.VICTIM_ENTITY)
+			.build();
 	}
 	
 	private static BlockState createState() {
