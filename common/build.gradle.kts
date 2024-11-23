@@ -68,6 +68,7 @@ publishMods {
 		repository = Properties.GITHUB_REPO
 		tagName = "${Versions.MOD}+${Versions.MINECRAFT}"
 		commitish = Properties.GITHUB_COMMITISH
+		description = rootProject.file("CHANGELOG.md").readText()
 
 		allowEmptyFiles = true
 	}

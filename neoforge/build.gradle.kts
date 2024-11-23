@@ -70,28 +70,20 @@ publishMods {
 	changelog = rootProject.file("CHANGELOG.md").readText()
 	displayName = "v${Versions.MOD} (NeoForge ${Versions.MINECRAFT})"
 	version = "${Versions.MOD}+${Versions.MINECRAFT}-neoforge"
-	type = STABLE
-
-	curseforge {
-		projectId = Properties.CURSEFORGE_PROJECT_ID
-		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
-
-		minecraftVersions.add(Versions.MINECRAFT)
-		javaVersions.add(JavaVersion.VERSION_21)
-
-		clientRequired = true
-		serverRequired = true
-	}
+	type = BETA
 
 	modrinth {
 		projectId = Properties.MODRINTH_PROJECT_ID
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+		description = rootProject.file("CHANGELOG.md").readText()
 
 		minecraftVersions.add(Versions.MINECRAFT)
 	}
 
 	github {
+		type = STABLE
 		accessToken = providers.environmentVariable("GITHUB_TOKEN")
 		parent(project(":common").tasks.named("publishGithub"))
+		description = rootProject.file("CHANGELOG.md").readText()
 	}
 }
