@@ -75,7 +75,6 @@ publishMods {
 	modrinth {
 		projectId = Properties.MODRINTH_PROJECT_ID
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-		description = rootProject.file("CHANGELOG.md").readText()
 
 		minecraftVersions.add(Versions.MINECRAFT)
 	}
@@ -84,6 +83,5 @@ publishMods {
 		type = STABLE
 		accessToken = providers.environmentVariable("GITHUB_TOKEN")
 		parent(project(":common").tasks.named("publishGithub"))
-		description = rootProject.file("CHANGELOG.md").readText()
 	}
 }
