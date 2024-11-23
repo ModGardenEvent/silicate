@@ -10,16 +10,16 @@ import house.greenhouse.silicate.api.context.param.ContextParamType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public record BlockStateCondition(
-		ContextParamType<BlockState> paramType,
-		BlockState blockState
+	ContextParamType<BlockState> paramType,
+	BlockState blockState
 ) implements GameCondition<BlockStateCondition> {
 	public static final MapCodec<BlockStateCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			ContextParamType.<BlockState>getCodec()
-					.fieldOf("param_type")
-					.forGetter(BlockStateCondition::paramType),
-			BlockState.CODEC
-					.fieldOf("block_state")
-					.forGetter(BlockStateCondition::blockState)
+		ContextParamType.<BlockState>getCodec()
+			.fieldOf("param_type")
+			.forGetter(BlockStateCondition::paramType),
+		BlockState.CODEC
+			.fieldOf("block_state")
+			.forGetter(BlockStateCondition::blockState)
 	).apply(instance, BlockStateCondition::new));
 	
 	@Override

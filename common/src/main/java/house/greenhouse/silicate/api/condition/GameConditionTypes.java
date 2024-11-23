@@ -25,9 +25,9 @@ public final class GameConditionTypes {
 			MapCodec<T> codec
 	) {
 		return Registry.register(
-				SilicateRegistries.GAME_CONDITION_TYPE,
-				id(name),
-				new GameConditionType<>(codec)
+			SilicateRegistries.GAME_CONDITION_TYPE,
+			id(name),
+			new GameConditionType<>(codec)
 		);
 	}
 }

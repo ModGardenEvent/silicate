@@ -18,45 +18,45 @@ import net.minecraft.world.entity.EntityType;
  * A condition to check an entity's {@link EntityType}.
  */
 public record EntityTypeCondition(
-		ContextParamType<Entity> paramType,
-		HolderSet<EntityType<?>> entityTypes
+	ContextParamType<Entity> paramType,
+	HolderSet<EntityType<?>> entityTypes
 ) implements GameCondition<EntityTypeCondition> {
 	public static final MapCodec<EntityTypeCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			ContextParamType.<Entity>getCodec()
-					.fieldOf("param_type")
-					.forGetter(EntityTypeCondition::paramType),
-			SilicateCodecs.ENTITY_TYPE_HOLDER_SET
-					.fieldOf("entity_type")
-					.forGetter(EntityTypeCondition::entityTypes)
+		ContextParamType.<Entity>getCodec()
+			.fieldOf("param_type")
+			.forGetter(EntityTypeCondition::paramType),
+		SilicateCodecs.ENTITY_TYPE_HOLDER_SET
+			.fieldOf("entity_type")
+			.forGetter(EntityTypeCondition::entityTypes)
 	).apply(instance, EntityTypeCondition::new));
 	
 	public static EntityTypeCondition of(
-			ContextParamType<Entity> paramType,
-			EntityType<?> entityType
+		ContextParamType<Entity> paramType,
+		EntityType<?> entityType
 	) {
 		//noinspection deprecation
 		return new EntityTypeCondition(
-				paramType,
-				HolderSet.direct(entityType.builtInRegistryHolder())
+			paramType,
+			HolderSet.direct(entityType.builtInRegistryHolder())
 		);
 	}
 	
 	public static EntityTypeCondition of(
-			ContextParamType<Entity> paramType,
-			TagKey<EntityType<?>> entityTag
+		ContextParamType<Entity> paramType,
+		TagKey<EntityType<?>> entityTag
 	) {
 		return new EntityTypeCondition(
-				paramType,
-				BuiltInRegistries.ENTITY_TYPE.getOrCreateTag(entityTag)
+			paramType,
+			BuiltInRegistries.ENTITY_TYPE.getOrCreateTag(entityTag)
 		);
 	}
 	
 	@Override
 	public boolean test(GameContext context) {
 		return context
-				.getParam(paramType)
-				.getType()
-				.is(entityTypes);
+			.getParam(paramType)
+			.getType()
+			.is(entityTypes);
 	}
 	
 	@Override

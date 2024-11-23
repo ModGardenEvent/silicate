@@ -16,20 +16,20 @@ import net.minecraft.world.phys.Vec3;
  * @param latterOperand The {@link Vec3} to do operations on (to the right).
  */
 public record Vec3Condition(
-		ContextParamType<Vec3> paramType,
-		Vec3Comparison comparison,
-		Vec3 latterOperand
+	ContextParamType<Vec3> paramType,
+	Vec3Comparison comparison,
+	Vec3 latterOperand
 ) implements GameCondition<Vec3Condition> {
 	public static final MapCodec<Vec3Condition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			ContextParamType.<Vec3>getCodec()
-					.fieldOf("param_type")
-					.forGetter(Vec3Condition::paramType),
-			Vec3Comparison.CODEC
-					.fieldOf("comparison")
-					.forGetter(Vec3Condition::comparison),
-			Vec3.CODEC
-					.fieldOf("latter_operand")
-					.forGetter(Vec3Condition::latterOperand)
+		ContextParamType.<Vec3>getCodec()
+			.fieldOf("param_type")
+			.forGetter(Vec3Condition::paramType),
+		Vec3Comparison.CODEC
+			.fieldOf("comparison")
+			.forGetter(Vec3Condition::comparison),
+		Vec3.CODEC
+			.fieldOf("latter_operand")
+			.forGetter(Vec3Condition::latterOperand)
 	).apply(instance, Vec3Condition::new));
 	
 	@Override

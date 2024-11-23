@@ -14,9 +14,9 @@ import static house.greenhouse.silicate.Silicate.id;
 public final class SilicateRegistries {
 	private static final ResourceKey<Registry<GameConditionType<?>>> GAME_CONDITION_TYPE_KEY = ResourceKey.createRegistryKey(id("game_condition_type"));
 	public static final Registry<GameConditionType<?>> GAME_CONDITION_TYPE = new MappedRegistry<>(
-			GAME_CONDITION_TYPE_KEY,
-			Lifecycle.stable(),
-			false
+		GAME_CONDITION_TYPE_KEY,
+		Lifecycle.stable(),
+		false
 	);
 	
 	private SilicateRegistries() {}

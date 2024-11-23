@@ -11,10 +11,10 @@ import java.util.List;
  */
 public class CompoundCondition implements GameCondition<CompoundCondition> {
 	public static final MapCodec<CompoundCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			GameCondition.CODEC
-					.listOf()
-					.fieldOf("conditions")
-					.forGetter(CompoundCondition::getConditions)
+		GameCondition.CODEC
+			.listOf()
+			.fieldOf("conditions")
+			.forGetter(CompoundCondition::getConditions)
 	).apply(instance, CompoundCondition::new));
 	private final List<GameCondition<?>> conditions;
 	

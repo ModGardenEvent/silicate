@@ -23,21 +23,21 @@ import java.util.Objects;
  * @param gameTypes The {@link GameType}s to equality against. Tests true if any are equal.
  */
 public record PlayerGameTypeCondition(
-		ContextParamType<Entity> paramType,
-		List<GameType> gameTypes
+	ContextParamType<Entity> paramType,
+	List<GameType> gameTypes
 ) implements GameCondition<PlayerGameTypeCondition> {
 	public static final MapCodec<PlayerGameTypeCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			ContextParamType.<Entity>getCodec()
-					.fieldOf("param_type")
-					.forGetter(PlayerGameTypeCondition::paramType),
-			Codec.mapEither(
-					GameType.CODEC
-							.listOf()
-							.fieldOf("game_types"),
-					GameType.CODEC
-							.fieldOf("game_type")
-			)
-					.forGetter(PlayerGameTypeCondition::eitherGameType)
+		ContextParamType.<Entity>getCodec()
+			.fieldOf("param_type")
+			.forGetter(PlayerGameTypeCondition::paramType),
+		Codec.mapEither(
+			GameType.CODEC
+				.listOf()
+				.fieldOf("game_types"),
+				GameType.CODEC
+					.fieldOf("game_type")
+		)
+			.forGetter(PlayerGameTypeCondition::eitherGameType)
 	).apply(instance, PlayerGameTypeCondition::of));
 	public static List<GameType> SURVIVAL_LIKE = List.of(GameType.SURVIVAL, GameType.ADVENTURE);
 	
@@ -64,17 +64,17 @@ public record PlayerGameTypeCondition(
 		Entity entity = context.getParam(paramType);
 		if (entity instanceof Duck_AbstractClientPlayer player) {
 			return gameTypes
-					.stream()
-					.anyMatch(
-							Objects.requireNonNull(
-									player.silicate$getPlayerInfo(),
-									"Player has no GameType"
-							).getGameMode()::equals
-					);
+				.stream()
+				.anyMatch(
+					Objects.requireNonNull(
+						player.silicate$getPlayerInfo(),
+						"Player has no GameType"
+					).getGameMode()::equals
+				);
 		} else if (entity instanceof ServerPlayer player) {
 			return gameTypes
-					.stream()
-					.anyMatch(player.gameMode.getGameModeForPlayer()::equals);
+				.stream()
+				.anyMatch(player.gameMode.getGameModeForPlayer()::equals);
 		} else {
 			return false;
 		}

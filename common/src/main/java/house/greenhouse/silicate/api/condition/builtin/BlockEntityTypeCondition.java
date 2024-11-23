@@ -13,16 +13,16 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public record BlockEntityTypeCondition(
-		ContextParamType<BlockEntity> paramType,
-		BlockEntityType<?> blockEntityType
+	ContextParamType<BlockEntity> paramType,
+	BlockEntityType<?> blockEntityType
 ) implements GameCondition<BlockEntityTypeCondition> {
 	public static final MapCodec<BlockEntityTypeCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			ContextParamType.<BlockEntity>getCodec()
-					.fieldOf("param_type")
-					.forGetter(BlockEntityTypeCondition::paramType),
-			ResourceLocation.CODEC
-					.fieldOf("block_entity_type")
-					.forGetter((t) -> BlockEntityType.getKey(t.blockEntityType()))
+		ContextParamType.<BlockEntity>getCodec()
+			.fieldOf("param_type")
+			.forGetter(BlockEntityTypeCondition::paramType),
+		ResourceLocation.CODEC
+			.fieldOf("block_entity_type")
+			.forGetter((t) -> BlockEntityType.getKey(t.blockEntityType()))
 	).apply(instance, BlockEntityTypeCondition::of));
 	
 	private static BlockEntityTypeCondition of(ContextParamType<BlockEntity> paramType, ResourceLocation blockEntityTypeId) {

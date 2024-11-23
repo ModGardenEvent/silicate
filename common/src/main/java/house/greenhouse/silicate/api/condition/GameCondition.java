@@ -14,7 +14,7 @@ import java.util.function.Predicate;
  */
 public interface GameCondition<T extends GameCondition<T>> extends Predicate<GameContext> {
 	Codec<GameCondition<?>> CODEC = SilicateRegistries.GAME_CONDITION_TYPE.byNameCodec()
-			.dispatch("type", GameCondition::getType, GameConditionType::codec);
+		.dispatch("type", GameCondition::getType, GameConditionType::codec);
 	
 	@Override
 	boolean test(GameContext context);
