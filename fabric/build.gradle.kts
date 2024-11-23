@@ -62,6 +62,13 @@ loom {
 			vmArg("-Dfabric-api.datagen.modid=${Properties.MOD_ID}")
 			runDir("build/datagen")
 		}
+		register("gameTestServer") {
+			inherit(runs.getByName("server"))
+			configName = "Fabric GameTestServer"
+			vmArgs("-Dfabric-api.gametest")
+			vmArgs("-Dfabric-api.gametest.report-file=${layout.buildDirectory}/junit.xml")
+			runDir("build/gametest")
+		}
 	}
 }
 
