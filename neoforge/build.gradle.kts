@@ -41,6 +41,11 @@ neoForge {
 			sourceSet = sourceSets["test"]
 			jvmArguments.set(setOf("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"))
 		}
+		create("gameTestServer") {
+			type = "gameTestServer"
+			@Suppress("UnstableApiUsage") // respectfully, shut the f*#@ up
+			gameDirectory = project.file("build/gametest")
+		}
 	}
 
 	mods {
