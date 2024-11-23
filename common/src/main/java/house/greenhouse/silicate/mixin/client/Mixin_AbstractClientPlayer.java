@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(AbstractClientPlayer.class)
 public abstract class Mixin_AbstractClientPlayer extends Player implements Duck_AbstractClientPlayer {
 	@Shadow
-	@javax.annotation.Nullable
+	@Nullable
 	protected abstract PlayerInfo getPlayerInfo();
 	
 	private Mixin_AbstractClientPlayer(Level level, BlockPos pos, float yRot, GameProfile gameProfile) {
