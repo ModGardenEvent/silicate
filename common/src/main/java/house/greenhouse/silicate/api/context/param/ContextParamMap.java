@@ -1,5 +1,6 @@
 package house.greenhouse.silicate.api.context.param;
 
+import house.greenhouse.silicate.api.exception.InvalidContextParameterException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -49,9 +50,9 @@ public final class ContextParamMap {
 		}
 		
 		/**
-		 * @throws IllegalArgumentException if a parameter is invalid or missing.
+		 * @throws InvalidContextParameterException if a parameter is invalid or missing.
 		 */
-		public ContextParamMap build() throws IllegalArgumentException {
+		public ContextParamMap build() throws InvalidContextParameterException {
 			validate();
 			return new ContextParamMap(params, paramSet);
 		}
@@ -59,17 +60,23 @@ public final class ContextParamMap {
 		/**
 		 * Ensure that all parameters are valid.
 		 */
-		private void validate() throws IllegalArgumentException {
-			params.forEach((type, param) -> {
-				if (!paramSet.hasParam(type)) {
-					throw new IllegalArgumentException("Context parameter " + type + " does not exist in this set");
+		private void validate() throws InvalidContextParameterException {
+			try {
+				params.forEach((type, param) -> {
+					if (!paramSet.hasParam(type)) {
+						throw new RuntimeException(new InvalidContextParameterException("Context parameter " + type + " does not exist in this set"));
+					}
+				});
+				paramSet.getRequired().forEach(type -> {
+					if (!params.containsKey(type)) {
+						throw new RuntimeException(new InvalidContextParameterException("Context parameter " + type + " is missing; required in set"));
+					}
+				});
+			} catch (RuntimeException e) {
+				if (e.getCause() instanceof InvalidContextParameterException icpe) {
+					throw icpe;
 				}
-			});
-			paramSet.getRequired().forEach(type -> {
-				if (!params.containsKey(type)) {
-					throw new IllegalArgumentException("Context parameter " + type + " is missing; required in set");
-				}
-			});
+			}
 		}
 	}
 }

@@ -7,6 +7,7 @@ import house.greenhouse.silicate.api.condition.builtin.math.Comparison;
 import house.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
 import house.greenhouse.silicate.api.context.GameContext;
 import house.greenhouse.silicate.api.context.param.*;
+import house.greenhouse.silicate.api.exception.InvalidContextParameterException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -84,7 +85,7 @@ public class SilicateGameTests {
 	}
 	
 	@GameTest(template = "silicate:test_template")
-	public static void contextParamMap(GameTestHelper helper) {
+	public static void contextParamMap(GameTestHelper helper) throws InvalidContextParameterException {
 		ContextParamSet paramSet = createParamSet();
 		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, null, null, helper);
 		helper.assertTrue(
@@ -104,18 +105,18 @@ public class SilicateGameTests {
 		try {
 			createInvalidParamMap();
 			helper.fail("Invalid parameter type allowed in ContextParamMap");
-		} catch (IllegalArgumentException ignored) {
+		} catch (InvalidContextParameterException ignored) {
 		}
 		try {
 			createMissingParamMap();
 			helper.fail("Missing parameter allowed in ContextParamMap");
-		} catch (IllegalArgumentException ignored) {
+		} catch (InvalidContextParameterException ignored) {
 		}
 		helper.succeed();
 	}
 	
 	@GameTest(template = "silicate:test_template")
-	public static void gameContext(GameTestHelper helper) {
+	public static void gameContext(GameTestHelper helper) throws InvalidContextParameterException {
 		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, null, null, helper);
 		GameContext context = GameContext.of(helper.getLevel(), paramMap);
 		helper.assertTrue(
@@ -134,7 +135,7 @@ public class SilicateGameTests {
 	}
 	
 	@GameTest(template = "silicate:test_template")
-	public static void conditions(GameTestHelper helper) {
+	public static void conditions(GameTestHelper helper) throws InvalidContextParameterException {
 		ContextParamMap paramMap = createParamMap(
 			createState(),
 			createOrigin(),
@@ -212,7 +213,7 @@ public class SilicateGameTests {
 		helper.succeed();
 	}
 	
-	private static void createInvalidParamMap() throws IllegalArgumentException {
+	private static void createInvalidParamMap() throws InvalidContextParameterException {
 		ContextParamSet paramSet = ContextParamSet.Builder.of()
 			.required(ContextParamTypes.BLOCK_STATE)
 			.required(ContextParamTypes.ORIGIN)
@@ -222,7 +223,7 @@ public class SilicateGameTests {
 			.build();
 	}
 	
-	private static void createMissingParamMap() throws IllegalArgumentException {
+	private static void createMissingParamMap() throws InvalidContextParameterException {
 		ContextParamSet paramSet = ContextParamSet.Builder.of()
 			.required(ContextParamTypes.BLOCK_STATE)
 			.required(ContextParamTypes.ORIGIN)
@@ -231,7 +232,7 @@ public class SilicateGameTests {
 			.build();
 	}
 	
-	private static ContextParamMap createParamMap(BlockState state, BlockPos origin, Entity entity, @Nullable BlockState entityBlock, @Nullable ServerPlayer fakePlayer, GameTestHelper helper) {
+	private static ContextParamMap createParamMap(BlockState state, BlockPos origin, Entity entity, @Nullable BlockState entityBlock, @Nullable ServerPlayer fakePlayer, GameTestHelper helper) throws InvalidContextParameterException {
 		ContextParamSet paramSet = createParamSet();
 		helper.setBlock(origin, state);
 		ContextParamMap.Builder builder = ContextParamMap.Builder.of(paramSet)
