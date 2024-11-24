@@ -16,7 +16,7 @@
 		"sources": "https://github.com/${sources}"
 	},
 	"license": "${mod_license}",
-	"icon": "${mod_id}.png",
+	"icon": "icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
