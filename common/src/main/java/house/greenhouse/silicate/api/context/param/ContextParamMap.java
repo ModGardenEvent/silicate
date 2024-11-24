@@ -10,13 +10,17 @@ import java.util.Map;
  * A map of {@link ContextParamType} to {@link ContextParam} values.
  * That is, a class representing a map of all present context parameters.
  */
-public final class ContextParamMap {
-	private final Map<ContextParamType<?>, ContextParam<?>> params;
+public sealed class ContextParamMap {
+	protected final Map<ContextParamType<?>, ContextParam<?>> params;
 	private final ContextParamSet paramSet;
 	
 	private ContextParamMap(Map<ContextParamType<?>, ContextParam<?>> params, ContextParamSet paramSet) {
-		this.params = Map.copyOf(params);
+		this.params = params;
 		this.paramSet = paramSet;
+	}
+	
+	private static ContextParamMap ofImmutable(Map<ContextParamType<?>, ContextParam<?>> params, ContextParamSet paramSet) {
+		return new ContextParamMap(Map.copyOf(params), paramSet);
 	}
 	
 	@SuppressWarnings("unchecked") // type is always correct
@@ -30,6 +34,21 @@ public final class ContextParamMap {
 	
 	public ContextParamSet getParamSet() {
 		return paramSet;
+	}
+	
+	public static final class Mutable extends ContextParamMap {
+		private Mutable(Map<ContextParamType<?>, ContextParam<?>> params, ContextParamSet paramSet) {
+			super(new HashMap<>(params), paramSet);
+		}
+		
+		public static Mutable of(ContextParamMap paramMap) {
+			return new Mutable(new HashMap<>(paramMap.params), paramMap.paramSet);
+		}
+		
+		@SuppressWarnings("unchecked") // Always correct.
+		public <T> ContextParam<T> set(ContextParamType<T> type, T param) {
+			return (ContextParam<T>) params.put(type, new ContextParam<>(param));
+		}
 	}
 
 	public static final class Builder {
@@ -63,7 +82,7 @@ public final class ContextParamMap {
 		 */
 		public ContextParamMap build() throws InvalidContextParameterException {
 			validate();
-			return new ContextParamMap(params, paramSet);
+			return ContextParamMap.ofImmutable(params, paramSet);
 		}
 		
 		/**
