@@ -24,16 +24,25 @@ public final class ContextParamMap {
 		return (ContextParam<T>) params.get(type);
 	}
 	
+	public <T> boolean has(ContextParamType<T> type) {
+		return params.containsKey(type);
+	}
+	
 	public ContextParamSet getParamSet() {
 		return paramSet;
 	}
 
 	public static final class Builder {
-		private final Map<ContextParamType<?>, ContextParam<?>> params = new HashMap<>();
+		private final Map<ContextParamType<?>, ContextParam<?>> params;
 		private final ContextParamSet paramSet;
 		
-		private Builder(ContextParamSet paramSet) {
+		private Builder(ContextParamSet paramSet, Map<ContextParamType<?>, ContextParam<?>> params) {
 			this.paramSet = paramSet;
+			this.params = params;
+		}
+		
+		private Builder(ContextParamSet paramSet) {
+			this(paramSet, new HashMap<>());
 		}
 		
 		public static Builder of(ContextParamSet paramSet) {
