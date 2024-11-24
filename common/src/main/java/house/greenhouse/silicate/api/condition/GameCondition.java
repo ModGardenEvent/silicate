@@ -13,7 +13,7 @@ import java.util.function.Predicate;
  * A distribution-agnostic contextual {@link Predicate} used to determine game behavior.
  * <br>
  * This is the main type in Silicate.
- * <h1>{@link TypedGameCondition}</h1>
+ * <h2>{@link TypedGameCondition}</h2>
  * If a condition has a parameter type, it is recommended to implement {@link TypedGameCondition} so that conditions that chain it can automatically determine their parameter type.
  * @see EntityPassengerCondition
  * @see EntityVehicleCondition
