@@ -49,12 +49,11 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 	 * @param <P> The value type of the parameter type.
 	 * @implNote We have to give up type checking somewhere, so we do it here. The parameter type is checked later on, so this is fine. It also doesn't really matter what type the condition is since the caller provides us that condition's type.
 	 */
-	@SuppressWarnings("rawtypes")
-	static <P> TypedGameCondition<?, P> retype(
+	static <T extends GameCondition<T>, P> TypedGameCondition<T, P> retype(
 			ContextParamType<P> paramType,
 			GameCondition<?> untyped
 	) {
-		return new TypedGameCondition<GameCondition, P>() {
+		return new TypedGameCondition<>() {
 			@Override
 			public ContextParamType<P> getParamType() {
 				return paramType;
@@ -67,14 +66,14 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public MapCodec<GameCondition> getCodec() {
-				return (MapCodec<GameCondition>) untyped.getCodec();
+			public MapCodec<T> getCodec() {
+				return (MapCodec<T>) untyped.getCodec();
 			}
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public GameConditionType<GameCondition> getType() {
-				return (GameConditionType<GameCondition>) untyped.getType();
+			public GameConditionType<T> getType() {
+				return (GameConditionType<T>) untyped.getType();
 			}
 		};
 	}
