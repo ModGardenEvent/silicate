@@ -5,3 +5,6 @@
 
 ## Changed
 - Clarified multiloader support in documentation.
+
+## Fixed
+- Registries are now automatically registered.

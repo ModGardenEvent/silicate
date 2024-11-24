@@ -1,5 +1,6 @@
 package house.greenhouse.silicate;
 
+import house.greenhouse.silicate.api.SilicateRegistries;
 import house.greenhouse.silicate.platform.SilicatePlatformHelper;
 import house.greenhouse.silicate.test.SilicateGameTests;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,7 @@ public class Silicate {
 
 	public static void init() {
 		LOG.info("Initializing Silicate");
+		SilicateRegistries.registerAll();
 	}
 	
 	public static SilicatePlatformHelper getHelper() {

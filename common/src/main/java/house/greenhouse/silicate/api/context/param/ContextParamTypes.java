@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.ApiStatus;
 
 import static house.greenhouse.silicate.Silicate.id;
 
@@ -40,6 +41,9 @@ public final class ContextParamTypes {
 	public static final ContextParamType<Unit> UNIT = new ContextParamType<>(id("unit"), Unit.class);
 	
 	private ContextParamTypes() {}
+
+	@ApiStatus.Internal
+	public static void registerAll() {}
 	
 	private static <T> ContextParamType<T> register(String name, Class<T> clazz) {
 		return Registry.register(
