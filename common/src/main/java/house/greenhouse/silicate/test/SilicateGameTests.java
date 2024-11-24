@@ -1,6 +1,7 @@
 package house.greenhouse.silicate.test;
 
 import house.greenhouse.silicate.Silicate;
+import house.greenhouse.silicate.api.condition.AlwaysCondition;
 import house.greenhouse.silicate.api.condition.CompoundCondition;
 import house.greenhouse.silicate.api.condition.InvertedCondition;
 import house.greenhouse.silicate.api.condition.TypedGameCondition;
@@ -284,6 +285,16 @@ public class SilicateGameTests {
 				invertedVehicleCondition.test(context),
 				"TypedGameCondition.fromUntyped test failed"
 		);
+		AlwaysCondition trueCondition = new AlwaysCondition(true);
+		helper.assertTrue(
+				trueCondition.test(context),
+				"AlwaysCondition(true) test failed"
+		);
+		AlwaysCondition falseCondition = new AlwaysCondition(false);
+		helper.assertFalse(
+				falseCondition.test(context),
+				"AlwaysCondition(false) test succeeded unexpectedly"
+		);
 		CompoundCondition compoundCondition = CompoundCondition.of(
 				stateCondition,
 				entityTypeCondition,
@@ -292,7 +303,9 @@ public class SilicateGameTests {
 				blockEntityTypeCondition,
 				gameTypeCondition,
 				passengerCondition,
-				vehicleCondition
+				vehicleCondition,
+				trueCondition,
+				new InvertedCondition(falseCondition)
 		);
 		helper.assertTrue(
 				compoundCondition.test(context),

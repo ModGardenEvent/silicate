@@ -14,6 +14,7 @@ public final class GameConditionTypes {
 	public static final GameConditionType<CompoundCondition> COMPOUND = register("compound", CompoundCondition.CODEC);
 	public static final GameConditionType<InvertedCondition> INVERTED = register("inverted", InvertedCondition.CODEC);
 	public static final GameConditionType<RetypedCondition> RETYPED = register("retyped", RetypedCondition.CODEC);
+	public static final GameConditionType<AlwaysCondition> ALWAYS = register("always", AlwaysCondition.CODEC);
 	public static final GameConditionType<EntityTypeCondition> ENTITY_TYPE = register("entity_type", EntityTypeCondition.CODEC);
 	public static final GameConditionType<EntityPassengerCondition> ENTITY_PASSENGER = register("entity_passenger", EntityPassengerCondition.CODEC);
 	public static final GameConditionType<EntityVehicleCondition> ENTITY_VEHICLE = register("entity_vehicle", EntityVehicleCondition.CODEC);
