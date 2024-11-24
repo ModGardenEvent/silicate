@@ -118,6 +118,15 @@ tasks {
 		}
 		exclude("\\.cache")
 	}
+
+	javadoc {
+		(options as StandardJavadocDocletOptions)
+			.tags(
+				"apiNote:a:API Note:",
+				"implSpec:a:Implementation Requirements:",
+				"implNote:a:Implementation Note:"
+			)
+	}
 }
 
 publishing {
