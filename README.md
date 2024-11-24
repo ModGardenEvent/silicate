@@ -6,7 +6,7 @@ A library providing powerful client-server-agnostic predicates with a simple API
 
 ## Usage
 Add this to your `build.gradle`(`.kts`)
-```build.gradle.kts
+```gradle
 repositories {
 	exclusiveContent {
 		forRepositories(
