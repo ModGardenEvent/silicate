@@ -2,6 +2,8 @@ package house.greenhouse.silicate.test;
 
 import house.greenhouse.silicate.Silicate;
 import house.greenhouse.silicate.api.condition.CompoundCondition;
+import house.greenhouse.silicate.api.condition.InvertedCondition;
+import house.greenhouse.silicate.api.condition.TypedGameCondition;
 import house.greenhouse.silicate.api.condition.builtin.*;
 import house.greenhouse.silicate.api.condition.builtin.math.Comparison;
 import house.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
@@ -15,6 +17,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FurnaceBlock;
@@ -22,6 +26,7 @@ import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -85,7 +90,7 @@ public class SilicateGameTests {
 	@GameTest(template = "silicate:test_template")
 	public static void contextParamMap(GameTestHelper helper) throws InvalidContextParameterException {
 		ContextParamSet paramSet = createParamSet();
-		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, null, null, helper);
+		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, null, null, null, helper);
 		helper.assertTrue(
 			paramMap.getParamSet().equals(paramSet),
 			"ContextParamMap.getParamSet() does not equal paramSet"
@@ -99,6 +104,32 @@ public class SilicateGameTests {
 				.value()
 				.equals(createOrigin().getCenter()),
 			"ContextParamTypes.ORIGIN is not equal to origin"
+		);
+		helper.assertFalse(
+			paramMap.has(ContextParamTypes.BLOCK_ENTITY),
+			"ContextParamMap.has(ContextParamTypes.BLOCK_ENTITY) != false"
+		);
+		helper.assertTrue(
+			paramMap.has(ContextParamTypes.ORIGIN),
+			"ContextParamMap.has(ContextParamTypes.ORIGIN) != true"
+		);
+		ContextParamMap.Mutable mutableParamMap = ContextParamMap.Mutable.of(paramMap);
+		Vec3 newOrigin = createOrigin().getBottomCenter();
+		helper.assertTrue(
+			mutableParamMap.get(ContextParamTypes.ORIGIN)
+				.equals(paramMap.get(ContextParamTypes.ORIGIN)),
+			"ContextParamMap.Mutable.get(ContextParamTypes.ORIGIN) != oldOrigin"
+		);
+		ContextParam<Vec3> oldOrigin = mutableParamMap.set(ContextParamTypes.ORIGIN, newOrigin);
+		helper.assertTrue(
+			paramMap.get(ContextParamTypes.ORIGIN).equals(oldOrigin),
+			"ContextParamMap.get(ContextParamTypes.ORIGIN) != oldOrigin"
+		);
+		helper.assertTrue(
+			mutableParamMap.get(ContextParamTypes.ORIGIN)
+				.value()
+				.equals(newOrigin),
+			"ContextParamMap.Mutable.get(ContextParamTypes.ORIGIN) != newOrigin"
 		);
 		try {
 			createInvalidParamMap();
@@ -115,7 +146,7 @@ public class SilicateGameTests {
 	
 	@GameTest(template = "silicate:test_template")
 	public static void gameContext(GameTestHelper helper) throws InvalidContextParameterException {
-		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, null, null, helper);
+		ContextParamMap paramMap = createParamMap(createState(), createOrigin(), null, null, null, null, helper);
 		GameContext context = GameContext.of(helper.getLevel(), paramMap);
 		helper.assertTrue(
 			context.getLevel() != null,
@@ -134,12 +165,16 @@ public class SilicateGameTests {
 	
 	@GameTest(template = "silicate:test_template")
 	public static void conditions(GameTestHelper helper) throws InvalidContextParameterException {
+		Chicken chicken = helper.getEntities(EntityType.CHICKEN).getFirst();
+		Zombie zombie = helper.getEntities(EntityType.ZOMBIE).getFirst();
+		ServerPlayer player = createFakePlayer(helper);
 		ContextParamMap paramMap = createParamMap(
 			createState(),
 			createOrigin(),
-			helper.getEntities(EntityType.CHICKEN).getFirst(),
+			chicken,
+			zombie,
 			createEntityBlock(),
-			createFakePlayer(helper),
+			player,
 			helper
 		);
 		GameContext context = GameContext.of(helper.getLevel(), paramMap);
@@ -196,17 +231,72 @@ public class SilicateGameTests {
 			gameTypeCondition.test(context),
 			"PlayerGameTypeCondition test failed"
 		);
-		CompoundCondition compoundCondition = CompoundCondition.of(
-			stateCondition,
-			entityTypeCondition,
-			entityTagCondition,
-			vec3Condition,
-			blockEntityTypeCondition,
-			gameTypeCondition
+		EntityPassengerCondition passengerCondition = new EntityPassengerCondition(
+				ContextParamTypes.THIS_ENTITY,
+				EntityTypeCondition.of(
+						ContextParamTypes.PASSENGER_ENTITY,
+						EntityType.ZOMBIE
+				),
+				false
+		);
+		helper.assertFalse(
+			passengerCondition.test(context),
+			"EntityPassengerCondition test unexpectedly succeeded"
+		);
+		EntityVehicleCondition vehicleCondition = new EntityVehicleCondition(
+				ContextParamTypes.VICTIM_ENTITY,
+				EntityTypeCondition.of(
+						ContextParamTypes.VEHICLE_ENTITY,
+						EntityType.CHICKEN
+				)
+		);
+		helper.assertFalse(
+				vehicleCondition.test(context),
+				"EntityVehicleCondition test unexpectedly succeeded"
+		);
+		zombie.startRiding(chicken);
+		helper.assertTrue(
+				passengerCondition.test(context),
+				"EntityPassengerCondition test failed"
 		);
 		helper.assertTrue(
-			compoundCondition.test(context),
-			"CompoundCondition test failed"
+				vehicleCondition.test(context),
+				"EntityVehicleCondition test failed"
+		);
+		InvertedCondition invertedCondition = new InvertedCondition(
+				EntityTypeCondition.of(
+						ContextParamTypes.VICTIM_ENTITY,
+						EntityType.CHICKEN
+				)
+		);
+		helper.assertTrue(
+				invertedCondition.test(context), 
+				"InvertedCondition test failed"
+		);
+		EntityVehicleCondition invertedVehicleCondition = new EntityVehicleCondition(
+				ContextParamTypes.VICTIM_ENTITY,
+				TypedGameCondition.fromUntyped(
+						ContextParamTypes.VICTIM_ENTITY,
+						invertedCondition
+				)
+		);
+		helper.assertFalse(
+				invertedVehicleCondition.test(context),
+				"TypedGameCondition.fromUntyped test failed"
+		);
+		CompoundCondition compoundCondition = CompoundCondition.of(
+				stateCondition,
+				entityTypeCondition,
+				entityTagCondition,
+				vec3Condition,
+				blockEntityTypeCondition,
+				gameTypeCondition,
+				passengerCondition,
+				vehicleCondition
+		);
+		helper.assertTrue(
+				compoundCondition.test(context),
+				"CompoundCondition test failed"
 		);
 		helper.succeed();
 	}
@@ -230,22 +320,23 @@ public class SilicateGameTests {
 			.build();
 	}
 	
-	private static ContextParamMap createParamMap(BlockState state, BlockPos origin, Entity entity, @Nullable BlockState entityBlock, @Nullable ServerPlayer fakePlayer, GameTestHelper helper) throws InvalidContextParameterException {
+	private static ContextParamMap createParamMap(BlockState state, BlockPos origin, Entity entity, Entity entity2, @Nullable BlockState entityBlock, @Nullable ServerPlayer fakePlayer, GameTestHelper helper) throws InvalidContextParameterException {
 		ContextParamSet paramSet = createParamSet();
 		helper.setBlock(origin, state);
 		ContextParamMap.Builder builder = ContextParamMap.Builder.of(paramSet)
-			.withParameter(ContextParamTypes.BLOCK_STATE, state)
-			.withParameter(ContextParamTypes.ORIGIN, origin.getCenter())
-			.withParameter(ContextParamTypes.THIS_ENTITY, entity);
+				.withParameter(ContextParamTypes.BLOCK_STATE, state)
+				.withParameter(ContextParamTypes.ORIGIN, origin.getCenter())
+				.withParameter(ContextParamTypes.THIS_ENTITY, entity)
+				.withParameter(ContextParamTypes.VICTIM_ENTITY, entity2);
 		if (entityBlock != null) {
 			BlockPos entityBlockPos = origin.east();
 			helper.setBlock(entityBlockPos, entityBlock);
 			builder
-				.withParameter(ContextParamTypes.BLOCK_ENTITY, helper.getBlockEntity(entityBlockPos));
+					.withParameter(ContextParamTypes.BLOCK_ENTITY, helper.getBlockEntity(entityBlockPos));
 		}
 		if (fakePlayer != null) {
 			builder
-				.withParameter(ContextParamTypes.ATTACKING_ENTITY, fakePlayer);
+					.withParameter(ContextParamTypes.ATTACKING_ENTITY, fakePlayer);
 		}
 		return builder
 				.build();

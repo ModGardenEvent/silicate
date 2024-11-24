@@ -4,9 +4,9 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import house.greenhouse.silicate.api.condition.GameCondition;
 import house.greenhouse.silicate.api.condition.GameConditionType;
 import house.greenhouse.silicate.api.condition.GameConditionTypes;
+import house.greenhouse.silicate.api.condition.TypedGameCondition;
 import house.greenhouse.silicate.api.context.GameContext;
 import house.greenhouse.silicate.api.context.param.ContextParamType;
 import house.greenhouse.silicate.duck.Duck_AbstractClientPlayer;
@@ -25,9 +25,9 @@ import java.util.Objects;
 public record PlayerGameTypeCondition(
 	ContextParamType<Entity> paramType,
 	List<GameType> gameTypes
-) implements GameCondition<PlayerGameTypeCondition> {
+) implements TypedGameCondition<PlayerGameTypeCondition, Entity> {
 	public static final MapCodec<PlayerGameTypeCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		ContextParamType.<Entity>getCodec()
+		ContextParamType.getCodec(Entity.class)
 			.fieldOf("param_type")
 			.forGetter(PlayerGameTypeCondition::paramType),
 		Codec.mapEither(
@@ -88,5 +88,10 @@ public record PlayerGameTypeCondition(
 	@Override
 	public GameConditionType<PlayerGameTypeCondition> getType() {
 		return GameConditionTypes.PLAYER_GAME_TYPE;
+	}
+
+	@Override
+	public ContextParamType<Entity> getParamType() {
+		return paramType;
 	}
 }

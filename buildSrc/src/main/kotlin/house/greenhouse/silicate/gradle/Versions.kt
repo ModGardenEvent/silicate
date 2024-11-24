@@ -1,7 +1,7 @@
 package house.greenhouse.silicate.gradle
 
 object Versions {
-	const val MOD = "0.1.0"
+	const val MOD = "0.2.0"
 
 	const val MINECRAFT = "1.21.1"
 	const val PARCHMENT_MINECRAFT = "1.21"

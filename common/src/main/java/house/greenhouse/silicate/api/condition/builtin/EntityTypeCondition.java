@@ -3,9 +3,9 @@ package house.greenhouse.silicate.api.condition.builtin;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import house.greenhouse.silicate.SilicateCodecs;
-import house.greenhouse.silicate.api.condition.GameCondition;
 import house.greenhouse.silicate.api.condition.GameConditionType;
 import house.greenhouse.silicate.api.condition.GameConditionTypes;
+import house.greenhouse.silicate.api.condition.TypedGameCondition;
 import house.greenhouse.silicate.api.context.GameContext;
 import house.greenhouse.silicate.api.context.param.ContextParamType;
 import net.minecraft.core.HolderSet;
@@ -20,9 +20,9 @@ import net.minecraft.world.entity.EntityType;
 public record EntityTypeCondition(
 	ContextParamType<Entity> paramType,
 	HolderSet<EntityType<?>> entityTypes
-) implements GameCondition<EntityTypeCondition> {
+) implements TypedGameCondition<EntityTypeCondition, Entity> {
 	public static final MapCodec<EntityTypeCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		ContextParamType.<Entity>getCodec()
+		ContextParamType.getCodec(Entity.class)
 			.fieldOf("param_type")
 			.forGetter(EntityTypeCondition::paramType),
 		SilicateCodecs.ENTITY_TYPE_HOLDER_SET
@@ -67,5 +67,10 @@ public record EntityTypeCondition(
 	@Override
 	public GameConditionType<EntityTypeCondition> getType() {
 		return GameConditionTypes.ENTITY_TYPE;
+	}
+
+	@Override
+	public ContextParamType<Entity> getParamType() {
+		return paramType;
 	}
 }

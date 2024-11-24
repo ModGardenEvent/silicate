@@ -2,9 +2,9 @@ package house.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import house.greenhouse.silicate.api.condition.GameCondition;
 import house.greenhouse.silicate.api.condition.GameConditionType;
 import house.greenhouse.silicate.api.condition.GameConditionTypes;
+import house.greenhouse.silicate.api.condition.TypedGameCondition;
 import house.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
 import house.greenhouse.silicate.api.context.GameContext;
 import house.greenhouse.silicate.api.context.param.ContextParamType;
@@ -19,9 +19,9 @@ public record Vec3Condition(
 	ContextParamType<Vec3> paramType,
 	Vec3Comparison comparison,
 	Vec3 latterOperand
-) implements GameCondition<Vec3Condition> {
+) implements TypedGameCondition<Vec3Condition, Vec3> {
 	public static final MapCodec<Vec3Condition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		ContextParamType.<Vec3>getCodec()
+		ContextParamType.getCodec(Vec3.class)
 			.fieldOf("param_type")
 			.forGetter(Vec3Condition::paramType),
 		Vec3Comparison.CODEC
@@ -46,5 +46,10 @@ public record Vec3Condition(
 	@Override
 	public GameConditionType<Vec3Condition> getType() {
 		return GameConditionTypes.VEC3;
+	}
+
+	@Override
+	public ContextParamType<Vec3> getParamType() {
+		return paramType;
 	}
 }

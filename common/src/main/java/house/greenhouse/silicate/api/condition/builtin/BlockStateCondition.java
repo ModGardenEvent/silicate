@@ -2,9 +2,9 @@ package house.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import house.greenhouse.silicate.api.condition.GameCondition;
 import house.greenhouse.silicate.api.condition.GameConditionType;
 import house.greenhouse.silicate.api.condition.GameConditionTypes;
+import house.greenhouse.silicate.api.condition.TypedGameCondition;
 import house.greenhouse.silicate.api.context.GameContext;
 import house.greenhouse.silicate.api.context.param.ContextParamType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,9 +12,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public record BlockStateCondition(
 	ContextParamType<BlockState> paramType,
 	BlockState blockState
-) implements GameCondition<BlockStateCondition> {
+) implements TypedGameCondition<BlockStateCondition, BlockState> {
 	public static final MapCodec<BlockStateCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		ContextParamType.<BlockState>getCodec()
+		ContextParamType.getCodec(BlockState.class)
 			.fieldOf("param_type")
 			.forGetter(BlockStateCondition::paramType),
 		BlockState.CODEC
@@ -36,5 +36,10 @@ public record BlockStateCondition(
 	@Override
 	public GameConditionType<BlockStateCondition> getType() {
 		return GameConditionTypes.BLOCK_STATE;
+	}
+
+	@Override
+	public ContextParamType<BlockState> getParamType() {
+		return paramType;
 	}
 }
