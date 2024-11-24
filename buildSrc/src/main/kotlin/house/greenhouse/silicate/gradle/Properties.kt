@@ -1,7 +1,7 @@
 package house.greenhouse.silicate.gradle
 
 object Properties {
-	const val GROUP = "house.greenhouse"
+	const val GROUP = "house.greenhouse.silicate"
 	const val MOD_NAME = "Silicate"
 	const val ARCHIVES_NAME = "silicate"
 	const val MOD_ID = "silicate"
