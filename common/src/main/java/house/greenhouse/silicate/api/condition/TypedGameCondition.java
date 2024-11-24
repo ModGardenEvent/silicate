@@ -28,9 +28,9 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 	private static GameCondition<?> toGameCondition(TypedGameCondition<?, ?> typedCondition) {
 		return typedCondition;
 	}
-
+	
 	/**
-	 * Return the codec for this {@link TypedGameCondition}
+	 * Return the codec for this {@link TypedGameCondition}.
 	 * @param clazz The class of the type in {@link P}.
 	 * @return The typed codec.
 	 * @param <P> The value type of the parameter type.
@@ -46,14 +46,15 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 	/**
 	 * Creates an anonymous {@link TypedGameCondition} from an untyped {@link GameCondition}.
 	 * @return The anonymous {@link TypedGameCondition} delegate.
-	 * @param <T> The type to delegate.
 	 * @param <P> The value type of the parameter type.
+	 * @implNote We have to give up type checking somewhere, so we do it here. The parameter type is checked later on, so this is fine. It also doesn't really matter what type the condition is since the caller provides us that condition's type.
 	 */
-	static <T extends GameCondition<T>, P> TypedGameCondition<?, P> fromUntyped(
+	@SuppressWarnings("rawtypes")
+	static <P> TypedGameCondition<?, P> retype(
 			ContextParamType<P> paramType,
-			T untyped
+			GameCondition<?> untyped
 	) {
-		return new TypedGameCondition<T, P>() {
+		return new TypedGameCondition<GameCondition, P>() {
 			@Override
 			public ContextParamType<P> getParamType() {
 				return paramType;
@@ -64,14 +65,16 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 				return untyped.test(context);
 			}
 
+			@SuppressWarnings("unchecked")
 			@Override
-			public MapCodec<T> getCodec() {
-				return untyped.getCodec();
+			public MapCodec<GameCondition> getCodec() {
+				return (MapCodec<GameCondition>) untyped.getCodec();
 			}
 
+			@SuppressWarnings("unchecked")
 			@Override
-			public GameConditionType<T> getType() {
-				return untyped.getType();
+			public GameConditionType<GameCondition> getType() {
+				return (GameConditionType<GameCondition>) untyped.getType();
 			}
 		};
 	}

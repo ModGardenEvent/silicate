@@ -275,7 +275,7 @@ public class SilicateGameTests {
 		);
 		EntityVehicleCondition invertedVehicleCondition = new EntityVehicleCondition(
 				ContextParamTypes.VICTIM_ENTITY,
-				TypedGameCondition.fromUntyped(
+				TypedGameCondition.retype(
 						ContextParamTypes.VICTIM_ENTITY,
 						invertedCondition
 				)
