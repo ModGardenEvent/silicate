@@ -19,8 +19,9 @@ repositories {
 }
 
 dependencies {
+	// If using multiloader, use each platform as below for silicate in their respective modules
 	implementation("house.greenhouse.silicate:silicate-PLATFORM:VERSION")
-	// Or, if using multiloader
+	// If using multiloader, put this in your "common" module
 	// compileOnly("house.greenhouse.silicate:silicate-common:VERSION")
 }
 ```
