@@ -10,8 +10,8 @@ Add this to your `build.gradle`(`.kts`)
 repositories {
 	exclusiveContent {
 		forRepositories(
-			maven("https://maven.muonmc.org/releases") {
-				name = "MuonMC"
+			maven("https://repo.greenhouse.house/releases") {
+				name = "Greenhouse"
 			}
 		)
 		filter { includeGroup("house.greenhouse.silicate") }
@@ -20,9 +20,9 @@ repositories {
 
 dependencies {
 	// If using multiloader, use each platform as below for silicate in their respective modules
-	implementation("house.greenhouse.silicate:silicate-PLATFORM:VERSION")
+	implementation("net.modgarden.silicate:silicate-PLATFORM:VERSION")
 	// If using multiloader, put this in your "common" module
-	// compileOnly("house.greenhouse.silicate:silicate-common:VERSION")
+	// compileOnly("net.modgarden.silicate:silicate-common:VERSION")
 }
 ```
 
