@@ -6,7 +6,7 @@ object Properties {
 	const val ARCHIVES_NAME = "silicate"
 	const val MOD_ID = "silicate"
 	const val MOD_AUTHOR = "Mod Garden Team"
-	val MOD_CONTRIBUTORS = listOf("Sylv (Sylv256)")
+	val MOD_CONTRIBUTORS = listOf("Sylv (Maintainer)")
 	const val DESCRIPTION = "A library providing powerful client-server-agnostic predicates with a simple API."
 	const val LICENSE = "MPL-2.0"
 
