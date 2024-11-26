@@ -9,5 +9,3 @@ name: Publish to All
 
 on:
   workflow_dispatch:
-
-jobs:
