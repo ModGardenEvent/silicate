@@ -9,3 +9,14 @@ name: Publish to All
 
 on:
   workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: No-Op
+        run: ':'
