@@ -42,7 +42,6 @@
 	"custom": {
 		"modmenu": {
 			"links": {
-				"modmenu.curseforge": "${curseforge_page}",
 				"modmenu.modrinth": "${modrinth_page}",
 				"modmenu.github_releases": "https://github.com/${sources}/releases"
 			}

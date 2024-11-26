@@ -10,8 +10,6 @@ object Properties {
 	const val DESCRIPTION = "A library providing powerful client-server-agnostic predicates with a simple API."
 	const val LICENSE = "MPL-2.0"
 
-	const val CURSEFORGE_PAGE = "https://www.curseforge.com/minecraft/mc-mods/curseforge-project"
-	const val CURSEFORGE_PROJECT_ID = "000000"
 	const val MODRINTH_PAGE = "https://modrinth.com/mod/silicate"
 	const val MODRINTH_PROJECT_ID = "????????"
 	const val GITHUB_REPO = "ModGardenEvent/silicate"
