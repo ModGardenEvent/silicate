@@ -1,6 +1,7 @@
 name: Publish to GitHub
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: [Publish To All]
     types: [completed]
