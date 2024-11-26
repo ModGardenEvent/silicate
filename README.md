@@ -14,7 +14,7 @@ repositories {
 				name = "Greenhouse"
 			}
 		)
-		filter { includeGroup("house.greenhouse.silicate") }
+		filter { includeGroup("net.modgarden.silicate") }
 	}
 }
 
