@@ -90,6 +90,12 @@ publishMods {
 		projectId = Properties.MODRINTH_PROJECT_ID
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 
+		requires {
+			slug = "fabric-api"
+
+			version = Versions.FABRIC_API
+		}
+
 		minecraftVersions.add(Versions.MINECRAFT)
 	}
 
