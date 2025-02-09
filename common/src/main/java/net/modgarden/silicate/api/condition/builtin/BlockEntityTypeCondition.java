@@ -2,6 +2,7 @@ package net.modgarden.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.resources.ResourceKey;
 import net.modgarden.silicate.api.condition.GameConditionType;
 import net.modgarden.silicate.api.condition.GameConditionTypes;
 import net.modgarden.silicate.api.condition.TypedGameCondition;
@@ -26,7 +27,11 @@ public record BlockEntityTypeCondition(
 	).apply(instance, BlockEntityTypeCondition::of));
 
 	private static BlockEntityTypeCondition of(ContextParamType<BlockEntity> paramType, ResourceLocation blockEntityTypeId) {
-		return new BlockEntityTypeCondition(paramType, BuiltInRegistries.BLOCK_ENTITY_TYPE.get(blockEntityTypeId));
+		return of(paramType, ResourceKey.create(BuiltInRegistries.BLOCK_ENTITY_TYPE.key(), blockEntityTypeId));
+	}
+
+	private static BlockEntityTypeCondition of(ContextParamType<BlockEntity> paramType, ResourceKey<BlockEntityType<?>> blockEntityTypeKey) {
+		return new BlockEntityTypeCondition(paramType, BuiltInRegistries.BLOCK_ENTITY_TYPE.getValueOrThrow(blockEntityTypeKey));
 	}
 
 	@Override

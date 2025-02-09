@@ -47,7 +47,7 @@ public record EntityTypeCondition(
 	) {
 		return new EntityTypeCondition(
 			paramType,
-			BuiltInRegistries.ENTITY_TYPE.getOrCreateTag(entityTag)
+			BuiltInRegistries.ENTITY_TYPE.getOrThrow(entityTag)
 		);
 	}
 

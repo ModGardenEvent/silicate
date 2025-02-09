@@ -47,7 +47,7 @@ public record ContextParamType<T>(ResourceLocation name, Class<T> clazz) {
 	private static @NotNull DataResult<? extends ContextParamType<?>> validateParamType(ResourceLocation id) {
 		try {
 			return DataResult.success(Objects.requireNonNull(
-					SilicateRegistries.CONTEXT_PARAM_TYPE.get(id),
+					SilicateRegistries.CONTEXT_PARAM_TYPE.getValue(id),
 					"ContextParamType (" + id + ") is unregistered"
 			));
 		} catch (NullPointerException e) {
