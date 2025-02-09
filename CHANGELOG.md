@@ -1,10 +1,6 @@
 ## Added
-- `RetypedCondition` - Allows encoded formats (e.g. JSON) to retype dynamically.
-- `AlwaysCondition` - Always returns one value in a test.
-- Mod icon.
+- Updated to 1.21.4.
 
 ## Changed
-- Clarified multiloader support in documentation.
 
 ## Fixed
-- Registries are now automatically registered.
