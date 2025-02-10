@@ -1,19 +1,5 @@
 package net.modgarden.silicate.test;
 
-import net.modgarden.silicate.Silicate;
-import net.modgarden.silicate.api.condition.AlwaysCondition;
-import net.modgarden.silicate.api.condition.CompoundCondition;
-import net.modgarden.silicate.api.condition.InvertedCondition;
-import net.modgarden.silicate.api.condition.TypedGameCondition;
-import net.modgarden.silicate.api.condition.builtin.*;
-import net.modgarden.silicate.api.condition.builtin.math.Comparison;
-import net.modgarden.silicate.api.condition.builtin.math.Vec3Comparison;
-import net.modgarden.silicate.api.context.GameContext;
-import net.modgarden.silicate.api.context.param.ContextParam;
-import net.modgarden.silicate.api.context.param.ContextParamMap;
-import net.modgarden.silicate.api.context.param.ContextParamSet;
-import net.modgarden.silicate.api.context.param.ContextParamTypes;
-import net.modgarden.silicate.api.exception.InvalidContextParameterException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -31,6 +17,20 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.phys.Vec3;
+import net.modgarden.silicate.Silicate;
+import net.modgarden.silicate.api.condition.AlwaysCondition;
+import net.modgarden.silicate.api.condition.CompoundCondition;
+import net.modgarden.silicate.api.condition.InvertedCondition;
+import net.modgarden.silicate.api.condition.MaybeTypedCondition;
+import net.modgarden.silicate.api.condition.builtin.*;
+import net.modgarden.silicate.api.condition.builtin.math.Comparison;
+import net.modgarden.silicate.api.condition.builtin.math.Vec3Comparison;
+import net.modgarden.silicate.api.context.GameContext;
+import net.modgarden.silicate.api.context.param.ContextParam;
+import net.modgarden.silicate.api.context.param.ContextParamMap;
+import net.modgarden.silicate.api.context.param.ContextParamSet;
+import net.modgarden.silicate.api.context.param.ContextParamTypes;
+import net.modgarden.silicate.api.exception.InvalidContextParameterException;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -237,9 +237,11 @@ public class SilicateGameTests {
 		);
 		EntityPassengerCondition passengerCondition = new EntityPassengerCondition(
 				ContextParamTypes.THIS_ENTITY,
-				EntityTypeCondition.of(
-						ContextParamTypes.PASSENGER_ENTITY,
-						EntityType.ZOMBIE
+				MaybeTypedCondition.of(
+						EntityTypeCondition.of(
+								ContextParamTypes.PASSENGER_ENTITY,
+								EntityType.ZOMBIE
+						)
 				),
 				false
 		);
@@ -249,9 +251,11 @@ public class SilicateGameTests {
 		);
 		EntityVehicleCondition vehicleCondition = new EntityVehicleCondition(
 				ContextParamTypes.VICTIM_ENTITY,
-				EntityTypeCondition.of(
-						ContextParamTypes.VEHICLE_ENTITY,
-						EntityType.CHICKEN
+				MaybeTypedCondition.of(
+						EntityTypeCondition.of(
+								ContextParamTypes.VEHICLE_ENTITY,
+								EntityType.CHICKEN
+						)
 				)
 		);
 		helper.assertFalse(
@@ -279,10 +283,7 @@ public class SilicateGameTests {
 		);
 		EntityVehicleCondition invertedVehicleCondition = new EntityVehicleCondition(
 				ContextParamTypes.VICTIM_ENTITY,
-				TypedGameCondition.retype(
-						ContextParamTypes.VICTIM_ENTITY,
-						invertedCondition
-				)
+				MaybeTypedCondition.of(invertedCondition)
 		);
 		helper.assertFalse(
 				invertedVehicleCondition.test(context),

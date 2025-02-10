@@ -3,13 +3,14 @@ package net.modgarden.silicate.api.condition.builtin;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.world.entity.Entity;
 import net.modgarden.silicate.api.condition.GameConditionType;
 import net.modgarden.silicate.api.condition.GameConditionTypes;
+import net.modgarden.silicate.api.condition.MaybeTypedCondition;
 import net.modgarden.silicate.api.condition.TypedGameCondition;
 import net.modgarden.silicate.api.context.GameContext;
 import net.modgarden.silicate.api.context.param.ContextParamMap;
 import net.modgarden.silicate.api.context.param.ContextParamType;
-import net.minecraft.world.entity.Entity;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,14 +23,14 @@ import java.util.Optional;
  */
 public record EntityPassengerCondition(
 		ContextParamType<Entity> paramType,
-		TypedGameCondition<?, Entity> condition,
+		MaybeTypedCondition<Entity> condition,
 		boolean matchAll
 ) implements TypedGameCondition<EntityPassengerCondition, Entity> {
 	public static final MapCodec<EntityPassengerCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			ContextParamType.getCodec(Entity.class)
 					.fieldOf("param_type")
 					.forGetter(EntityPassengerCondition::paramType),
-			TypedGameCondition.getTypedCodec(Entity.class)
+			TypedGameCondition.getMaybeTypedCodec(Entity.class)
 					.fieldOf("condition")
 					.forGetter(EntityPassengerCondition::condition),
 			Codec.BOOL
@@ -38,7 +39,7 @@ public record EntityPassengerCondition(
 	).apply(instance, EntityPassengerCondition::of));
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	private static EntityPassengerCondition of(ContextParamType<Entity> paramType, TypedGameCondition<?, Entity> condition, Optional<Boolean> matchAll) {
+	private static EntityPassengerCondition of(ContextParamType<Entity> paramType, MaybeTypedCondition<Entity> condition, Optional<Boolean> matchAll) {
 		return new EntityPassengerCondition(
 				paramType,
 				condition,
@@ -59,7 +60,7 @@ public record EntityPassengerCondition(
 	}
 
 	private boolean testPassenger(GameContext oldContext, Entity passenger, ContextParamMap.Mutable paramMap) {
-		paramMap.set(condition.getParamType(), passenger);
+		paramMap.set(condition.getParamTypeOrDefault(paramType), passenger);
 		GameContext context = GameContext.of(oldContext.getLevel(), paramMap);
 		return condition.test(context);
 	}

@@ -2,10 +2,10 @@ package net.modgarden.silicate.api.context.param;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import net.modgarden.silicate.api.SilicateRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.modgarden.silicate.api.SilicateBuiltInRegistries;
 import net.modgarden.silicate.api.condition.GameCondition;
 import net.modgarden.silicate.api.condition.TypedGameCondition;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -47,7 +47,7 @@ public record ContextParamType<T>(ResourceLocation name, Class<T> clazz) {
 	private static @NotNull DataResult<? extends ContextParamType<?>> validateParamType(ResourceLocation id) {
 		try {
 			return DataResult.success(Objects.requireNonNull(
-					SilicateRegistries.CONTEXT_PARAM_TYPE.getValue(id),
+					SilicateBuiltInRegistries.CONTEXT_PARAM_TYPE.getValue(id),
 					"ContextParamType (" + id + ") is unregistered"
 			));
 		} catch (NullPointerException e) {
