@@ -4,15 +4,15 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.GameType;
 import net.modgarden.silicate.api.condition.GameConditionType;
 import net.modgarden.silicate.api.condition.GameConditionTypes;
 import net.modgarden.silicate.api.condition.TypedGameCondition;
 import net.modgarden.silicate.api.context.GameContext;
 import net.modgarden.silicate.api.context.param.ContextParamType;
 import net.modgarden.silicate.duck.Duck_AbstractClientPlayer;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.GameType;
 
 import java.util.List;
 import java.util.Objects;

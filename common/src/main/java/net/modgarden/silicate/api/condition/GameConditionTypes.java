@@ -1,9 +1,9 @@
 package net.modgarden.silicate.api.condition;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Registry;
 import net.modgarden.silicate.api.SilicateBuiltInRegistries;
 import net.modgarden.silicate.api.condition.builtin.*;
-import net.minecraft.core.Registry;
 import org.jetbrains.annotations.ApiStatus;
 
 import static net.modgarden.silicate.Silicate.id;

@@ -2,10 +2,10 @@ package net.modgarden.silicate.api.context.param;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import net.minecraft.resources.ResourceLocation;
 import net.modgarden.silicate.api.SilicateBuiltInRegistries;
 import net.modgarden.silicate.api.condition.GameCondition;
 import net.modgarden.silicate.api.condition.TypedGameCondition;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

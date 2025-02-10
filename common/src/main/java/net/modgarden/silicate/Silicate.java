@@ -1,9 +1,9 @@
 package net.modgarden.silicate;
 
+import net.minecraft.resources.ResourceLocation;
 import net.modgarden.silicate.api.SilicateBuiltInRegistries;
 import net.modgarden.silicate.platform.SilicatePlatformHelper;
 import net.modgarden.silicate.test.SilicateGameTests;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -3,8 +3,8 @@ package net.modgarden.silicate;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.minecraft.SharedConstants;
-import net.modgarden.silicate.api.condition.GameCondition;
 import net.modgarden.silicate.api.SilicateRegistries;
+import net.modgarden.silicate.api.condition.GameCondition;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

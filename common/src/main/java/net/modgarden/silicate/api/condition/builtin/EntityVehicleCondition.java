@@ -2,6 +2,7 @@ package net.modgarden.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.world.entity.Entity;
 import net.modgarden.silicate.api.condition.GameConditionType;
 import net.modgarden.silicate.api.condition.GameConditionTypes;
 import net.modgarden.silicate.api.condition.MaybeTypedCondition;
@@ -9,7 +10,6 @@ import net.modgarden.silicate.api.condition.TypedGameCondition;
 import net.modgarden.silicate.api.context.GameContext;
 import net.modgarden.silicate.api.context.param.ContextParamMap;
 import net.modgarden.silicate.api.context.param.ContextParamType;
-import net.minecraft.world.entity.Entity;
 
 /**
  * A condition that tests {@link #condition} with the vehicle of {@link #paramType}.

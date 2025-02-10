@@ -1,9 +1,9 @@
 package net.modgarden.silicate.api.context;
 
-import net.modgarden.silicate.api.condition.GameCondition;
-import net.modgarden.silicate.api.context.param.ContextParamType;
-import net.modgarden.silicate.api.context.param.ContextParamMap;
 import net.minecraft.world.level.Level;
+import net.modgarden.silicate.api.condition.GameCondition;
+import net.modgarden.silicate.api.context.param.ContextParamMap;
+import net.modgarden.silicate.api.context.param.ContextParamType;
 import org.jetbrains.annotations.Nullable;
 
 /**

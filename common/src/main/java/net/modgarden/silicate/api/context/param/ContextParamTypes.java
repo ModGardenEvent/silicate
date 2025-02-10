@@ -1,15 +1,15 @@
 package net.modgarden.silicate.api.context.param;
 
-import net.modgarden.silicate.api.SilicateBuiltInRegistries;
-import net.modgarden.silicate.api.condition.builtin.EntityPassengerCondition;
-import net.modgarden.silicate.api.condition.builtin.EntityVehicleCondition;
-import net.modgarden.silicate.api.context.GameContext;
 import net.minecraft.core.Registry;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.modgarden.silicate.api.SilicateBuiltInRegistries;
+import net.modgarden.silicate.api.condition.builtin.EntityPassengerCondition;
+import net.modgarden.silicate.api.condition.builtin.EntityVehicleCondition;
+import net.modgarden.silicate.api.context.GameContext;
 import org.jetbrains.annotations.ApiStatus;
 
 import static net.modgarden.silicate.Silicate.id;

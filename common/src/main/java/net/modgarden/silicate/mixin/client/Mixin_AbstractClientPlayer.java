@@ -1,12 +1,12 @@
 package net.modgarden.silicate.mixin.client;
 
 import com.mojang.authlib.GameProfile;
-import net.modgarden.silicate.duck.Duck_AbstractClientPlayer;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.modgarden.silicate.duck.Duck_AbstractClientPlayer;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

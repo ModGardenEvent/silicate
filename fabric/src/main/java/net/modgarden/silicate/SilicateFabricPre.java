@@ -1,7 +1,7 @@
 package net.modgarden.silicate;
 
-import net.modgarden.silicate.platform.SilicatePlatformHelperFabric;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+import net.modgarden.silicate.platform.SilicatePlatformHelperFabric;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

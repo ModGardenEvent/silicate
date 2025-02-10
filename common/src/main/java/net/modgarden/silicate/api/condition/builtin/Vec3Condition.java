@@ -2,13 +2,13 @@ package net.modgarden.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.world.phys.Vec3;
 import net.modgarden.silicate.api.condition.GameConditionType;
 import net.modgarden.silicate.api.condition.GameConditionTypes;
 import net.modgarden.silicate.api.condition.TypedGameCondition;
 import net.modgarden.silicate.api.condition.builtin.math.Vec3Comparison;
 import net.modgarden.silicate.api.context.GameContext;
 import net.modgarden.silicate.api.context.param.ContextParamType;
-import net.minecraft.world.phys.Vec3;
 
 /**
  * Allows the caller to check if the value of a {@link Vec3} passes equality/inequality comparisons with {@link #latterOperand}.
