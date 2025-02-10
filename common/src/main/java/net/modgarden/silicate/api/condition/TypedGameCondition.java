@@ -79,7 +79,7 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 	}
 
 	/**
-	 * For conditions with multiple parameter types, this would be the first or main parameter type. This is never the parameter type chained to another condition.
+	 * For conditions with multiple parameter types, this would be the first or main parameter type. This is never the parameter type used in series with another condition.
 	 * @return The first or main parameter type.
 	 */
 	ContextParamType<P> getParamType();
