@@ -66,7 +66,7 @@ publishMods {
 	github {
 		accessToken = providers.environmentVariable("GITHUB_TOKEN")
 		repository = Properties.GITHUB_REPO
-		tagName = "${Versions.MOD}+${Versions.MINECRAFT}"
+		tagName = "v${Versions.MOD}+${Versions.MINECRAFT}"
 		commitish = Properties.GITHUB_COMMITISH
 
 		allowEmptyFiles = true
