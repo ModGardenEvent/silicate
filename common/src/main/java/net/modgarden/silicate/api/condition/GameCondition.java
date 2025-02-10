@@ -18,6 +18,7 @@ import java.util.function.Predicate;
  * @see EntityPassengerCondition
  * @see EntityVehicleCondition
  * @see TypedGameCondition
+ * @see MaybeTypedCondition
  */
 public interface GameCondition<T extends GameCondition<T>> extends Predicate<GameContext> {
 	Codec<GameCondition<?>> CODEC = SilicateRegistries.GAME_CONDITION_TYPE.byNameCodec()

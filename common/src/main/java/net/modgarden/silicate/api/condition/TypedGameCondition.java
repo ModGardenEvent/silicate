@@ -8,8 +8,9 @@ import net.modgarden.silicate.api.context.param.ContextParamType;
 
 /**
  * A {@link GameCondition} that has a {@link ContextParamType}.
- * @see #getParamType()
  * @implSpec See the documentation on {@link #getParamType()}.
+ * @see #getParamType()
+ * @see MaybeTypedCondition
  */
 public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameCondition<T> {
 	/**
@@ -41,6 +42,19 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 						condition -> validate(condition, clazz),
 						TypedGameCondition::toGameCondition
 				);
+	}
+
+	/**
+	 * Return the codec for this {@link TypedGameCondition} that also accepts a {@link GameCondition}.
+	 * @param clazz The class of the type in {@link P}.
+	 * @return The typed or untyped codec.
+	 * @param <P> The value type of the parameter type.
+	 */
+	static <P> Codec<MaybeTypedCondition<P>> getMaybeTypedCodec(Class<P> clazz) {
+		return Codec.either(
+				getTypedCodec(clazz),
+				GameCondition.CODEC
+		).xmap(MaybeTypedCondition::new, MaybeTypedCondition::either);
 	}
 
 	/**
