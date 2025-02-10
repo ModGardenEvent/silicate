@@ -1,6 +1,6 @@
 package net.modgarden.silicate.api.context.param;
 
-import net.modgarden.silicate.api.SilicateRegistries;
+import net.modgarden.silicate.api.SilicateBuiltInRegistries;
 import net.modgarden.silicate.api.condition.builtin.EntityPassengerCondition;
 import net.modgarden.silicate.api.condition.builtin.EntityVehicleCondition;
 import net.modgarden.silicate.api.context.GameContext;
@@ -47,7 +47,7 @@ public final class ContextParamTypes {
 
 	private static <T> ContextParamType<T> register(String name, Class<T> clazz) {
 		return Registry.register(
-				SilicateRegistries.CONTEXT_PARAM_TYPE,
+				SilicateBuiltInRegistries.CONTEXT_PARAM_TYPE,
 				id(name),
 				new ContextParamType<>(id(name), clazz)
 		);

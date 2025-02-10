@@ -4,7 +4,7 @@ package net.modgarden.silicate;
 import net.modgarden.silicate.api.condition.GameCondition;
 import net.modgarden.silicate.platform.SilicatePlatformHelperNeoForge;
 import net.minecraft.gametest.framework.GameTestRegistry;
-import net.modgarden.silicate.test.SilicateTestRegistries;
+import net.modgarden.silicate.api.SilicateRegistries;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -29,6 +29,6 @@ public class SilicateNeoForge {
 
 	@SubscribeEvent
 	public static void newDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
-		event.dataPackRegistry(SilicateTestRegistries.CONDITION, GameCondition.CODEC);
+		event.dataPackRegistry(SilicateRegistries.CONDITION, GameCondition.CODEC);
 	}
 }

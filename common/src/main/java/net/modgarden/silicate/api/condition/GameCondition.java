@@ -2,7 +2,7 @@ package net.modgarden.silicate.api.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import net.modgarden.silicate.api.SilicateRegistries;
+import net.modgarden.silicate.api.SilicateBuiltInRegistries;
 import net.modgarden.silicate.api.condition.builtin.EntityPassengerCondition;
 import net.modgarden.silicate.api.condition.builtin.EntityVehicleCondition;
 import net.modgarden.silicate.api.context.GameContext;
@@ -21,7 +21,7 @@ import java.util.function.Predicate;
  * @see MaybeTypedCondition
  */
 public interface GameCondition<T extends GameCondition<T>> extends Predicate<GameContext> {
-	Codec<GameCondition<?>> CODEC = SilicateRegistries.GAME_CONDITION_TYPE.byNameCodec()
+	Codec<GameCondition<?>> CODEC = SilicateBuiltInRegistries.GAME_CONDITION_TYPE.byNameCodec()
 			.dispatch("type", GameCondition::getType, GameConditionType::codec);
 
 	@Override

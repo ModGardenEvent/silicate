@@ -1,6 +1,6 @@
 package net.modgarden.silicate;
 
-import net.modgarden.silicate.api.SilicateRegistries;
+import net.modgarden.silicate.api.SilicateBuiltInRegistries;
 import net.modgarden.silicate.platform.SilicatePlatformHelper;
 import net.modgarden.silicate.test.SilicateGameTests;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +23,7 @@ public class Silicate {
 
 	public static void init() {
 		LOG.info("Initializing Silicate");
-		SilicateRegistries.registerAll();
+		SilicateBuiltInRegistries.registerAll();
 	}
 
 	public static SilicatePlatformHelper getHelper() {
