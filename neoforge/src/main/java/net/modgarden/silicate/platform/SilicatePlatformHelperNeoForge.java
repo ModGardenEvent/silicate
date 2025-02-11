@@ -3,6 +3,7 @@ package net.modgarden.silicate.platform;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import org.jetbrains.annotations.ApiStatus;
@@ -27,5 +28,13 @@ public class SilicatePlatformHelperNeoForge implements SilicatePlatformHelper {
 	@Override
 	public ServerPlayer createFakePlayer(ServerLevel level) {
 		return new FakePlayer(level, DEFAULT_PROFILE);
+	}
+
+	@Override
+	public Side getSide() {
+		return switch (FMLEnvironment.dist) {
+			case CLIENT -> Side.CLIENT;
+			case DEDICATED_SERVER -> Side.DEDICATED_SERVER;
+		};
 	}
 }

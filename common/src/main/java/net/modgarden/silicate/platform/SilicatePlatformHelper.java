@@ -47,4 +47,6 @@ public interface SilicatePlatformHelper {
 	 * @return The fake player.
 	 */
 	ServerPlayer createFakePlayer(ServerLevel level);
+
+	Side getSide();
 }
