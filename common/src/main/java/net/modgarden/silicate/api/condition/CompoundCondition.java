@@ -1,5 +1,6 @@
 package net.modgarden.silicate.api.condition;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.modgarden.silicate.api.context.GameContext;
@@ -11,28 +12,41 @@ import java.util.List;
  */
 public class CompoundCondition implements GameCondition<CompoundCondition> {
 	public static final MapCodec<CompoundCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GameCondition.CODEC
-			.listOf()
-			.fieldOf("conditions")
-			.forGetter(CompoundCondition::getConditions)
+			Codec.BOOL
+					.optionalFieldOf("or", false)
+					.forGetter(CompoundCondition::isOr),
+			GameCondition.CODEC
+					.listOf()
+					.fieldOf("conditions")
+					.forGetter(CompoundCondition::getConditions)
 	).apply(instance, CompoundCondition::new));
+	private final boolean or;
 	private final List<GameCondition<?>> conditions;
 
-	private CompoundCondition(List<GameCondition<?>> conditions) {
+	private CompoundCondition(boolean or, List<GameCondition<?>> conditions) {
+		this.or = or;
 		this.conditions = List.copyOf(conditions);
 	}
 
-	public static CompoundCondition of(List<GameCondition<?>> conditions) {
-		return new CompoundCondition(conditions);
+	public static CompoundCondition of(boolean or, List<GameCondition<?>> conditions) {
+		return new CompoundCondition(or, conditions);
+	}
+
+	public static CompoundCondition of(boolean or, GameCondition<?>... conditions) {
+		return of(or, List.of(conditions));
 	}
 
 	public static CompoundCondition of(GameCondition<?>... conditions) {
-		return of(List.of(conditions));
+		return of(false, List.of(conditions));
 	}
 
 	@Override
 	public boolean test(GameContext context) {
-		return conditions.stream().allMatch(condition -> condition.test(context));
+		if (isOr()) {
+			return conditions.stream().anyMatch(condition -> condition.test(context));
+		} else {
+			return conditions.stream().allMatch(condition -> condition.test(context));
+		}
 	}
 
 	@Override
@@ -45,6 +59,16 @@ public class CompoundCondition implements GameCondition<CompoundCondition> {
 		return GameConditionTypes.COMPOUND;
 	}
 
+	/**
+	 * @return Whether the compound is an {@code or} type or an {@code and} type.
+	 */
+	public boolean isOr() {
+		return or;
+	}
+
+	/**
+	 * @return {@link GameCondition}s that in the compound.
+	 */
 	public List<GameCondition<?>> getConditions() {
 		return conditions;
 	}

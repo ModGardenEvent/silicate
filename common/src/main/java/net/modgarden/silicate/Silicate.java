@@ -1,6 +1,7 @@
 package net.modgarden.silicate;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.modgarden.silicate.api.SilicateBuiltInRegistries;
 import net.modgarden.silicate.platform.SilicatePlatformHelper;
 import net.modgarden.silicate.test.SilicateGameTests;
@@ -18,12 +19,21 @@ public class Silicate {
 	public static final List<Class<?>> GAME_TESTS = List.of(
 		SilicateGameTests.class
 	);
+	private static MinecraftServer server;
 
 	private static SilicatePlatformHelper helper;
 
 	public static void init() {
 		LOG.info("Initializing Silicate");
 		SilicateBuiltInRegistries.registerAll();
+	}
+
+	public static void setServer(MinecraftServer server) {
+		Silicate.server = server;
+	}
+
+	public static MinecraftServer getServer() {
+		return server;
 	}
 
 	public static SilicatePlatformHelper getHelper() {

@@ -29,6 +29,6 @@ public class SilicateNeoForge {
 
 	@SubscribeEvent
 	public static void newDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
-		event.dataPackRegistry(SilicateRegistries.CONDITION, GameCondition.CODEC);
+		event.dataPackRegistry(SilicateRegistries.CONDITION_TEMPLATE, GameCondition.TYPED_CODEC);
 	}
 }

@@ -27,4 +27,12 @@ public class SilicatePlatformHelperFabric implements SilicatePlatformHelper {
 	public ServerPlayer createFakePlayer(ServerLevel level) {
 		return FakePlayer.get(level, DEFAULT_PROFILE);
 	}
+
+	@Override
+	public Side getSide() {
+		return switch (FabricLoader.getInstance().getEnvironmentType()) {
+			case CLIENT -> Side.CLIENT;
+			case SERVER -> Side.DEDICATED_SERVER;
+		};
+	}
 }

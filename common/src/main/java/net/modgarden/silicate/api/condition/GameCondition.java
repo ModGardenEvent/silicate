@@ -1,12 +1,20 @@
 package net.modgarden.silicate.api.condition;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.modgarden.silicate.api.SilicateBuiltInRegistries;
+import net.modgarden.silicate.api.SilicateRegistries;
 import net.modgarden.silicate.api.condition.builtin.EntityPassengerCondition;
 import net.modgarden.silicate.api.condition.builtin.EntityVehicleCondition;
 import net.modgarden.silicate.api.context.GameContext;
+import org.jetbrains.annotations.ApiStatus;
 
+import javax.xml.crypto.Data;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -21,8 +29,17 @@ import java.util.function.Predicate;
  * @see MaybeTypedCondition
  */
 public interface GameCondition<T extends GameCondition<T>> extends Predicate<GameContext> {
-	Codec<GameCondition<?>> CODEC = SilicateBuiltInRegistries.GAME_CONDITION_TYPE.byNameCodec()
+	Codec<GameCondition<?>> TYPED_CODEC = SilicateBuiltInRegistries.GAME_CONDITION_TYPE.byNameCodec()
 			.dispatch("type", GameCondition::getType, GameConditionType::codec);
+	@SuppressWarnings("unchecked") // We use ConditionTemplate which uses raw types. Everything is checked at runtime.
+	Codec<GameCondition<?>> CODEC = Codec.either(ResourceLocation.CODEC, TYPED_CODEC)
+			.flatComapMap(
+					either -> either.map(
+							ConditionTemplate::new,
+							Function.identity()
+					),
+					condition -> DataResult.error(() -> "Cannot convert pre-existing GameCondition to ResourceLocation")
+			);
 
 	@Override
 	boolean test(GameContext context);

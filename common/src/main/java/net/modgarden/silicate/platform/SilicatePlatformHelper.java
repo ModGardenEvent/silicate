@@ -1,9 +1,11 @@
 package net.modgarden.silicate.platform;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -47,4 +49,6 @@ public interface SilicatePlatformHelper {
 	 * @return The fake player.
 	 */
 	ServerPlayer createFakePlayer(ServerLevel level);
+
+	Side getSide();
 }

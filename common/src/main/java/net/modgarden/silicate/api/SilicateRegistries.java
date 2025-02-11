@@ -13,7 +13,7 @@ import net.modgarden.silicate.api.context.param.ContextParamType;
 public final class SilicateRegistries {
 	public static final ResourceKey<Registry<GameConditionType<?>>> GAME_CONDITION_TYPE = create("game_condition_type");
 	public static final ResourceKey<Registry<ContextParamType<?>>> CONTEXT_PARAM_TYPE = create("context_param_type");
-	public static final ResourceKey<Registry<GameCondition<?>>> CONDITION = create("condition");
+	public static final ResourceKey<Registry<GameCondition<?>>> CONDITION_TEMPLATE = create("condition_template");
 
 	private static <T> ResourceKey<Registry<T>> create(String name) {
 		return ResourceKey.createRegistryKey(Silicate.id(name));
