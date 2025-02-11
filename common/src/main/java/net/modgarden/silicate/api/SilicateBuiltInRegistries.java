@@ -15,6 +15,7 @@ import net.modgarden.silicate.api.context.param.ContextParamType;
 import net.modgarden.silicate.api.context.param.ContextParamTypes;
 import org.jetbrains.annotations.ApiStatus;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 /**
@@ -43,6 +44,10 @@ public final class SilicateBuiltInRegistries {
 	}
 
 	private static Optional<RegistryAccess> getRegistryAccess() {
+		if (Thread.currentThread().getName().equals("Server thread")) {
+			return Optional.of(Silicate.getServer().registryAccess());
+		}
+
 		return switch (Silicate.getHelper().getSide()) {
 			case CLIENT -> {
 				ClientPacketListener connection = Minecraft.getInstance().getConnection();
