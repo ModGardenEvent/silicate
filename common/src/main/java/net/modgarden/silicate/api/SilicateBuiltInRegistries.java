@@ -15,7 +15,6 @@ import net.modgarden.silicate.api.context.param.ContextParamType;
 import net.modgarden.silicate.api.context.param.ContextParamTypes;
 import org.jetbrains.annotations.ApiStatus;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 /**
