@@ -7,6 +7,7 @@ import net.modgarden.silicate.api.condition.GameCondition;
 import net.modgarden.silicate.platform.SilicatePlatformHelperNeoForge;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import org.jetbrains.annotations.ApiStatus;
@@ -27,8 +28,14 @@ public class SilicateNeoForge {
 		GameTestRegistry.register(clazz);
 	}
 
-	@SubscribeEvent
-	public static void newDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
-		event.dataPackRegistry(SilicateRegistries.CONDITION_TEMPLATE, GameCondition.TYPED_CODEC);
+	@EventBusSubscriber(
+			modid = MOD_ID,
+			bus = EventBusSubscriber.Bus.MOD
+	)
+	public static class ModEvents {
+		@SubscribeEvent
+		public static void newDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
+			event.dataPackRegistry(SilicateRegistries.CONDITION_TEMPLATE, GameCondition.TYPED_CODEC, GameCondition.TYPED_CODEC);
+		}
 	}
 }
