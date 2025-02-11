@@ -15,6 +15,6 @@ public class SilicateFabric implements ModInitializer {
 		SharedConstants.IS_RUNNING_IN_IDE = Silicate.getHelper().isDevelopmentEnvironment();
 		Silicate.init();
 
-		DynamicRegistries.registerSynced(SilicateRegistries.CONDITION, GameCondition.CODEC);
+		DynamicRegistries.registerSynced(SilicateRegistries.CONDITION_TEMPLATE, GameCondition.TYPED_CODEC);
 	}
 }

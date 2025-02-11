@@ -3,6 +3,7 @@ package net.modgarden.silicate.test;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
@@ -18,10 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.phys.Vec3;
 import net.modgarden.silicate.Silicate;
-import net.modgarden.silicate.api.condition.AlwaysCondition;
-import net.modgarden.silicate.api.condition.CompoundCondition;
-import net.modgarden.silicate.api.condition.InvertedCondition;
-import net.modgarden.silicate.api.condition.MaybeTypedCondition;
+import net.modgarden.silicate.api.condition.*;
 import net.modgarden.silicate.api.condition.builtin.*;
 import net.modgarden.silicate.api.condition.builtin.math.Comparison;
 import net.modgarden.silicate.api.condition.builtin.math.Vec3Comparison;
@@ -318,6 +316,29 @@ public class SilicateGameTests {
 		helper.succeed();
 	}
 
+	@GameTest(template = "silicate:test_template")
+	public static void conditionTemplates(GameTestHelper helper) throws InvalidContextParameterException {
+		Chicken chicken = helper.getEntities(EntityType.CHICKEN).getFirst();
+		Zombie zombie = helper.getEntities(EntityType.ZOMBIE).getFirst();
+		ServerPlayer player = createFakePlayer(helper);
+		ContextParamMap paramMap = createParamMapWithPassenger(
+				createState(),
+				createOrigin(),
+				chicken,
+				zombie,
+				createEntityBlock(),
+				player,
+				helper
+		);
+		zombie.startRiding(chicken);
+		GameContext context = GameContext.of(helper.getLevel(), paramMap);
+		ConditionTemplate always = new ConditionTemplate(ResourceLocation.fromNamespaceAndPath("test", "true"));
+		helper.assertTrue(always.test(context), "ConditionTemplate test:true failed");
+		ConditionTemplate ridingOnly = new ConditionTemplate(ResourceLocation.fromNamespaceAndPath("test", "riding_only"));
+		helper.assertTrue(ridingOnly.test(context), "ConditionTemplate test:riding_only failed");
+		helper.succeed();
+	}
+
 	private static void createInvalidParamMap() throws InvalidContextParameterException {
 		ContextParamSet paramSet = ContextParamSet.Builder.of()
 			.required(ContextParamTypes.BLOCK_STATE)
@@ -345,6 +366,29 @@ public class SilicateGameTests {
 				.withParameter(ContextParamTypes.ORIGIN, origin.getCenter())
 				.withParameter(ContextParamTypes.THIS_ENTITY, entity)
 				.withParameter(ContextParamTypes.VICTIM_ENTITY, entity2);
+		return checkAndBuildParamMap(origin, entityBlock, fakePlayer, helper, builder);
+	}
+
+	private static ContextParamMap createParamMapWithPassenger(BlockState state, BlockPos origin, Entity entity, Entity entity2, @Nullable BlockState entityBlock, @Nullable ServerPlayer fakePlayer, GameTestHelper helper) throws InvalidContextParameterException {
+		ContextParamSet paramSet = ContextParamSet.Builder.of()
+				.required(ContextParamTypes.BLOCK_STATE)
+				.required(ContextParamTypes.ORIGIN)
+				.optional(ContextParamTypes.BLOCK_ENTITY)
+				.optional(ContextParamTypes.ATTACKING_ENTITY)
+				.required(ContextParamTypes.VEHICLE_ENTITY)
+				.required(ContextParamTypes.THIS_ENTITY)
+				.build();
+		helper.setBlock(origin, state);
+		ContextParamMap.Builder builder = ContextParamMap.Builder.of(paramSet)
+				.withParameter(ContextParamTypes.BLOCK_STATE, state)
+				.withParameter(ContextParamTypes.ORIGIN, origin.getCenter())
+				.withParameter(ContextParamTypes.VEHICLE_ENTITY, entity)
+				.withParameter(ContextParamTypes.THIS_ENTITY, entity2);
+		return checkAndBuildParamMap(origin, entityBlock, fakePlayer, helper, builder);
+	}
+
+	@NotNull
+	private static ContextParamMap checkAndBuildParamMap(BlockPos origin, @Nullable BlockState entityBlock, @Nullable ServerPlayer fakePlayer, GameTestHelper helper, ContextParamMap.Builder builder) throws InvalidContextParameterException {
 		if (entityBlock != null) {
 			BlockPos entityBlockPos = origin.east();
 			helper.setBlock(entityBlockPos, entityBlock);
