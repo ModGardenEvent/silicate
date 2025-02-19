@@ -1,5 +1,10 @@
 package net.modgarden.silicate.api.context.param;
 
+import net.modgarden.silicate.api.condition.builtin.EntityPassengerCondition;
+import net.modgarden.silicate.api.condition.builtin.EntityProjectileOwnerCondition;
+import net.modgarden.silicate.api.condition.builtin.EntityTameOwnerCondition;
+import net.modgarden.silicate.api.condition.builtin.EntityVehicleCondition;
+import net.modgarden.silicate.api.context.GameContext;
 import net.minecraft.core.Registry;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.Entity;
@@ -7,9 +12,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.modgarden.silicate.api.SilicateBuiltInRegistries;
-import net.modgarden.silicate.api.condition.builtin.EntityPassengerCondition;
-import net.modgarden.silicate.api.condition.builtin.EntityVehicleCondition;
-import net.modgarden.silicate.api.context.GameContext;
 import org.jetbrains.annotations.ApiStatus;
 
 import static net.modgarden.silicate.Silicate.id;
@@ -28,7 +30,7 @@ public final class ContextParamTypes {
 	 */
 	public static final ContextParamType<Entity> VEHICLE_ENTITY = register("vehicle_entity", Entity.class);
 	/**
-	 * A temporary parameter type typically used in {@link EntityProjectileOwnerCondition}.
+	 * A temporary parameter type typically used in {@link EntityProjectileOwnerCondition} and {@link EntityTameOwnerCondition}.
 	 */
 	public static final ContextParamType<Entity> OWNER_ENTITY = register("owner_entity", Entity.class);
 	/**
