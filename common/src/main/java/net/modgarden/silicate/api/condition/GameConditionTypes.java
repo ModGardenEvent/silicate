@@ -18,6 +18,8 @@ public final class GameConditionTypes {
 	public static final GameConditionType<AlwaysCondition> ALWAYS = register("always", AlwaysCondition.CODEC);
 	public static final GameConditionType<EntityTypeCondition> ENTITY_TYPE = register("entity_type", EntityTypeCondition.CODEC);
 	public static final GameConditionType<EntityPassengerCondition> ENTITY_PASSENGER = register("entity_passenger", EntityPassengerCondition.CODEC);
+	public static final GameConditionType<EntityProjectileOwnerCondition> ENTITY_PROJECTILE_OWNER = register("entity_projectile_owner", EntityProjectileOwnerCondition.CODEC);
+	public static final GameConditionType<EntityTameOwnerCondition> ENTITY_TAME_OWNER = register("entity_tame_owner", EntityTameOwnerCondition.CODEC);
 	public static final GameConditionType<EntityVehicleCondition> ENTITY_VEHICLE = register("entity_vehicle", EntityVehicleCondition.CODEC);
 	public static final GameConditionType<BlockStateCondition> BLOCK_STATE = register("block_state", BlockStateCondition.CODEC);
 	public static final GameConditionType<Vec3Condition> VEC3 = register("vec3", Vec3Condition.CODEC);
