@@ -1,3 +1,2 @@
-## Added
-- `EntityProjectileOwnerCondition` - Checks the owner of a projectile entity/`TraceableEntity` (mojmap).
-- `EntityTameOwnerCondition` - Checks the owner of a tamed entity/`OwnableEntity` (mojmap).
+## Fixed
+- Fixed GameConditions being unable to be sent from the server to clients.
