@@ -1,23 +1,9 @@
 package net.modgarden.silicate.test;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.gametest.framework.GameTest;
-import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Chicken;
-import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.level.GameType;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FurnaceBlock;
-import net.minecraft.world.level.block.NoteBlock;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.animal.horse.SkeletonHorse;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.modgarden.silicate.Silicate;
 import net.modgarden.silicate.api.condition.*;
 import net.modgarden.silicate.api.condition.builtin.*;
@@ -29,6 +15,21 @@ import net.modgarden.silicate.api.context.param.ContextParamMap;
 import net.modgarden.silicate.api.context.param.ContextParamSet;
 import net.modgarden.silicate.api.context.param.ContextParamTypes;
 import net.modgarden.silicate.api.exception.InvalidContextParameterException;
+import net.minecraft.core.BlockPos;
+import net.minecraft.gametest.framework.GameTest;
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FurnaceBlock;
+import net.minecraft.world.level.block.NoteBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -167,14 +168,14 @@ public class SilicateGameTests {
 
 	@GameTest(template = "silicate:test_template")
 	public static void conditions(GameTestHelper helper) throws InvalidContextParameterException {
-		Chicken chicken = helper.getEntities(EntityType.CHICKEN).getFirst();
-		Zombie zombie = helper.getEntities(EntityType.ZOMBIE).getFirst();
+		SkeletonHorse skeletonHorse = helper.getEntities(EntityType.SKELETON_HORSE).getFirst();
+		Skeleton skeleton = helper.getEntities(EntityType.SKELETON).getFirst();
 		ServerPlayer player = createFakePlayer(helper);
 		ContextParamMap paramMap = createParamMap(
 			createState(),
 			createOrigin(),
-			chicken,
-			zombie,
+			skeletonHorse,
+			skeleton,
 			createEntityBlock(),
 			player,
 			helper
@@ -190,7 +191,7 @@ public class SilicateGameTests {
 		);
 		EntityTypeCondition entityTypeCondition = EntityTypeCondition.of(
 			ContextParamTypes.THIS_ENTITY,
-			EntityType.CHICKEN
+			EntityType.SKELETON_HORSE
 		);
 		helper.assertTrue(
 			entityTypeCondition.test(context),
@@ -198,7 +199,7 @@ public class SilicateGameTests {
 		);
 		EntityTypeCondition entityTagCondition = EntityTypeCondition.of(
 			ContextParamTypes.THIS_ENTITY,
-			EntityTypeTags.FALL_DAMAGE_IMMUNE
+			EntityTypeTags.SKELETONS
 		);
 		helper.assertTrue(
 			entityTagCondition.test(context),
@@ -233,12 +234,47 @@ public class SilicateGameTests {
 			gameTypeCondition.test(context),
 			"PlayerGameTypeCondition test failed"
 		);
+
+		Arrow arrow = helper.getEntities(EntityType.ARROW).getFirst();
+		ContextParamMap projectileParamMap = createParamMap(
+				createState(),
+				createOrigin(),
+				arrow,
+				player,
+				null,
+				null,
+				helper
+		);
+		GameContext projectileContext = GameContext.of(helper.getLevel(), projectileParamMap);
+
+		EntityTameOwnerCondition tameOwnerCondition = new EntityTameOwnerCondition(
+				ContextParamTypes.THIS_ENTITY,
+				EntityTypeCondition.of(
+						ContextParamTypes.OWNER_ENTITY,
+						EntityType.PLAYER
+				)
+		);
+		helper.assertFalse(
+				tameOwnerCondition.test(context),
+				"EntityTameOwnerCondition test unexpectedly succeeded"
+		);
+		EntityProjectileOwnerCondition projectileOwnerCondition = new EntityProjectileOwnerCondition(
+				ContextParamTypes.THIS_ENTITY,
+				EntityTypeCondition.of(
+						ContextParamTypes.OWNER_ENTITY,
+						EntityType.SKELETON
+				)
+		);
+		helper.assertFalse(
+				projectileOwnerCondition.test(projectileContext),
+				"EntityProjectileOwnerCondition test unexpectedly succeeded"
+		);
 		EntityPassengerCondition passengerCondition = new EntityPassengerCondition(
 				ContextParamTypes.THIS_ENTITY,
 				MaybeTypedCondition.of(
 						EntityTypeCondition.of(
 								ContextParamTypes.PASSENGER_ENTITY,
-								EntityType.ZOMBIE
+								EntityType.SKELETON
 						)
 				),
 				false
@@ -252,7 +288,7 @@ public class SilicateGameTests {
 				MaybeTypedCondition.of(
 						EntityTypeCondition.of(
 								ContextParamTypes.VEHICLE_ENTITY,
-								EntityType.CHICKEN
+								EntityType.SKELETON_HORSE
 						)
 				)
 		);
@@ -260,7 +296,17 @@ public class SilicateGameTests {
 				vehicleCondition.test(context),
 				"EntityVehicleCondition test unexpectedly succeeded"
 		);
-		zombie.startRiding(chicken);
+		skeletonHorse.setOwnerUUID(helper.getLevel().getRandomPlayer().getUUID());
+		arrow.setOwner(skeleton);
+		skeleton.startRiding(skeletonHorse);
+		helper.assertTrue(
+				tameOwnerCondition.test(context),
+				"EntityTameOwnerCondition test failed"
+		);
+		helper.assertTrue(
+				projectileOwnerCondition.test(projectileContext),
+				"EntityProjectileOwnerCondition test failed"
+		);
 		helper.assertTrue(
 				passengerCondition.test(context),
 				"EntityPassengerCondition test failed"
@@ -272,7 +318,7 @@ public class SilicateGameTests {
 		InvertedCondition invertedCondition = new InvertedCondition(
 				EntityTypeCondition.of(
 						ContextParamTypes.VICTIM_ENTITY,
-						EntityType.CHICKEN
+						EntityType.SKELETON_HORSE
 				)
 		);
 		helper.assertTrue(
@@ -318,19 +364,19 @@ public class SilicateGameTests {
 
 	@GameTest(template = "silicate:test_template")
 	public static void conditionTemplates(GameTestHelper helper) throws InvalidContextParameterException {
-		Chicken chicken = helper.getEntities(EntityType.CHICKEN).getFirst();
-		Zombie zombie = helper.getEntities(EntityType.ZOMBIE).getFirst();
+		SkeletonHorse skeletonHorse = helper.getEntities(EntityType.SKELETON_HORSE).getFirst();
+		Skeleton skeleton = helper.getEntities(EntityType.SKELETON).getFirst();
 		ServerPlayer player = createFakePlayer(helper);
 		ContextParamMap paramMap = createParamMapWithPassenger(
 				createState(),
 				createOrigin(),
-				chicken,
-				zombie,
+				skeletonHorse,
+				skeleton,
 				createEntityBlock(),
 				player,
 				helper
 		);
-		zombie.startRiding(chicken);
+		skeleton.startRiding(skeletonHorse);
 		GameContext context = GameContext.of(helper.getLevel(), paramMap);
 		ConditionTemplate always = new ConditionTemplate(ResourceLocation.fromNamespaceAndPath("test", "true"));
 		helper.assertTrue(always.test(context), "ConditionTemplate test:true failed");

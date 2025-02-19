@@ -1,6 +1,3 @@
 ## Added
-
-## Changed
-
-## Fixed
-- Client-side crash occurring when starting an integrated server. Caused by incorrect registry lookups.
+- `EntityProjectileOwnerCondition` - Checks the owner of a projectile entity/`TraceableEntity` (mojmap).
+- `EntityTameOwnerCondition` - Checks the owner of a tamed entity/`OwnableEntity` (mojmap).

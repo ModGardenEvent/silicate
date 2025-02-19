@@ -28,6 +28,10 @@ public final class ContextParamTypes {
 	 */
 	public static final ContextParamType<Entity> VEHICLE_ENTITY = register("vehicle_entity", Entity.class);
 	/**
+	 * A temporary parameter type typically used in {@link EntityProjectileOwnerCondition}.
+	 */
+	public static final ContextParamType<Entity> OWNER_ENTITY = register("owner_entity", Entity.class);
+	/**
 	 * The aggressor in an attacker-victim scenario.
 	 */
 	public static final ContextParamType<Entity> ATTACKING_ENTITY = register("attacking_entity", Entity.class);
