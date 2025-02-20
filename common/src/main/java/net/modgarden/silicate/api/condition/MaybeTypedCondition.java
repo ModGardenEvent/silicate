@@ -2,6 +2,7 @@ package net.modgarden.silicate.api.condition;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Holder;
 import net.modgarden.silicate.api.context.GameContext;
 import net.modgarden.silicate.api.context.param.ContextParamType;
 
@@ -13,14 +14,14 @@ import java.util.function.Predicate;
  */
 @SuppressWarnings("rawtypes") // This class does not care about the type and does not require it.
 public record MaybeTypedCondition<P>(
-		Either<TypedGameCondition<?, P>, GameCondition<?>> either
+		Either<Holder<TypedGameCondition<?, P>>, Holder<GameCondition<?>>> either
 ) implements GameCondition, Predicate {
 	public static <P> MaybeTypedCondition<P> of(TypedGameCondition<?, P> condition) {
-		return new MaybeTypedCondition<>(Either.left(condition));
+		return new MaybeTypedCondition<>(Either.left(Holder.direct(condition)));
 	}
 
 	public static <P> MaybeTypedCondition<P> of(GameCondition<?> condition) {
-		return new MaybeTypedCondition<>(Either.right(condition));
+		return new MaybeTypedCondition<>(Either.right(Holder.direct(condition)));
 	}
 
 	@Override
@@ -30,17 +31,17 @@ public record MaybeTypedCondition<P>(
 
 	@Override
 	public boolean test(GameContext context) {
-		return either.map(typed -> typed.test(context), untyped -> untyped.test(context));
+		return either.map(typed -> typed.value().test(context), untyped -> untyped.value().test(context));
 	}
 
 	@Override
 	public MapCodec<?> getCodec() {
-		return either.map(GameCondition::getCodec, GameCondition::getCodec);
+		return either.map(holder -> holder.value().getCodec(), holder -> holder.value().getCodec());
 	}
 
 	@Override
 	public GameConditionType<?> getType() {
-		return either.map(GameCondition::getType, GameCondition::getType);
+		return either.map(holder -> holder.value().getType(), holder -> holder.value().getType());
 	}
 
 	/**
@@ -49,6 +50,6 @@ public record MaybeTypedCondition<P>(
 	 * @return The condition's parameter type or the default parameter type.
 	 */
 	public ContextParamType<P> getParamTypeOrDefault(ContextParamType<P> defaultParamType) {
-		return either.map(TypedGameCondition::getParamType, untyped -> defaultParamType);
+		return either.map(holder -> holder.value().getParamType(), untyped -> defaultParamType);
 	}
 }

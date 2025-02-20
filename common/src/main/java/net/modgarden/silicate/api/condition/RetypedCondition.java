@@ -2,6 +2,7 @@ package net.modgarden.silicate.api.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.modgarden.silicate.api.context.GameContext;
 import net.modgarden.silicate.api.context.param.ContextParamType;
 
@@ -11,7 +12,7 @@ import net.modgarden.silicate.api.context.param.ContextParamType;
  */
 public record RetypedCondition(
 		ContextParamType<?> paramType,
-		GameCondition<?> condition
+		Holder<GameCondition<?>> condition
 ) implements TypedGameCondition<RetypedCondition, Object> {
 	public static final MapCodec<RetypedCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			ContextParamType.ANY_CODEC
@@ -30,7 +31,7 @@ public record RetypedCondition(
 
 	@Override
 	public boolean test(GameContext context) {
-		return condition.test(context);
+		return condition.value().test(context);
 	}
 
 	@Override

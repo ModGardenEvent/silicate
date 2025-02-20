@@ -3,6 +3,7 @@ package net.modgarden.silicate.api.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Holder;
 import net.modgarden.silicate.api.context.GameContext;
 import net.modgarden.silicate.api.context.param.ContextParamType;
 
@@ -17,10 +18,10 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 	 * @see ContextParamType#getCodec(Class)
 	 */
 	@SuppressWarnings("unchecked") // Checked at runtime.
-	private static <P> DataResult<TypedGameCondition<?, P>> validate(GameCondition<?> condition, Class<P> clazz) {
+	private static <P> DataResult<Holder<TypedGameCondition<?, P>>> validate(Holder<GameCondition<?>> condition, Class<P> clazz) {
 		// Extra Spooky!
-		if (condition instanceof TypedGameCondition<?, ?> typedCondition && typedCondition.getParamType().clazz().equals(clazz)) {
-			return DataResult.success((TypedGameCondition<?, P>) typedCondition);
+		if (condition.isBound() && condition.value() instanceof TypedGameCondition<?, ?> typedCondition && typedCondition.getParamType().clazz().equals(clazz)) {
+			return DataResult.success((Holder<TypedGameCondition<?,P>>) typedCondition);
 		} else {
 			return DataResult.error(() -> "GameCondition is not a TypedGameCondition");
 		}
@@ -36,11 +37,12 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 	 * @return The typed codec.
 	 * @param <P> The value type of the parameter type.
 	 */
-	static <P> Codec<TypedGameCondition<?, P>> getTypedCodec(Class<P> clazz) {
+	@SuppressWarnings("unchecked")
+	static <P> Codec<Holder<TypedGameCondition<?, P>>> getTypedCodec(Class<P> clazz) {
 		return GameCondition.CODEC
 				.comapFlatMap(
 						condition -> validate(condition, clazz),
-						TypedGameCondition::toGameCondition
+						holder -> (Holder<GameCondition<?>>)(Object)holder
 				);
 	}
 

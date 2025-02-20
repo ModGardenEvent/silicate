@@ -4,6 +4,9 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.RegistryFileCodec;
+import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.modgarden.silicate.api.SilicateBuiltInRegistries;
@@ -32,14 +35,7 @@ public interface GameCondition<T extends GameCondition<T>> extends Predicate<Gam
 	Codec<GameCondition<?>> TYPED_CODEC = SilicateBuiltInRegistries.GAME_CONDITION_TYPE.byNameCodec()
 			.dispatch("type", GameCondition::getType, GameConditionType::codec);
 	@SuppressWarnings("unchecked") // We use ConditionTemplate which uses raw types. Everything is checked at runtime.
-	Codec<GameCondition<?>> CODEC = Codec.either(ResourceLocation.CODEC, TYPED_CODEC)
-			.flatComapMap(
-					either -> either.map(
-							ConditionTemplate::new,
-							Function.identity()
-					),
-					condition -> DataResult.error(() -> "Cannot convert pre-existing GameCondition to ResourceLocation")
-			);
+	Codec<Holder<GameCondition<?>>> CODEC = RegistryFileCodec.create(SilicateRegistries.CONDITION_TEMPLATE, TYPED_CODEC);
 
 	@Override
 	boolean test(GameContext context);

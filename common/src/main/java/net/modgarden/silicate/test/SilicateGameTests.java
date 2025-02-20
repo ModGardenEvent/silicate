@@ -1,11 +1,17 @@
 package net.modgarden.silicate.test;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.modgarden.silicate.Silicate;
-import net.modgarden.silicate.api.condition.*;
+import net.modgarden.silicate.api.SilicateRegistries;
+import net.modgarden.silicate.api.condition.AlwaysCondition;
+import net.modgarden.silicate.api.condition.CompoundCondition;
+import net.modgarden.silicate.api.condition.InvertedCondition;
 import net.modgarden.silicate.api.condition.builtin.*;
 import net.modgarden.silicate.api.condition.builtin.math.Comparison;
 import net.modgarden.silicate.api.condition.builtin.math.Vec3Comparison;
@@ -18,6 +24,7 @@ import net.modgarden.silicate.api.exception.InvalidContextParameterException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
@@ -30,11 +37,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.phys.Vec3;
+import net.modgarden.silicate.api.condition.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 @ApiStatus.Internal
 public class SilicateGameTests {
@@ -167,6 +176,7 @@ public class SilicateGameTests {
 	}
 
 	@GameTest(template = "silicate:test_template")
+	@SuppressWarnings("unchecked")
 	public static void conditions(GameTestHelper helper) throws InvalidContextParameterException {
 		SkeletonHorse skeletonHorse = helper.getEntities(EntityType.SKELETON_HORSE).getFirst();
 		Skeleton skeleton = helper.getEntities(EntityType.SKELETON).getFirst();
@@ -249,9 +259,11 @@ public class SilicateGameTests {
 
 		EntityTameOwnerCondition tameOwnerCondition = new EntityTameOwnerCondition(
 				ContextParamTypes.THIS_ENTITY,
-				EntityTypeCondition.of(
-						ContextParamTypes.OWNER_ENTITY,
-						EntityType.PLAYER
+				Holder.direct(
+						EntityTypeCondition.of(
+								ContextParamTypes.OWNER_ENTITY,
+								EntityType.PLAYER
+						)
 				)
 		);
 		helper.assertFalse(
@@ -260,9 +272,11 @@ public class SilicateGameTests {
 		);
 		EntityProjectileOwnerCondition projectileOwnerCondition = new EntityProjectileOwnerCondition(
 				ContextParamTypes.THIS_ENTITY,
-				EntityTypeCondition.of(
+				Holder.direct(
+					EntityTypeCondition.of(
 						ContextParamTypes.OWNER_ENTITY,
 						EntityType.SKELETON
+					)
 				)
 		);
 		helper.assertFalse(
@@ -296,7 +310,7 @@ public class SilicateGameTests {
 				vehicleCondition.test(context),
 				"EntityVehicleCondition test unexpectedly succeeded"
 		);
-		skeletonHorse.setOwnerUUID(helper.getLevel().getRandomPlayer().getUUID());
+		skeletonHorse.setOwnerUUID(Objects.requireNonNull(helper.getLevel().getRandomPlayer()).getUUID());
 		arrow.setOwner(skeleton);
 		skeleton.startRiding(skeletonHorse);
 		helper.assertTrue(
@@ -316,9 +330,11 @@ public class SilicateGameTests {
 				"EntityVehicleCondition test failed"
 		);
 		InvertedCondition invertedCondition = new InvertedCondition(
-				EntityTypeCondition.of(
-						ContextParamTypes.VICTIM_ENTITY,
-						EntityType.SKELETON_HORSE
+				Holder.direct(
+						EntityTypeCondition.of(
+								ContextParamTypes.VICTIM_ENTITY,
+								EntityType.SKELETON_HORSE
+						)
 				)
 		);
 		helper.assertTrue(
@@ -344,16 +360,16 @@ public class SilicateGameTests {
 				"AlwaysCondition(false) test succeeded unexpectedly"
 		);
 		CompoundCondition compoundCondition = CompoundCondition.of(
-				stateCondition,
-				entityTypeCondition,
-				entityTagCondition,
-				vec3Condition,
-				blockEntityTypeCondition,
-				gameTypeCondition,
-				passengerCondition,
-				vehicleCondition,
-				trueCondition,
-				new InvertedCondition(falseCondition)
+				Holder.direct(stateCondition),
+				Holder.direct(entityTypeCondition),
+				Holder.direct(entityTagCondition),
+				Holder.direct(vec3Condition),
+				Holder.direct(blockEntityTypeCondition),
+				Holder.direct(gameTypeCondition),
+				Holder.direct(passengerCondition),
+				Holder.direct(vehicleCondition),
+				Holder.direct(trueCondition),
+				Holder.direct(new InvertedCondition(Holder.direct(falseCondition)))
 		);
 		helper.assertTrue(
 				compoundCondition.test(context),
@@ -378,10 +394,16 @@ public class SilicateGameTests {
 		);
 		skeleton.startRiding(skeletonHorse);
 		GameContext context = GameContext.of(helper.getLevel(), paramMap);
-		ConditionTemplate always = new ConditionTemplate(ResourceLocation.fromNamespaceAndPath("test", "true"));
-		helper.assertTrue(always.test(context), "ConditionTemplate test:true failed");
-		ConditionTemplate ridingOnly = new ConditionTemplate(ResourceLocation.fromNamespaceAndPath("test", "riding_only"));
-		helper.assertTrue(ridingOnly.test(context), "ConditionTemplate test:riding_only failed");
+		Holder<GameCondition<?>> always = helper.getLevel()
+				.registryAccess()
+				.registryOrThrow(SilicateRegistries.CONDITION_TEMPLATE)
+				.getHolderOrThrow(ResourceKey.create(SilicateRegistries.CONDITION_TEMPLATE, ResourceLocation.fromNamespaceAndPath("test", "true")));
+		helper.assertTrue(always.value().test(context), "ConditionTemplate test:true failed");
+		Holder<GameCondition<?>> ridingOnly = helper.getLevel()
+				.registryAccess()
+				.registryOrThrow(SilicateRegistries.CONDITION_TEMPLATE)
+				.getHolderOrThrow(ResourceKey.create(SilicateRegistries.CONDITION_TEMPLATE, ResourceLocation.fromNamespaceAndPath("test", "riding_only")));
+		helper.assertTrue(ridingOnly.value().test(context), "ConditionTemplate test:riding_only failed");
 		helper.succeed();
 	}
 

@@ -2,6 +2,7 @@ package net.modgarden.silicate.api.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.modgarden.silicate.api.context.GameContext;
 
 /**
@@ -9,7 +10,7 @@ import net.modgarden.silicate.api.context.GameContext;
  * @param condition The condition to invert.
  */
 public record InvertedCondition(
-		GameCondition<?> condition
+		Holder<GameCondition<?>> condition
 ) implements GameCondition<InvertedCondition> {
 	public static final MapCodec<InvertedCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			GameCondition.CODEC
@@ -19,7 +20,7 @@ public record InvertedCondition(
 
 	@Override
 	public boolean test(GameContext context) {
-		return !condition.test(context);
+		return !condition.value().test(context);
 	}
 
 	@Override
