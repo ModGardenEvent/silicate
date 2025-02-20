@@ -17,11 +17,11 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 	/**
 	 * @see ContextParamType#getCodec(Class)
 	 */
-	@SuppressWarnings("unchecked") // Checked at runtime.
+	@SuppressWarnings({"unchecked", "rawtypes"}) // Checked at runtime.
 	private static <P> DataResult<Holder<TypedGameCondition<?, P>>> validate(Holder<GameCondition<?>> condition, Class<P> clazz) {
 		// Extra Spooky!
 		if (condition.isBound() && condition.value() instanceof TypedGameCondition<?, ?> typedCondition && typedCondition.getParamType().clazz().equals(clazz)) {
-			return DataResult.success((Holder<TypedGameCondition<?,P>>) typedCondition);
+			return DataResult.success((Holder) condition);
 		} else {
 			return DataResult.error(() -> "GameCondition is not a TypedGameCondition");
 		}
