@@ -2,9 +2,9 @@ package net.modgarden.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.entity.TraceableEntity;
 import net.modgarden.silicate.api.condition.GameConditionType;
 import net.modgarden.silicate.api.condition.GameConditionTypes;
 import net.modgarden.silicate.api.condition.TypedGameCondition;
@@ -20,7 +20,7 @@ import net.modgarden.silicate.api.context.param.ContextParamType;
  */
 public record EntityTameOwnerCondition(
 		ContextParamType<Entity> paramType,
-		TypedGameCondition<?, Entity> condition
+		Holder<TypedGameCondition<?, Entity>> condition
 ) implements TypedGameCondition<EntityTameOwnerCondition, Entity> {
 	public static final MapCodec<EntityTameOwnerCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			ContextParamType.getCodec(Entity.class)
@@ -31,7 +31,7 @@ public record EntityTameOwnerCondition(
 					.forGetter(EntityTameOwnerCondition::condition)
 	).apply(instance, EntityTameOwnerCondition::of));
 
-	private static EntityTameOwnerCondition of(ContextParamType<Entity> paramType, TypedGameCondition<?, Entity> condition) {
+	private static EntityTameOwnerCondition of(ContextParamType<Entity> paramType, Holder<TypedGameCondition<?, Entity>> condition) {
 		return new EntityTameOwnerCondition(
 				paramType,
 				condition
@@ -51,9 +51,9 @@ public record EntityTameOwnerCondition(
 	}
 
 	private boolean testOwner(GameContext oldContext, Entity owner, ContextParamMap.Mutable paramMap) {
-		paramMap.set(condition.getParamType(), owner);
+		paramMap.set(condition.value().getParamType(), owner);
 		GameContext context = GameContext.of(oldContext.getLevel(), paramMap);
-		return condition.test(context);
+		return condition.value().test(context);
 	}
 
 	@Override

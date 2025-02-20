@@ -1,7 +1,7 @@
 package net.modgarden.silicate.gradle
 
 object Versions {
-	const val MOD = "0.6.0"
+	const val MOD = "0.7.0"
 
 	const val MINECRAFT = "1.21.1"
 	const val PARCHMENT_MINECRAFT = "1.21"

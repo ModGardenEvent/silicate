@@ -3,6 +3,7 @@ package net.modgarden.silicate.api.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.modgarden.silicate.api.context.GameContext;
 
 import java.util.List;
@@ -21,31 +22,33 @@ public class CompoundCondition implements GameCondition<CompoundCondition> {
 					.forGetter(CompoundCondition::getConditions)
 	).apply(instance, CompoundCondition::new));
 	private final boolean or;
-	private final List<GameCondition<?>> conditions;
+	private final List<Holder<GameCondition<?>>> conditions;
 
-	private CompoundCondition(boolean or, List<GameCondition<?>> conditions) {
+	private CompoundCondition(boolean or, List<Holder<GameCondition<?>>> conditions) {
 		this.or = or;
 		this.conditions = List.copyOf(conditions);
 	}
 
-	public static CompoundCondition of(boolean or, List<GameCondition<?>> conditions) {
+	public static CompoundCondition of(boolean or, List<Holder<GameCondition<?>>> conditions) {
 		return new CompoundCondition(or, conditions);
 	}
 
-	public static CompoundCondition of(boolean or, GameCondition<?>... conditions) {
+	@SuppressWarnings("unchecked")
+	public static CompoundCondition of(boolean or, Holder<GameCondition<?>>... conditions) {
 		return of(or, List.of(conditions));
 	}
 
-	public static CompoundCondition of(GameCondition<?>... conditions) {
+	@SuppressWarnings("unchecked")
+	public static CompoundCondition of(Holder<GameCondition<?>>... conditions) {
 		return of(false, List.of(conditions));
 	}
 
 	@Override
 	public boolean test(GameContext context) {
 		if (isOr()) {
-			return conditions.stream().anyMatch(condition -> condition.test(context));
+			return conditions.stream().anyMatch(condition -> condition.value().test(context));
 		} else {
-			return conditions.stream().allMatch(condition -> condition.test(context));
+			return conditions.stream().allMatch(condition -> condition.value().test(context));
 		}
 	}
 
@@ -69,7 +72,7 @@ public class CompoundCondition implements GameCondition<CompoundCondition> {
 	/**
 	 * @return {@link GameCondition}s that in the compound.
 	 */
-	public List<GameCondition<?>> getConditions() {
+	public List<Holder<GameCondition<?>>> getConditions() {
 		return conditions;
 	}
 }
