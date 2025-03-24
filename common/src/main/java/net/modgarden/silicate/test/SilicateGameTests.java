@@ -1,12 +1,10 @@
 package net.modgarden.silicate.test;
 
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.modgarden.silicate.Silicate;
-import net.modgarden.silicate.api.SilicateRegistries;
 import net.modgarden.silicate.api.condition.AlwaysCondition;
 import net.modgarden.silicate.api.condition.CompoundCondition;
 import net.modgarden.silicate.api.condition.InvertedCondition;
@@ -394,15 +392,9 @@ public class SilicateGameTests {
 		);
 		skeleton.startRiding(skeletonHorse);
 		GameContext context = GameContext.of(helper.getLevel(), paramMap);
-		Holder<GameCondition<?>> always = helper.getLevel()
-				.registryAccess()
-				.registryOrThrow(SilicateRegistries.CONDITION_TEMPLATE)
-				.getHolderOrThrow(ResourceKey.create(SilicateRegistries.CONDITION_TEMPLATE, ResourceLocation.fromNamespaceAndPath("test", "true")));
+		Holder<GameCondition<?>> always = GameCondition.getTemplate(ResourceLocation.fromNamespaceAndPath("test", "true"));
 		helper.assertTrue(always.value().test(context), "ConditionTemplate test:true failed");
-		Holder<GameCondition<?>> ridingOnly = helper.getLevel()
-				.registryAccess()
-				.registryOrThrow(SilicateRegistries.CONDITION_TEMPLATE)
-				.getHolderOrThrow(ResourceKey.create(SilicateRegistries.CONDITION_TEMPLATE, ResourceLocation.fromNamespaceAndPath("test", "riding_only")));
+		Holder<GameCondition<?>> ridingOnly = GameCondition.getTemplate(ResourceLocation.fromNamespaceAndPath("test", "riding_only"));
 		helper.assertTrue(ridingOnly.value().test(context), "ConditionTemplate test:riding_only failed");
 		helper.succeed();
 	}
