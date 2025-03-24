@@ -2,10 +2,8 @@ package net.modgarden.silicate.test;
 
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.monster.Skeleton;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.modgarden.silicate.Silicate;
 import net.modgarden.silicate.api.SilicateRegistries;
@@ -43,7 +41,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 
 @ApiStatus.Internal
 public class SilicateGameTests {
@@ -181,6 +178,9 @@ public class SilicateGameTests {
 		SkeletonHorse skeletonHorse = helper.getEntities(EntityType.SKELETON_HORSE).getFirst();
 		Skeleton skeleton = helper.getEntities(EntityType.SKELETON).getFirst();
 		ServerPlayer player = createFakePlayer(helper);
+		// Fake players need to be added to the player list manually
+		// This is necessary for OwnableEntity#getOwner(UUID)
+		helper.getLevel().players().add(player);
 		ContextParamMap paramMap = createParamMap(
 			createState(),
 			createOrigin(),
@@ -310,7 +310,7 @@ public class SilicateGameTests {
 				vehicleCondition.test(context),
 				"EntityVehicleCondition test unexpectedly succeeded"
 		);
-		skeletonHorse.setOwnerUUID(Objects.requireNonNull(helper.getLevel().getRandomPlayer()).getUUID());
+		skeletonHorse.setOwnerUUID(player.getUUID());
 		arrow.setOwner(skeleton);
 		skeleton.startRiding(skeletonHorse);
 		helper.assertTrue(
