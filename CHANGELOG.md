@@ -1,5 +1,5 @@
-## Added
-- Swapped ConditionTemplate out for Holders.
+## Changed
+- tweak: add `GameCondition#getTemplate` for ease of access to condition templates
 
 ## Fixed
-- Fixed GameConditions being unable to be sent from the server to clients.
+- fix(GameTest): add fake player to player list

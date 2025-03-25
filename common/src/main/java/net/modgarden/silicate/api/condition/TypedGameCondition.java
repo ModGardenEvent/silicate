@@ -27,8 +27,9 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 		}
 	}
 
-	private static GameCondition<?> toGameCondition(TypedGameCondition<?, ?> typedCondition) {
-		return typedCondition;
+	@SuppressWarnings("unchecked") // The underlying type can be cast.
+	private static <P> Holder<GameCondition<?>> toGameCondition(Holder<TypedGameCondition<?, P>> typedCondition) {
+		return (Holder<GameCondition<?>>) (Object) typedCondition;
 	}
 
 	/**
@@ -37,12 +38,11 @@ public interface TypedGameCondition<T extends GameCondition<T>, P> extends GameC
 	 * @return The typed codec.
 	 * @param <P> The value type of the parameter type.
 	 */
-	@SuppressWarnings("unchecked")
 	static <P> Codec<Holder<TypedGameCondition<?, P>>> getTypedCodec(Class<P> clazz) {
 		return GameCondition.CODEC
 				.comapFlatMap(
 						condition -> validate(condition, clazz),
-						holder -> (Holder<GameCondition<?>>)(Object)holder
+						TypedGameCondition::toGameCondition
 				);
 	}
 

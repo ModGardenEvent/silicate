@@ -181,6 +181,9 @@ public class SilicateGameTests {
 		SkeletonHorse skeletonHorse = helper.getEntities(EntityType.SKELETON_HORSE).getFirst();
 		Skeleton skeleton = helper.getEntities(EntityType.SKELETON).getFirst();
 		ServerPlayer player = createFakePlayer(helper);
+		// Fake players need to be added to the player list manually
+		// This is necessary for OwnableEntity#getOwner(UUID)
+		helper.getLevel().players().add(player);
 		ContextParamMap paramMap = createParamMap(
 			createState(),
 			createOrigin(),
@@ -310,7 +313,7 @@ public class SilicateGameTests {
 				vehicleCondition.test(context),
 				"EntityVehicleCondition test unexpectedly succeeded"
 		);
-		skeletonHorse.setOwnerUUID(Objects.requireNonNull(helper.getLevel().getRandomPlayer()).getUUID());
+		skeletonHorse.setOwnerUUID(player.getUUID());
 		arrow.setOwner(skeleton);
 		skeleton.startRiding(skeletonHorse);
 		helper.assertTrue(
@@ -394,15 +397,9 @@ public class SilicateGameTests {
 		);
 		skeleton.startRiding(skeletonHorse);
 		GameContext context = GameContext.of(helper.getLevel(), paramMap);
-		Holder<GameCondition<?>> always = helper.getLevel()
-				.registryAccess()
-				.registryOrThrow(SilicateRegistries.CONDITION_TEMPLATE)
-				.getHolderOrThrow(ResourceKey.create(SilicateRegistries.CONDITION_TEMPLATE, ResourceLocation.fromNamespaceAndPath("test", "true")));
+		Holder<GameCondition<?>> always = GameCondition.getTemplate(ResourceLocation.fromNamespaceAndPath("test", "true"));
 		helper.assertTrue(always.value().test(context), "ConditionTemplate test:true failed");
-		Holder<GameCondition<?>> ridingOnly = helper.getLevel()
-				.registryAccess()
-				.registryOrThrow(SilicateRegistries.CONDITION_TEMPLATE)
-				.getHolderOrThrow(ResourceKey.create(SilicateRegistries.CONDITION_TEMPLATE, ResourceLocation.fromNamespaceAndPath("test", "riding_only")));
+		Holder<GameCondition<?>> ridingOnly = GameCondition.getTemplate(ResourceLocation.fromNamespaceAndPath("test", "riding_only"));
 		helper.assertTrue(ridingOnly.value().test(context), "ConditionTemplate test:riding_only failed");
 		helper.succeed();
 	}

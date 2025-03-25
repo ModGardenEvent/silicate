@@ -1,9 +1,9 @@
 package net.modgarden.silicate.api.condition;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.RegistryFixedCodec;
@@ -14,10 +14,7 @@ import net.modgarden.silicate.api.SilicateRegistries;
 import net.modgarden.silicate.api.condition.builtin.EntityPassengerCondition;
 import net.modgarden.silicate.api.condition.builtin.EntityVehicleCondition;
 import net.modgarden.silicate.api.context.GameContext;
-import org.jetbrains.annotations.ApiStatus;
 
-import javax.xml.crypto.Data;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -34,7 +31,6 @@ import java.util.function.Predicate;
 public interface GameCondition<T extends GameCondition<T>> extends Predicate<GameContext> {
 	Codec<GameCondition<?>> TYPED_CODEC = SilicateBuiltInRegistries.GAME_CONDITION_TYPE.byNameCodec()
 			.dispatch("type", GameCondition::getType, GameConditionType::codec);
-	@SuppressWarnings("unchecked") // We use ConditionTemplate which uses raw types. Everything is checked at runtime.
 	Codec<Holder<GameCondition<?>>> CODEC = RegistryFileCodec.create(SilicateRegistries.CONDITION_TEMPLATE, TYPED_CODEC);
 
 	@Override
@@ -46,4 +42,20 @@ public interface GameCondition<T extends GameCondition<T>> extends Predicate<Gam
 	MapCodec<T> getCodec();
 
 	GameConditionType<T> getType();
+
+	/**
+	 * A helper function for retrieving condition templates.
+	 * @param location The condition template's {@link ResourceLocation}.
+	 * @return The condition template.
+	 */
+	static Holder<GameCondition<?>> getTemplate(ResourceLocation location) {
+		return SilicateBuiltInRegistries
+				.lookupOrThrow(SilicateRegistries.CONDITION_TEMPLATE)
+				.getOrThrow(
+						ResourceKey.create(
+								SilicateRegistries.CONDITION_TEMPLATE,
+								location
+						)
+				);
+	}
 }

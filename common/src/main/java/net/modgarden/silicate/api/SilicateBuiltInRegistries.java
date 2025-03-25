@@ -42,6 +42,9 @@ public final class SilicateBuiltInRegistries {
 		return getRegistryAccess().orElseThrow().lookupOrThrow(registry);
 	}
 
+	/**
+	 * Get free {@link RegistryAccess} anywhere you go!
+	 */
 	private static Optional<RegistryAccess> getRegistryAccess() {
 		if (Thread.currentThread().getName().equals("Server thread")) {
 			return Optional.of(Silicate.getServer().registryAccess());
