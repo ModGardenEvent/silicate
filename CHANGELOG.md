@@ -1,2 +1,5 @@
+## Changed
+- tweak: add `GameCondition#getTemplate` for ease of access to condition templates
+
 ## Fixed
-- Fixed a ClassCastException within TypedGameCondition.
+- fix(GameTest): add fake player to player list
