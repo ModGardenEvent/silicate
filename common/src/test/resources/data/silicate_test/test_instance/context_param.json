@@ -1,0 +1,6 @@
+{
+	"type": "silicate_test:context_param",
+	"environment": "silicate_test:default",
+	"structure": "silicate_test:test_template",
+	"max_ticks": 400
+}

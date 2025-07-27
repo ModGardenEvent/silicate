@@ -4,28 +4,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.modgarden.silicate.api.SilicateBuiltInRegistries;
 import net.modgarden.silicate.platform.SilicatePlatformHelper;
-import net.modgarden.silicate.test.SilicateGameTests;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 @ApiStatus.Internal
 public class Silicate {
 	public static final String MOD_ID = "silicate";
 	public static final String MOD_NAME = "Silicate";
 	public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
-	public static final List<Class<?>> GAME_TESTS = List.of(
-		SilicateGameTests.class
-	);
 	private static MinecraftServer server;
 
 	private static SilicatePlatformHelper helper;
 
 	public static void init() {
 		LOG.info("Initializing Silicate");
-		SilicateBuiltInRegistries.registerAll();
 	}
 
 	public static void setServer(MinecraftServer server) {

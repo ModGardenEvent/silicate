@@ -24,4 +24,4 @@ jobs:
         uses: gradle/actions/setup-gradle@dbbdc275be76ac10734476cc723d82dfe7ec6eda # v3.4.2
 
       - name: Test NeoForge
-        run: ./gradlew neoforge:runGameTestServer
+        run: ./gradlew neoforge:runGameTest

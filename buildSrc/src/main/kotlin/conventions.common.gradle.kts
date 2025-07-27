@@ -49,20 +49,6 @@ dependencies {
 	implementation("org.jetbrains:annotations:24.1.0")
 }
 
-// Declare capabilities on the outgoing configurations.
-// Read more about capabilities here: https://docs.gradle.org/current/userguide/component_capabilities.html#sec:declaring-additional-capabilities-for-a-local-component
-setOf("apiElements", "runtimeElements", "sourcesElements", "javadocElements").forEach { variant ->
-	configurations.getByName(variant).outgoing {
-		capability("$group:${Properties.MOD_ID}-${project.name}:$version")
-		capability("$group:${Properties.MOD_ID}:$version")
-	}
-	publishing.publications.forEach { publication ->
-		if (publication is MavenPublication) {
-			publication.suppressPomMetadataWarningsFor(variant)
-		}
-	}
-}
-
 tasks {
 	named<Jar>("sourcesJar").configure {
 		from(rootProject.file("LICENSE")) {

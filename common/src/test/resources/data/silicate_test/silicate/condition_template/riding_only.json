@@ -5,12 +5,12 @@
 		{
 			"type": "silicate:entity_passenger",
 			"param_type": "silicate:this_entity",
-			"condition": "test:true"
+			"condition": "silicate_test:true"
 		},
 		{
 			"type": "silicate:entity_vehicle",
 			"param_type": "silicate:this_entity",
-			"condition": "test:true"
+			"condition": "silicate_test:true"
 		}
 	]
 }

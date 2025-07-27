@@ -5,12 +5,14 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.TraceableEntity;
+import net.minecraft.world.level.Level;
 import net.modgarden.silicate.api.condition.GameConditionType;
 import net.modgarden.silicate.api.condition.GameConditionTypes;
 import net.modgarden.silicate.api.condition.TypedGameCondition;
 import net.modgarden.silicate.api.context.GameContext;
 import net.modgarden.silicate.api.context.param.ContextParamMap;
 import net.modgarden.silicate.api.context.param.ContextParamType;
+import net.modgarden.silicate.api.context.param.ContextParamTypes;
 
 /**
  * A condition that tests {@link #condition} with the owner of {@link #paramType}.
@@ -45,14 +47,14 @@ public record EntityProjectileOwnerCondition(
 		if (entity instanceof TraceableEntity traceable && traceable.getOwner() != null) {
 			ContextParamMap oldParamMap = oldContext.getParams();
 			ContextParamMap.Mutable paramMap = ContextParamMap.Mutable.of(oldParamMap);
-			return testOwner(oldContext, traceable.getOwner(), paramMap);
+			return testOwner(oldContext.getLevel(), traceable.getOwner(), paramMap);
 		}
 		return false;
 	}
 
-	private boolean testOwner(GameContext oldContext, Entity owner, ContextParamMap.Mutable paramMap) {
-		paramMap.set(condition.value().getParamType(), owner);
-		GameContext context = GameContext.of(oldContext.getLevel(), paramMap);
+	private boolean testOwner(Level level, Entity owner, ContextParamMap.Mutable paramMap) {
+		paramMap.set(ContextParamTypes.OWNER_ENTITY, owner);
+		GameContext context = GameContext.of(level, paramMap);
 		return condition.value().test(context);
 	}
 
