@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.modgarden.silicate.Silicate;
 import net.modgarden.silicate.api.condition.GameConditionType;
@@ -16,6 +17,8 @@ import net.modgarden.silicate.api.context.param.ContextParamTypes;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Optional;
+
+import static net.modgarden.silicate.Silicate.id;
 
 /**
  * Built-in Registries for Silicate.
@@ -28,8 +31,16 @@ public final class SilicateBuiltInRegistries {
 
 	@ApiStatus.Internal
 	public static void registerAll() {
+		registerRegistries();
 		GameConditionTypes.registerAll();
 		ContextParamTypes.registerAll();
+	}
+
+	@SuppressWarnings("unchecked")
+	private static void registerRegistries() {
+		Registry<Registry<?>> registryRegistry = (Registry<Registry<?>>) BuiltInRegistries.REGISTRY;
+		Registry.register(registryRegistry, id("context_param_type"), CONTEXT_PARAM_TYPE);
+		Registry.register(registryRegistry, id("game_condition"), GAME_CONDITION_TYPE);
 	}
 
 	/**

@@ -34,6 +34,8 @@ loom {
 	mods {
 		register(Properties.MOD_ID) {
 			sourceSet(sourceSets["main"])
+		}
+		register(Properties.MOD_ID + "_test") {
 			sourceSet(sourceSets["test"])
 		}
 	}
@@ -62,11 +64,11 @@ loom {
 			vmArg("-Dfabric-api.datagen.modid=${Properties.MOD_ID}")
 			runDir("build/datagen")
 		}
-		register("gameTestServer") {
+		register("gameTest") {
 			inherit(runs.getByName("server"))
-			configName = "Fabric GameTestServer"
+			configName = "Fabric Game Test"
 			vmArgs("-Dfabric-api.gametest")
-			vmArgs("-Dfabric-api.gametest.report-file=${layout.buildDirectory}/junit.xml")
+			vmArgs("-Dfabric-api.gametest.report-file=${layout.buildDirectory.get()}/junit.xml")
 			runDir("build/gametest")
 		}
 	}

@@ -1,5 +1,3 @@
-import net.modgarden.silicate.gradle.Properties
-
 plugins {
 	id("conventions.common")
 }
@@ -11,19 +9,33 @@ configurations {
 	register("commonResources") {
 		isCanBeResolved = true
 	}
+	register("commonTestJava") {
+		isCanBeResolved = true
+	}
 	register("commonTestResources") {
 		isCanBeResolved = true
 	}
 }
 
-dependencies {
-	compileOnly(project(":common")) {
-		capabilities {
-			requireCapability("$group:${Properties.MOD_ID}")
+gradle.projectsEvaluated {
+	sourceSets {
+		getByName("main") {
+			compileClasspath += project(":common").sourceSets["main"].output
+			runtimeClasspath += project(":common").sourceSets["main"].output
+		}
+		getByName("test") {
+			compileClasspath += project(":common").sourceSets["test"].output
+			runtimeClasspath += project(":common").sourceSets["test"].output
 		}
 	}
+}
+
+dependencies {
+	testCompileOnly(project(":common"))
+
 	"commonJava"(project(":common", "commonJava"))
 	"commonResources"(project(":common", "commonResources"))
+	"commonTestJava"(project(":common", "commonTestJava"))
 	"commonTestResources"(project(":common", "commonTestResources"))
 }
 
@@ -31,6 +43,10 @@ tasks {
 	named<JavaCompile>("compileJava").configure {
 		dependsOn(configurations.getByName("commonJava"))
 		source(configurations.getByName("commonJava"))
+	}
+	named<JavaCompile>("compileTestJava").configure {
+		dependsOn(configurations.getByName("commonTestJava"))
+		source(configurations.getByName("commonTestJava"))
 	}
 	named<ProcessResources>("processResources").configure {
 		dependsOn(configurations.getByName("commonResources"))

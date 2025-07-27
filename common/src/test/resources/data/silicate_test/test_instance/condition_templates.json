@@ -1,0 +1,16 @@
+{
+	"type": "silicate_test:conditions",
+	"environment": "silicate_test:default",
+	"structure": "silicate_test:test_template",
+	"max_ticks": 400,
+	"conditions": [
+		{
+			"name": "ConditionTemplate silicate_test:true",
+			"condition": "silicate_test:true"
+		},
+		{
+			"name": "ConditionTemplate silicate_test:riding_only",
+			"condition": "silicate_test:riding_only"
+		}
+	]
+}

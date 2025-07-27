@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.modgarden.silicate.api.condition.GameConditionType;
 import net.modgarden.silicate.api.condition.GameConditionTypes;
 import net.modgarden.silicate.api.condition.MaybeTypedCondition;
@@ -11,6 +12,7 @@ import net.modgarden.silicate.api.condition.TypedGameCondition;
 import net.modgarden.silicate.api.context.GameContext;
 import net.modgarden.silicate.api.context.param.ContextParamMap;
 import net.modgarden.silicate.api.context.param.ContextParamType;
+import net.modgarden.silicate.api.context.param.ContextParamTypes;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,15 +55,15 @@ public record EntityPassengerCondition(
 		ContextParamMap oldParamMap = oldContext.getParams();
 		ContextParamMap.Mutable paramMap = ContextParamMap.Mutable.of(oldParamMap);
 		if (matchAll) {
-			return !passengers.isEmpty() && passengers.stream().allMatch(passenger -> testPassenger(oldContext, passenger, paramMap));
+			return !passengers.isEmpty() && passengers.stream().allMatch(passenger -> testPassenger(oldContext.getLevel(), passenger, paramMap));
 		} else {
-			return passengers.stream().anyMatch(passenger -> testPassenger(oldContext, passenger, paramMap));
+			return passengers.stream().anyMatch(passenger -> testPassenger(oldContext.getLevel(), passenger, paramMap));
 		}
 	}
 
-	private boolean testPassenger(GameContext oldContext, Entity passenger, ContextParamMap.Mutable paramMap) {
-		paramMap.set(condition.getParamTypeOrDefault(paramType), passenger);
-		GameContext context = GameContext.of(oldContext.getLevel(), paramMap);
+	private boolean testPassenger(Level level, Entity passenger, ContextParamMap.Mutable paramMap) {
+		paramMap.set(ContextParamTypes.PASSENGER_ENTITY, passenger);
+		GameContext context = GameContext.of(level, paramMap);
 		return condition.test(context);
 	}
 

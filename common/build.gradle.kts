@@ -44,6 +44,10 @@ configurations {
 		isCanBeResolved = false
 		isCanBeConsumed = true
 	}
+	register("commonTestJava") {
+		isCanBeResolved = false
+		isCanBeConsumed = true
+	}
 	register("commonTestResources") {
 		isCanBeResolved = false
 		isCanBeConsumed = true
@@ -53,7 +57,7 @@ configurations {
 artifacts {
 	add("commonJava", sourceSets["main"].java.sourceDirectories.singleFile)
 	add("commonResources", sourceSets["main"].resources.sourceDirectories.singleFile)
-	add("commonResources", sourceSets["generated"].resources.sourceDirectories.singleFile)
+	add("commonTestJava", sourceSets["test"].java.sourceDirectories.singleFile)
 	add("commonTestResources", sourceSets["test"].resources.sourceDirectories.singleFile)
 }
 
