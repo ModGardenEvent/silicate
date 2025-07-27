@@ -1,12 +1,9 @@
 package net.modgarden.silicate.api.condition;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.RegistryFileCodec;
-import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.modgarden.silicate.api.SilicateBuiltInRegistries;
@@ -14,10 +11,7 @@ import net.modgarden.silicate.api.SilicateRegistries;
 import net.modgarden.silicate.api.condition.builtin.EntityPassengerCondition;
 import net.modgarden.silicate.api.condition.builtin.EntityVehicleCondition;
 import net.modgarden.silicate.api.context.GameContext;
-import org.jetbrains.annotations.ApiStatus;
 
-import javax.xml.crypto.Data;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
