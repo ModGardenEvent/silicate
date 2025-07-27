@@ -17,7 +17,10 @@ repositories {
 
 dependencies {
 	minecraft("com.mojang:minecraft:${Versions.MINECRAFT}")
-	mappings(loom.officialMojangMappings())
+	mappings(loom.layered {
+		officialMojangMappings()
+		parchment("org.parchmentmc.data:parchment-${Versions.PARCHMENT_MINECRAFT}:${Versions.PARCHMENT}")
+	})
 
 	modImplementation("net.fabricmc:fabric-loader:${Versions.FABRIC_LOADER}")
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.FABRIC_API}")
