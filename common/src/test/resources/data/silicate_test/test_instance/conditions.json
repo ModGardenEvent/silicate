@@ -1,0 +1,188 @@
+{
+	"type": "silicate_test:conditions",
+	"environment": "silicate_test:default",
+	"structure": "silicate_test:test_template",
+	"max_ticks": 400,
+	"conditions": [
+		{
+			"name": "BlockStateCondition",
+			"condition": {
+				"type": "silicate:block_state",
+				"param_type": "silicate:block_state",
+				"block_state": {
+					"Name": "minecraft:note_block",
+					"Properties": {
+						"note": "2",
+						"instrument": "banjo"
+					}
+				}
+			}
+		},
+		{
+			"name": "EntityTypeCondition EntityType",
+			"condition": {
+				"type": "silicate:entity_type",
+				"param_type": "silicate:this_entity",
+				"entity_type": "minecraft:skeleton_horse"
+			}
+		},
+		{
+			"name": "EntityTypeCondition TagKey",
+			"condition": {
+				"type": "silicate:entity_type",
+				"param_type": "silicate:this_entity",
+				"entity_type": "#minecraft:skeletons"
+			}
+		},
+		{
+			"name": "Vec3Condition",
+			"condition": {
+				"type": "silicate:vec3",
+				"param_type": "silicate:origin",
+				"comparison": [
+					"=",
+					">",
+					"<="
+				],
+				"latter_operand": [
+					1.5,
+					1.0,
+					1.5
+				]
+			}
+		},
+		{
+			"name": "BlockEntityTypeCondition",
+			"condition": {
+				"type": "silicate:block_entity_type",
+				"param_type": "silicate:block_entity",
+				"block_entity_type": "minecraft:furnace"
+			}
+		},
+		{
+			"name": "PlayerGameTypeCondition",
+			"condition": {
+				"type": "silicate:player_game_type",
+				"param_type": "silicate:attacking_entity",
+				"game_types": [
+					"survival",
+					"adventure"
+				]
+			}
+		},
+		{
+			"name": "EntityTameOwnerCondition",
+			"condition": {
+				"type": "silicate:entity_tame_owner",
+				"param_type": "silicate:this_entity",
+				"condition": {
+					"type": "silicate:entity_type",
+					"param_type": "silicate:owner_entity",
+					"entity_type": "minecraft:player"
+				}
+			}
+		},
+		{
+			"name": "EntityProjectileOwnerCondition",
+			"condition": {
+				"type": "silicate:entity_projectile_owner",
+				"param_type": "silicate_test:projectile",
+				"condition": {
+					"type": "silicate:entity_type",
+					"param_type": "silicate:owner_entity",
+					"entity_type": "minecraft:skeleton"
+				}
+			}
+		},
+		{
+			"name": "EntityPassengerCondition",
+			"condition": {
+				"type": "silicate:entity_passenger",
+				"param_type": "silicate:this_entity",
+				"condition": {
+					"type": "silicate:entity_type",
+					"param_type": "silicate:passenger_entity",
+					"entity_type": "minecraft:skeleton"
+				}
+			}
+		},
+		{
+			"name": "EntityVehicleCondition",
+			"condition": {
+				"type": "silicate:entity_vehicle",
+				"param_type": "silicate:victim_entity",
+				"condition": {
+					"type": "silicate:entity_type",
+					"param_type": "silicate:vehicle_entity",
+					"entity_type": "minecraft:skeleton_horse"
+				}
+			}
+		},
+		{
+			"name": "InvertedCondition",
+			"condition": {
+				"type": "silicate:inverted",
+				"condition": {
+					"type": "silicate:entity_type",
+					"param_type": "silicate:victim_entity",
+					"entity_type": "minecraft:skeleton_horse"
+				}
+			}
+		},
+		{
+			"name": "AlwaysCondition(true)",
+			"condition": {
+				"type": "silicate:always",
+				"value": true
+			}
+		},
+		{
+			"name": "AlwaysCondition(false)",
+			"condition": {
+				"type": "silicate:always",
+				"value": false
+			},
+			"should_succeed": false
+		},
+		{
+			"name": "CompoundCondition(and)",
+			"condition": {
+				"type": "silicate:compound",
+				"conditions": [
+					{
+						"type": "silicate:always",
+						"value": true
+					},
+					{
+						"type": "silicate:entity_type",
+						"param_type": "silicate:this_entity",
+						"entity_type": "minecraft:skeleton_horse"
+					},
+					{
+						"type": "silicate:entity_type",
+						"param_type": "silicate:this_entity",
+						"entity_type": "#minecraft:skeletons"
+					}
+				]
+			}
+		},
+		{
+			"name": "CompoundCondition(or)",
+			"condition": {
+				"type": "silicate:compound",
+				"or": true,
+				"conditions": [
+					{
+						"type": "silicate:always",
+						"value": false
+					},
+					{
+						"type": "silicate:entity_type",
+						"param_type": "silicate:this_entity",
+						"entity_type": "minecraft:skeleton_horse"
+					}
+				]
+			}
+		}
+	]
+}

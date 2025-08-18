@@ -3,6 +3,7 @@ package net.modgarden.silicate.api.condition.builtin;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.modgarden.silicate.api.condition.GameConditionType;
 import net.modgarden.silicate.api.condition.GameConditionTypes;
 import net.modgarden.silicate.api.condition.MaybeTypedCondition;
@@ -10,6 +11,7 @@ import net.modgarden.silicate.api.condition.TypedGameCondition;
 import net.modgarden.silicate.api.context.GameContext;
 import net.modgarden.silicate.api.context.param.ContextParamMap;
 import net.modgarden.silicate.api.context.param.ContextParamType;
+import net.modgarden.silicate.api.context.param.ContextParamTypes;
 
 /**
  * A condition that tests {@link #condition} with the vehicle of {@link #paramType}.
@@ -37,10 +39,14 @@ public record EntityVehicleCondition(
 		} else {
 			ContextParamMap oldParamMap = oldContext.getParams();
 			ContextParamMap.Mutable paramMap = ContextParamMap.Mutable.of(oldParamMap);
-			paramMap.set(condition.getParamTypeOrDefault(paramType), entity.getVehicle());
-			GameContext context = GameContext.of(oldContext.getLevel(), paramMap);
-			return condition.test(context);
+			return testVehicle(oldContext.getLevel(), entity.getVehicle(), paramMap);
 		}
+	}
+
+	private boolean testVehicle(Level level, Entity vehicle, ContextParamMap.Mutable paramMap) {
+		paramMap.set(ContextParamTypes.VEHICLE_ENTITY, vehicle);
+		GameContext context = GameContext.of(level, paramMap);
+		return condition.test(context);
 	}
 
 	@Override

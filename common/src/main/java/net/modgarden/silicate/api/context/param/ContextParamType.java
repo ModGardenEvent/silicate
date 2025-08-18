@@ -32,15 +32,39 @@ public record ContextParamType<T>(ResourceLocation name, Class<T> clazz) {
 	 * @implNote Although potentially unsafe, this shouldn't result in any Mad Gadget situations given that the actual non-erased type at runtime will be checked. See the implementation of {@link TypedGameCondition#validate(Holder, Class)} for further information.
 	 * @see TypedGameCondition#validate(Holder, Class)
 	 */
-	@SuppressWarnings("JavadocReference") // We want people to be able to verify the underlying implementation.
+	@SuppressWarnings({"JavadocReference", "unchecked"})// We want people to be able to verify the underlying implementation.
 	public static <T> Codec<ContextParamType<T>> getCodec(Class<T> clazz) {
 		// Spooky!
 		return ResourceLocation.CODEC
-				.xmap(name -> new ContextParamType<>(name, clazz), ContextParamType::name);
+				.flatXmap(name -> {
+					ContextParamType<?> paramType = SilicateBuiltInRegistries.CONTEXT_PARAM_TYPE.getValue(name);
+					if (paramType != null) {
+						if (clazz.equals(paramType.clazz()))
+							return DataResult.success((ContextParamType<T>)paramType);
+						if (clazz.isAssignableFrom(paramType.clazz())) // If the paramType extends the specified class...
+							return DataResult.success(new ContextParamType<>(name, clazz)); // Create a new ContextParamType that may be used in place of the old one.
+						return DataResult.error(() -> paramType + " is not of the proper parameter"); // Remapping is the reason why we don't tell which class.
+					}
+					return DataResult.error(() -> "Context Param Type '" + name + "' does not exist");
+				}, paramType -> DataResult.success(paramType.name()));
+	}
+
+	@Override // Makes sure that values return the correct value within the context when clazz is cast.
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (!(obj instanceof ContextParamType<?> contextParamType))
+			return false;
+		return contextParamType.name().equals(this.name());
 	}
 
 	@Override
-	public String toString() {
+	public int hashCode() {
+		return Objects.hash(name());
+	}
+
+	@Override
+	public @NotNull String toString() {
 		return "ContextParamType<" + this.name() + ">";
 	}
 

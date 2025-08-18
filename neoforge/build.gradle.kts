@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage") // respectfully, shut the f*#@ up
+
 import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
 import org.apache.tools.ant.filters.LineContains
@@ -30,20 +32,23 @@ neoForge {
 		}
 		create("client") {
 			client()
+			ideName = "NeoForge Client (:${project.name})"
 			gameDirectory.set(file("runs/client"))
 			sourceSet = sourceSets["test"]
 			jvmArguments.set(setOf("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"))
 		}
 		create("server") {
 			server()
+			ideName = "NeoForge Server (:${project.name})"
 			gameDirectory.set(file("runs/server"))
 			programArgument("--nogui")
 			sourceSet = sourceSets["test"]
 			jvmArguments.set(setOf("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"))
 		}
-		create("gameTestServer") {
+		create("gameTest") {
 			type = "gameTestServer"
-			@Suppress("UnstableApiUsage") // respectfully, shut the f*#@ up
+			ideName = "NeoForge Game Test (:${project.name})"
+			sourceSet = sourceSets["test"]
 			gameDirectory = project.file("build/gametest")
 		}
 	}
@@ -51,6 +56,8 @@ neoForge {
 	mods {
 		register(Properties.MOD_ID) {
 			sourceSet(sourceSets["main"])
+		}
+		register(Properties.MOD_ID + "_test") {
 			sourceSet(sourceSets["test"])
 		}
 	}

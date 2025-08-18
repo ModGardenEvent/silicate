@@ -21,12 +21,6 @@
 	"entrypoints": {
 		"main": [
 		  "net.modgarden.silicate.SilicateFabric"
-		],
-		"preLaunch": [
-		  "net.modgarden.silicate.SilicateFabricPre"
-		],
-		"fabric-gametest": [
-		  "net.modgarden.silicate.test.SilicateGameTests"
 		]
 	},
 	"mixins": [
