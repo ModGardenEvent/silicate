@@ -3,7 +3,6 @@ package net.modgarden.silicate.mixin.client;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.modgarden.silicate.duck.Duck_AbstractClientPlayer;
@@ -17,8 +16,8 @@ public abstract class Mixin_AbstractClientPlayer extends Player implements Duck_
 	@Nullable
 	protected abstract PlayerInfo getPlayerInfo();
 
-	private Mixin_AbstractClientPlayer(Level level, BlockPos pos, float yRot, GameProfile gameProfile) {
-		super(level, pos, yRot, gameProfile);
+	private Mixin_AbstractClientPlayer(Level level, GameProfile gameProfile) {
+		super(level, gameProfile);
 	}
 
 	@Override
