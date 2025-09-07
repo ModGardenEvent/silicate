@@ -10,7 +10,7 @@ Add this to your `build.gradle`(`.kts`)
 repositories {
 	exclusiveContent {
 		forRepositories(
-			maven("https://repo.greenhouse.house/releases") {
+			maven("https://maven.modgarden.net/releases") {
 				name = "Greenhouse"
 			}
 		)
