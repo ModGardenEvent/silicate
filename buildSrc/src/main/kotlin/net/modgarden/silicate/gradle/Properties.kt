@@ -1,5 +1,7 @@
 package net.modgarden.silicate.gradle
 
+import java.net.URI
+
 object Properties {
 	const val GROUP = "net.modgarden.silicate"
 	const val MOD_NAME = "Silicate"
@@ -12,6 +14,8 @@ object Properties {
 
 	const val MODRINTH_PAGE = "https://modrinth.com/mod/silicate"
 	const val MODRINTH_PROJECT_ID = "vaQ7oWvL"
-	const val GITHUB_REPO = "ModGardenEvent/silicate"
-	const val GITHUB_COMMITISH = Versions.MINECRAFT
+
+	val FORGEJO_HOST = URI("https://git.greenhouse.lgbt")
+	const val FORGEJO_REPO = "Modding/silicate"
+	const val FORGEJO_COMITISH = Versions.MINECRAFT
 }

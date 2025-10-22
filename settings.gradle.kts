@@ -11,6 +11,9 @@ pluginManagement {
 		maven("https://repo.spongepowered.org/repository/maven-public/") {
 			name = "Sponge Snapshots"
 		}
+		maven("https://maven.greenhouse.lgbt/snapshots") {
+			name = "Greenhouse Snapshots"
+		}
 	}
 }
 

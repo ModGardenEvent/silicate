@@ -86,9 +86,9 @@ publishMods {
 		minecraftVersions.add(Versions.MINECRAFT)
 	}
 
-	github {
+	forgejo {
 		type = STABLE
-		accessToken = providers.environmentVariable("GITHUB_TOKEN")
-		parent(project(":common").tasks.named("publishGithub"))
+		accessToken = providers.environmentVariable("FORGEJO_TOKEN")
+		parent(project(":common").tasks.named("publishForgejo"))
 	}
 }

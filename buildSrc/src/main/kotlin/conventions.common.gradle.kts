@@ -71,6 +71,11 @@ tasks {
 		}
 	}
 
+	var forgejoHost = Properties.FORGEJO_HOST.toString()
+	if (!forgejoHost.endsWith("/")) {
+		forgejoHost += "/"
+	}
+
 	val expandProps = mapOf(
 		"mod_version" to Versions.MOD,
 		"group" to project.group, //Else we target the task's group.
@@ -91,7 +96,7 @@ tasks {
 		"neoforge_loader_version_range" to Versions.NEOFORGE_LOADER_RANGE,
 		"java_version" to Versions.JAVA,
 		"modrinth_page" to Properties.MODRINTH_PAGE,
-		"sources" to Properties.GITHUB_REPO
+		"sources" to forgejoHost + Properties.FORGEJO_REPO
 	)
 
 	val processResourcesTasks = listOf("processResources", "processTestResources", "processDatagenResources")

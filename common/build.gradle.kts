@@ -67,11 +67,12 @@ publishMods {
 	version = "${Versions.MOD}+${Versions.MINECRAFT}"
 	type = STABLE
 
-	github {
-		accessToken = providers.environmentVariable("GITHUB_TOKEN")
-		repository = Properties.GITHUB_REPO
+	forgejo {
+		accessToken = providers.environmentVariable("FORGEJO_TOKEN")
+		host(Properties.FORGEJO_HOST)
+		repository = Properties.FORGEJO_REPO
 		tagName = "v${Versions.MOD}+${Versions.MINECRAFT}"
-		commitish = Properties.GITHUB_COMMITISH
+		commitish = Properties.FORGEJO_COMITISH
 
 		allowEmptyFiles = true
 	}
