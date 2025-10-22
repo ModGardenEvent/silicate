@@ -3,7 +3,7 @@ package net.modgarden.silicate.gradle
 import java.net.URI
 
 object Properties {
-	const val GROUP = "net.modgarden.silicate"
+	const val GROUP = "lgbt.greenhouse.silicate"
 	const val MOD_NAME = "Silicate"
 	const val ARCHIVES_NAME = "silicate"
 	const val MOD_ID = "silicate"
