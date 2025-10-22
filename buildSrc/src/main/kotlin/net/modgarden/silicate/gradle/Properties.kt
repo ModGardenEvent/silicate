@@ -8,7 +8,7 @@ object Properties {
 	const val ARCHIVES_NAME = "silicate"
 	const val MOD_ID = "silicate"
 	const val MOD_AUTHOR = "Greenhouse"
-	val MOD_CONTRIBUTORS = listOf("Sylv (Maintainer)")
+	val MOD_CONTRIBUTORS = listOf("Sylv (Maintainer)", "MerchantCalico")
 	const val DESCRIPTION = "A library providing powerful client-server-agnostic predicates with a simple API."
 	const val LICENSE = "MPL-2.0"
 
