@@ -20,7 +20,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-		  "net.modgarden.silicate.test.SilicateGameTestsFabric"
+          "lgbt.greenhouse.silicate.test.SilicateGameTestsFabric"
 		]
 	},
 	"depends": {

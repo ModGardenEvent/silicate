@@ -5,10 +5,10 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "Mixin_MinecraftServer"
+		"lgbt.greenhouse.silicate.mixin.Mixin_MinecraftServer"
   ],
   "client": [
-    "client.Mixin_AbstractClientPlayer"
+		"lgbt.greenhouse.silicate.mixin.client.Mixin_AbstractClientPlayer"
   ],
   "server": [],
   "injectors": {

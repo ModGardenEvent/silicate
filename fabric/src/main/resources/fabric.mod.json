@@ -20,7 +20,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-		  "net.modgarden.silicate.SilicateFabric"
+          "lgbt.greenhouse.silicate.SilicateFabric"
 		]
 	},
 	"mixins": [
