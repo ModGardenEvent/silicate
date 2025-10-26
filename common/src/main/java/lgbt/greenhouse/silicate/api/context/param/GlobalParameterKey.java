@@ -10,7 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public record GlobalParameterKey<T>(ResourceLocation name, Class<T> clazz) {
+public record GlobalParameterKey<T>(ResourceLocation name, Class<T> clazz)
+		implements ParameterKey<T> {
 	/**
 	 * The generic {@link Codec} for any {@link GlobalParameterKey}.
 	 * <br>
@@ -76,5 +77,20 @@ public record GlobalParameterKey<T>(ResourceLocation name, Class<T> clazz) {
 		} catch (NullPointerException e) {
 			return DataResult.error(e::getMessage);
 		}
+	}
+
+	@Override
+	public ParameterScope scope() {
+		return ParameterScope.GLOBAL;
+	}
+
+	@Override
+	public ResourceLocation getId() {
+		return this.name;
+	}
+
+	@Override
+	public Class<T> getType() {
+		return this.clazz;
 	}
 }
