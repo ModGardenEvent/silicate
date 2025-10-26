@@ -27,7 +27,7 @@ import java.util.function.Predicate;
  */
 public interface GameCondition<T extends GameCondition<T>> extends Predicate<GameContext> {
 	Codec<GameCondition<?>> TYPED_CODEC = SilicateBuiltInRegistries.GAME_CONDITION_TYPE.byNameCodec()
-			.dispatch("type", GameCondition::getType, GameConditionType::codec);
+			.dispatch("predicate", GameCondition::getType, GameConditionType::codec);
 	Codec<Holder<GameCondition<?>>> CODEC = RegistryFileCodec.create(SilicateRegistries.CONDITION_TEMPLATE, TYPED_CODEC);
 
 	@Override
