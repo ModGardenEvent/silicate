@@ -10,8 +10,8 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import lgbt.greenhouse.silicate.Silicate;
-import lgbt.greenhouse.silicate.api.condition.GameConditionType;
-import lgbt.greenhouse.silicate.api.condition.GameConditionTypes;
+import lgbt.greenhouse.silicate.api.condition.PredicateType;
+import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamTypes;
 import org.jetbrains.annotations.ApiStatus;
@@ -24,7 +24,7 @@ import static lgbt.greenhouse.silicate.Silicate.id;
  * Built-in Registries for Silicate.
  */
 public final class SilicateBuiltInRegistries {
-	public static final Registry<GameConditionType<?>> GAME_CONDITION_TYPE = create(SilicateRegistries.GAME_CONDITION_TYPE);
+	public static final Registry<PredicateType<?>> PREDICATE = create(SilicateRegistries.PREDICATE);
 	public static final Registry<ContextParamType<?>> CONTEXT_PARAM_TYPE = create(SilicateRegistries.CONTEXT_PARAM_TYPE);
 
 	private SilicateBuiltInRegistries() {}
@@ -32,7 +32,7 @@ public final class SilicateBuiltInRegistries {
 	@ApiStatus.Internal
 	public static void registerAll() {
 		registerRegistries();
-		GameConditionTypes.registerAll();
+		PredicateTypes.registerAll();
 		ContextParamTypes.registerAll();
 	}
 
@@ -40,7 +40,7 @@ public final class SilicateBuiltInRegistries {
 	private static void registerRegistries() {
 		Registry<Registry<?>> registryRegistry = (Registry<Registry<?>>) BuiltInRegistries.REGISTRY;
 		Registry.register(registryRegistry, id("context_param_type"), CONTEXT_PARAM_TYPE);
-		Registry.register(registryRegistry, id("game_condition"), GAME_CONDITION_TYPE);
+		Registry.register(registryRegistry, id("predicate"), PREDICATE);
 	}
 
 	/**

@@ -4,10 +4,10 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import lgbt.greenhouse.silicate.api.condition.GameConditionType;
-import lgbt.greenhouse.silicate.api.condition.GameConditionTypes;
-import lgbt.greenhouse.silicate.api.condition.MaybeTypedCondition;
-import lgbt.greenhouse.silicate.api.condition.TypedGameCondition;
+import lgbt.greenhouse.silicate.api.condition.PredicateType;
+import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.MaybeTypedPredicate;
+import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamMap;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
@@ -18,18 +18,18 @@ import lgbt.greenhouse.silicate.api.context.param.ContextParamTypes;
  * @param paramType The parameter type that has a vehicle.
  * @param condition The game condition to check against.
  */
-public record EntityVehicleCondition(
+public record EntityVehiclePredicate(
 		ContextParamType<Entity> paramType,
-		MaybeTypedCondition<Entity> condition
-) implements TypedGameCondition<EntityVehicleCondition, Entity> {
-	public static final MapCodec<EntityVehicleCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		MaybeTypedPredicate<Entity> condition
+) implements TypedGamePredicate<EntityVehiclePredicate, Entity> {
+	public static final MapCodec<EntityVehiclePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			ContextParamType.getCodec(Entity.class)
 					.fieldOf("param_type")
-					.forGetter(EntityVehicleCondition::paramType),
-			TypedGameCondition.getMaybeTypedCodec(Entity.class)
+					.forGetter(EntityVehiclePredicate::paramType),
+			TypedGamePredicate.getMaybeTypedCodec(Entity.class)
 					.fieldOf("condition")
-					.forGetter(EntityVehicleCondition::condition)
-	).apply(instance, EntityVehicleCondition::new));
+					.forGetter(EntityVehiclePredicate::condition)
+	).apply(instance, EntityVehiclePredicate::new));
 
 	@Override
 	public boolean test(GameContext oldContext) {
@@ -50,13 +50,13 @@ public record EntityVehicleCondition(
 	}
 
 	@Override
-	public MapCodec<EntityVehicleCondition> getCodec() {
+	public MapCodec<EntityVehiclePredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public GameConditionType<EntityVehicleCondition> getType() {
-		return GameConditionTypes.ENTITY_VEHICLE;
+	public PredicateType<EntityVehiclePredicate> getType() {
+		return PredicateTypes.ENTITY_VEHICLE;
 	}
 
 	@Override

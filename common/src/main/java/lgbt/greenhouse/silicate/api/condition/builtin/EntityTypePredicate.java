@@ -8,44 +8,44 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import lgbt.greenhouse.silicate.SilicateCodecs;
-import lgbt.greenhouse.silicate.api.condition.GameConditionType;
-import lgbt.greenhouse.silicate.api.condition.GameConditionTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGameCondition;
+import lgbt.greenhouse.silicate.api.condition.PredicateType;
+import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
 
 /**
- * A condition to check an entity's {@link EntityType}.
+ * A predicate to check an entity's {@link EntityType}.
  */
-public record EntityTypeCondition(
+public record EntityTypePredicate(
 	ContextParamType<Entity> paramType,
 	HolderSet<EntityType<?>> entityTypes
-) implements TypedGameCondition<EntityTypeCondition, Entity> {
-	public static final MapCodec<EntityTypeCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+) implements TypedGamePredicate<EntityTypePredicate, Entity> {
+	public static final MapCodec<EntityTypePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		ContextParamType.getCodec(Entity.class)
 			.fieldOf("param_type")
-			.forGetter(EntityTypeCondition::paramType),
+			.forGetter(EntityTypePredicate::paramType),
 		SilicateCodecs.ENTITY_TYPE_HOLDER_SET
 			.fieldOf("entity_type")
-			.forGetter(EntityTypeCondition::entityTypes)
-	).apply(instance, EntityTypeCondition::new));
+			.forGetter(EntityTypePredicate::entityTypes)
+	).apply(instance, EntityTypePredicate::new));
 
-	public static EntityTypeCondition of(
+	public static EntityTypePredicate of(
 		ContextParamType<Entity> paramType,
 		EntityType<?> entityType
 	) {
 		//noinspection deprecation
-		return new EntityTypeCondition(
+		return new EntityTypePredicate(
 			paramType,
 			HolderSet.direct(entityType.builtInRegistryHolder())
 		);
 	}
 
-	public static EntityTypeCondition of(
+	public static EntityTypePredicate of(
 		ContextParamType<Entity> paramType,
 		TagKey<EntityType<?>> entityTag
 	) {
-		return new EntityTypeCondition(
+		return new EntityTypePredicate(
 			paramType,
 			BuiltInRegistries.ENTITY_TYPE.getOrThrow(entityTag)
 		);
@@ -60,13 +60,13 @@ public record EntityTypeCondition(
 	}
 
 	@Override
-	public MapCodec<EntityTypeCondition> getCodec() {
+	public MapCodec<EntityTypePredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public GameConditionType<EntityTypeCondition> getType() {
-		return GameConditionTypes.ENTITY_TYPE;
+	public PredicateType<EntityTypePredicate> getType() {
+		return PredicateTypes.ENTITY_TYPE;
 	}
 
 	@Override

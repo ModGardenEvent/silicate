@@ -5,8 +5,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.SilicateRegistries;
-import lgbt.greenhouse.silicate.api.condition.GameCondition;
-import lgbt.greenhouse.silicate.api.condition.GameConditionTypes;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamTypes;
 import lgbt.greenhouse.silicate.platform.SilicatePlatformHelperNeoForge;
 import net.neoforged.bus.api.IEventBus;
@@ -35,7 +35,7 @@ public class SilicateNeoForge {
 		@SubscribeEvent
 		public static void registerContents(RegisterEvent event) {
 			register(event, SilicateRegistries.CONTEXT_PARAM_TYPE, ContextParamTypes::registerAll);
-			register(event, SilicateRegistries.GAME_CONDITION_TYPE, GameConditionTypes::registerAll);
+			register(event, SilicateRegistries.PREDICATE, PredicateTypes::registerAll);
 		}
 
 		private static void register(RegisterEvent event, ResourceKey<? extends Registry<?>> requiredKey,
@@ -48,12 +48,12 @@ public class SilicateNeoForge {
 		@SubscribeEvent
 		public static void newRegistry(NewRegistryEvent event) {
 			event.register(SilicateBuiltInRegistries.CONTEXT_PARAM_TYPE);
-			event.register(SilicateBuiltInRegistries.GAME_CONDITION_TYPE);
+			event.register(SilicateBuiltInRegistries.PREDICATE);
 		}
 
 		@SubscribeEvent
 		public static void newDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
-			event.dataPackRegistry(SilicateRegistries.CONDITION_TEMPLATE, GameCondition.TYPED_CODEC, GameCondition.TYPED_CODEC);
+			event.dataPackRegistry(SilicateRegistries.CONDITION_TEMPLATE, GamePredicate.TYPED_CODEC, GamePredicate.TYPED_CODEC);
 		}
 	}
 }

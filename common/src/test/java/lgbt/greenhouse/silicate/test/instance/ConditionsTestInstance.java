@@ -2,7 +2,7 @@ package lgbt.greenhouse.silicate.test.instance;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import lgbt.greenhouse.silicate.api.condition.GameCondition;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -85,8 +85,8 @@ public class ConditionsTestInstance extends GameTestInstance {
 					helper.fail(Component.literal("Condition " + condition.condition() + " within Silicate Conditions Test is invalid."));
 					return;
 				}
-				GameCondition<?> gameCondition = condition.condition().value();
-				boolean conditionTest = gameCondition.test(context);
+				GamePredicate<?> gamePredicate = condition.condition().value();
+				boolean conditionTest = gamePredicate.test(context);
 				String conditionName = condition.name();
 
 				if (condition.shouldSucceed()) {

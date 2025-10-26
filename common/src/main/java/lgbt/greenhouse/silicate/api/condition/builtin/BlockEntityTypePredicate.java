@@ -7,31 +7,31 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import lgbt.greenhouse.silicate.api.condition.GameConditionType;
-import lgbt.greenhouse.silicate.api.condition.GameConditionTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGameCondition;
+import lgbt.greenhouse.silicate.api.condition.PredicateType;
+import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
 
-public record BlockEntityTypeCondition(
+public record BlockEntityTypePredicate(
 	ContextParamType<BlockEntity> paramType,
 	BlockEntityType<?> blockEntityType
-) implements TypedGameCondition<BlockEntityTypeCondition, BlockEntity> {
-	public static final MapCodec<BlockEntityTypeCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+) implements TypedGamePredicate<BlockEntityTypePredicate, BlockEntity> {
+	public static final MapCodec<BlockEntityTypePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		ContextParamType.getCodec(BlockEntity.class)
 				.fieldOf("param_type")
-				.forGetter(BlockEntityTypeCondition::paramType),
+				.forGetter(BlockEntityTypePredicate::paramType),
 		ResourceLocation.CODEC
 				.fieldOf("block_entity_type")
 				.forGetter((t) -> BlockEntityType.getKey(t.blockEntityType()))
-	).apply(instance, BlockEntityTypeCondition::of));
+	).apply(instance, BlockEntityTypePredicate::of));
 
-	private static BlockEntityTypeCondition of(ContextParamType<BlockEntity> paramType, ResourceLocation blockEntityTypeId) {
+	private static BlockEntityTypePredicate of(ContextParamType<BlockEntity> paramType, ResourceLocation blockEntityTypeId) {
 		return of(paramType, ResourceKey.create(BuiltInRegistries.BLOCK_ENTITY_TYPE.key(), blockEntityTypeId));
 	}
 
-	private static BlockEntityTypeCondition of(ContextParamType<BlockEntity> paramType, ResourceKey<BlockEntityType<?>> blockEntityTypeKey) {
-		return new BlockEntityTypeCondition(paramType, BuiltInRegistries.BLOCK_ENTITY_TYPE.getValueOrThrow(blockEntityTypeKey));
+	private static BlockEntityTypePredicate of(ContextParamType<BlockEntity> paramType, ResourceKey<BlockEntityType<?>> blockEntityTypeKey) {
+		return new BlockEntityTypePredicate(paramType, BuiltInRegistries.BLOCK_ENTITY_TYPE.getValueOrThrow(blockEntityTypeKey));
 	}
 
 	@Override
@@ -41,13 +41,13 @@ public record BlockEntityTypeCondition(
 	}
 
 	@Override
-	public MapCodec<BlockEntityTypeCondition> getCodec() {
+	public MapCodec<BlockEntityTypePredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public GameConditionType<BlockEntityTypeCondition> getType() {
-		return GameConditionTypes.BLOCK_ENTITY_TYPE;
+	public PredicateType<BlockEntityTypePredicate> getType() {
+		return PredicateTypes.BLOCK_ENTITY_TYPE;
 	}
 
 	@Override

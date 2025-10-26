@@ -1,13 +1,13 @@
 package lgbt.greenhouse.silicate.api.context;
 
 import net.minecraft.world.level.Level;
-import lgbt.greenhouse.silicate.api.condition.GameCondition;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamMap;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Context useful to {@link GameCondition}.
+ * Context useful to {@link GamePredicate}.
  */
 public class GameContext {
 	@Nullable

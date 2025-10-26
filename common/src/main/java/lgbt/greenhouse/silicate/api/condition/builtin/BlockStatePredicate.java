@@ -3,24 +3,24 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.block.state.BlockState;
-import lgbt.greenhouse.silicate.api.condition.GameConditionType;
-import lgbt.greenhouse.silicate.api.condition.GameConditionTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGameCondition;
+import lgbt.greenhouse.silicate.api.condition.PredicateType;
+import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
 
-public record BlockStateCondition(
+public record BlockStatePredicate(
 	ContextParamType<BlockState> paramType,
 	BlockState blockState
-) implements TypedGameCondition<BlockStateCondition, BlockState> {
-	public static final MapCodec<BlockStateCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+) implements TypedGamePredicate<BlockStatePredicate, BlockState> {
+	public static final MapCodec<BlockStatePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		ContextParamType.getCodec(BlockState.class)
 			.fieldOf("param_type")
-			.forGetter(BlockStateCondition::paramType),
+			.forGetter(BlockStatePredicate::paramType),
 		BlockState.CODEC
 			.fieldOf("block_state")
-			.forGetter(BlockStateCondition::blockState)
-	).apply(instance, BlockStateCondition::new));
+			.forGetter(BlockStatePredicate::blockState)
+	).apply(instance, BlockStatePredicate::new));
 
 	@Override
 	public boolean test(GameContext context) {
@@ -29,13 +29,13 @@ public record BlockStateCondition(
 	}
 
 	@Override
-	public MapCodec<BlockStateCondition> getCodec() {
+	public MapCodec<BlockStatePredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public GameConditionType<BlockStateCondition> getType() {
-		return GameConditionTypes.BLOCK_STATE;
+	public PredicateType<BlockStatePredicate> getType() {
+		return PredicateTypes.BLOCK_STATE;
 	}
 
 	@Override

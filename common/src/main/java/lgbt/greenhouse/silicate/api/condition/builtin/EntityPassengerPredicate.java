@@ -5,10 +5,10 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import lgbt.greenhouse.silicate.api.condition.GameConditionType;
-import lgbt.greenhouse.silicate.api.condition.GameConditionTypes;
-import lgbt.greenhouse.silicate.api.condition.MaybeTypedCondition;
-import lgbt.greenhouse.silicate.api.condition.TypedGameCondition;
+import lgbt.greenhouse.silicate.api.condition.PredicateType;
+import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.MaybeTypedPredicate;
+import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamMap;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
@@ -23,26 +23,26 @@ import java.util.Optional;
  * @param condition The game condition to check against.
  * @param matchAll Whether to check if all passengers match or if any match.
  */
-public record EntityPassengerCondition(
+public record EntityPassengerPredicate(
 		ContextParamType<Entity> paramType,
-		MaybeTypedCondition<Entity> condition,
+		MaybeTypedPredicate<Entity> condition,
 		boolean matchAll
-) implements TypedGameCondition<EntityPassengerCondition, Entity> {
-	public static final MapCodec<EntityPassengerCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+) implements TypedGamePredicate<EntityPassengerPredicate, Entity> {
+	public static final MapCodec<EntityPassengerPredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			ContextParamType.getCodec(Entity.class)
 					.fieldOf("param_type")
-					.forGetter(EntityPassengerCondition::paramType),
-			TypedGameCondition.getMaybeTypedCodec(Entity.class)
+					.forGetter(EntityPassengerPredicate::paramType),
+			TypedGamePredicate.getMaybeTypedCodec(Entity.class)
 					.fieldOf("condition")
-					.forGetter(EntityPassengerCondition::condition),
+					.forGetter(EntityPassengerPredicate::condition),
 			Codec.BOOL
 					.optionalFieldOf("matchAll")
 					.forGetter(condition -> Optional.of(condition.matchAll()))
-	).apply(instance, EntityPassengerCondition::of));
+	).apply(instance, EntityPassengerPredicate::of));
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	private static EntityPassengerCondition of(ContextParamType<Entity> paramType, MaybeTypedCondition<Entity> condition, Optional<Boolean> matchAll) {
-		return new EntityPassengerCondition(
+	private static EntityPassengerPredicate of(ContextParamType<Entity> paramType, MaybeTypedPredicate<Entity> condition, Optional<Boolean> matchAll) {
+		return new EntityPassengerPredicate(
 				paramType,
 				condition,
 				matchAll.orElse(false)
@@ -68,13 +68,13 @@ public record EntityPassengerCondition(
 	}
 
 	@Override
-	public MapCodec<EntityPassengerCondition> getCodec() {
+	public MapCodec<EntityPassengerPredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public GameConditionType<EntityPassengerCondition> getType() {
-		return GameConditionTypes.ENTITY_PASSENGER;
+	public PredicateType<EntityPassengerPredicate> getType() {
+		return PredicateTypes.ENTITY_PASSENGER;
 	}
 
 	@Override

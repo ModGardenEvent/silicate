@@ -5,12 +5,11 @@ import com.mojang.serialization.DataResult;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
-import lgbt.greenhouse.silicate.api.condition.TypedGameCondition;
+import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-@SuppressWarnings("unused") // use generic as marker
 public record ContextParamType<T>(ResourceLocation name, Class<T> clazz) {
 	/**
 	 * The generic {@link Codec} for any {@link ContextParamType}.
@@ -29,8 +28,8 @@ public record ContextParamType<T>(ResourceLocation name, Class<T> clazz) {
 	 * @param clazz The class of the type in {@link T}.
 	 * @return The parameter type's codec.
 	 * @param <T> The value type of the parameter type.
-	 * @implNote Although potentially unsafe, this shouldn't result in any Mad Gadget situations given that the actual non-erased type at runtime will be checked. See the implementation of {@link TypedGameCondition#validate(Holder, Class)} for further information.
-	 * @see TypedGameCondition#validate(Holder, Class)
+	 * @implNote Although potentially unsafe, this shouldn't result in any Mad Gadget situations given that the actual non-erased type at runtime will be checked. See the implementation of {@link TypedGamePredicate#validate(Holder, Class)} for further information.
+	 * @see TypedGamePredicate#validate(Holder, Class)
 	 */
 	@SuppressWarnings({"JavadocReference", "unchecked"})// We want people to be able to verify the underlying implementation.
 	public static <T> Codec<ContextParamType<T>> getCodec(Class<T> clazz) {

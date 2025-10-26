@@ -4,37 +4,37 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.level.Level;
-import lgbt.greenhouse.silicate.api.condition.GameConditionType;
-import lgbt.greenhouse.silicate.api.condition.GameConditionTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGameCondition;
+import lgbt.greenhouse.silicate.api.condition.PredicateType;
+import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamMap;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
 import lgbt.greenhouse.silicate.api.context.param.ContextParamTypes;
 
 /**
- * A condition that tests {@link #condition} with the owner of {@link #paramType}.
+ * A predicate that tests {@link #condition} with the owner of {@link #paramType}.
  * Always returns false if the {@link #paramType} has no owner.
  * @param paramType The parameter type that has a passenger.
  * @param condition The game condition to check against.
  */
-public record EntityTameOwnerCondition(
+public record EntityProjectileOwnerPredicate(
 		ContextParamType<Entity> paramType,
-		Holder<TypedGameCondition<?, Entity>> condition
-) implements TypedGameCondition<EntityTameOwnerCondition, Entity> {
-	public static final MapCodec<EntityTameOwnerCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		Holder<TypedGamePredicate<?, Entity>> condition
+) implements TypedGamePredicate<EntityProjectileOwnerPredicate, Entity> {
+	public static final MapCodec<EntityProjectileOwnerPredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			ContextParamType.getCodec(Entity.class)
 					.fieldOf("param_type")
-					.forGetter(EntityTameOwnerCondition::paramType),
-			TypedGameCondition.getTypedCodec(Entity.class)
+					.forGetter(EntityProjectileOwnerPredicate::paramType),
+			TypedGamePredicate.getTypedCodec(Entity.class)
 					.fieldOf("condition")
-					.forGetter(EntityTameOwnerCondition::condition)
-	).apply(instance, EntityTameOwnerCondition::of));
+					.forGetter(EntityProjectileOwnerPredicate::condition)
+	).apply(instance, EntityProjectileOwnerPredicate::of));
 
-	private static EntityTameOwnerCondition of(ContextParamType<Entity> paramType, Holder<TypedGameCondition<?, Entity>> condition) {
-		return new EntityTameOwnerCondition(
+	private static EntityProjectileOwnerPredicate of(ContextParamType<Entity> paramType, Holder<TypedGamePredicate<?, Entity>> condition) {
+		return new EntityProjectileOwnerPredicate(
 				paramType,
 				condition
 		);
@@ -44,10 +44,10 @@ public record EntityTameOwnerCondition(
 	public boolean test(GameContext oldContext) {
 		Entity entity = oldContext.getParam(paramType);
 
-		if (entity instanceof OwnableEntity ownable && ownable.getOwner() != null) {
+		if (entity instanceof TraceableEntity traceable && traceable.getOwner() != null) {
 			ContextParamMap oldParamMap = oldContext.getParams();
 			ContextParamMap.Mutable paramMap = ContextParamMap.Mutable.of(oldParamMap);
-			return testOwner(oldContext.getLevel(), ownable.getOwner(), paramMap);
+			return testOwner(oldContext.getLevel(), traceable.getOwner(), paramMap);
 		}
 		return false;
 	}
@@ -59,13 +59,13 @@ public record EntityTameOwnerCondition(
 	}
 
 	@Override
-	public MapCodec<EntityTameOwnerCondition> getCodec() {
+	public MapCodec<EntityProjectileOwnerPredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public GameConditionType<EntityTameOwnerCondition> getType() {
-		return GameConditionTypes.ENTITY_TAME_OWNER;
+	public PredicateType<EntityProjectileOwnerPredicate> getType() {
+		return PredicateTypes.ENTITY_PROJECTILE_OWNER;
 	}
 
 	@Override

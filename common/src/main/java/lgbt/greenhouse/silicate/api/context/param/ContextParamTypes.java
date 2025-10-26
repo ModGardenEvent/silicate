@@ -1,9 +1,9 @@
 package lgbt.greenhouse.silicate.api.context.param;
 
-import lgbt.greenhouse.silicate.api.condition.builtin.EntityPassengerCondition;
-import lgbt.greenhouse.silicate.api.condition.builtin.EntityProjectileOwnerCondition;
-import lgbt.greenhouse.silicate.api.condition.builtin.EntityTameOwnerCondition;
-import lgbt.greenhouse.silicate.api.condition.builtin.EntityVehicleCondition;
+import lgbt.greenhouse.silicate.api.condition.builtin.EntityPassengerPredicate;
+import lgbt.greenhouse.silicate.api.condition.builtin.EntityProjectileOwnerPredicate;
+import lgbt.greenhouse.silicate.api.condition.builtin.EntityTameOwnerPredicate;
+import lgbt.greenhouse.silicate.api.condition.builtin.EntityVehiclePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import net.minecraft.core.Registry;
 import net.minecraft.util.Unit;
@@ -22,15 +22,15 @@ import static lgbt.greenhouse.silicate.Silicate.id;
 public final class ContextParamTypes {
 	public static final ContextParamType<Entity> THIS_ENTITY = register("this_entity", Entity.class);
 	/**
-	 * A temporary parameter type typically used in {@link EntityPassengerCondition}.
+	 * A temporary parameter type typically used in {@link EntityPassengerPredicate}.
 	 */
 	public static final ContextParamType<Entity> PASSENGER_ENTITY = register("passenger_entity", Entity.class);
 	/**
-	 * A temporary parameter type typically used in {@link EntityVehicleCondition}.
+	 * A temporary parameter type typically used in {@link EntityVehiclePredicate}.
 	 */
 	public static final ContextParamType<Entity> VEHICLE_ENTITY = register("vehicle_entity", Entity.class);
 	/**
-	 * A temporary parameter type typically used in {@link EntityProjectileOwnerCondition} and {@link EntityTameOwnerCondition}.
+	 * A temporary parameter type typically used in {@link EntityProjectileOwnerPredicate} and {@link EntityTameOwnerPredicate}.
 	 */
 	public static final ContextParamType<Entity> OWNER_ENTITY = register("owner_entity", Entity.class);
 	/**

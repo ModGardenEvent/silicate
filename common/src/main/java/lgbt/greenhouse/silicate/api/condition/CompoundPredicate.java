@@ -9,37 +9,37 @@ import lgbt.greenhouse.silicate.api.context.GameContext;
 import java.util.List;
 
 /**
- * A condition composed of other conditions, all checked together.
+ * A predicate composed of other conditions, all checked together.
  */
-public class CompoundCondition implements GameCondition<CompoundCondition> {
-	public static final MapCodec<CompoundCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+public class CompoundPredicate implements GamePredicate<CompoundPredicate> {
+	public static final MapCodec<CompoundPredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			Codec.BOOL
 					.optionalFieldOf("or", false)
-					.forGetter(CompoundCondition::isOr),
-			GameCondition.CODEC
+					.forGetter(CompoundPredicate::isOr),
+			GamePredicate.CODEC
 					.listOf()
 					.fieldOf("conditions")
-					.forGetter(CompoundCondition::getConditions)
-	).apply(instance, CompoundCondition::new));
+					.forGetter(CompoundPredicate::getConditions)
+	).apply(instance, CompoundPredicate::new));
 	private final boolean or;
-	private final List<Holder<GameCondition<?>>> conditions;
+	private final List<Holder<GamePredicate<?>>> conditions;
 
-	private CompoundCondition(boolean or, List<Holder<GameCondition<?>>> conditions) {
+	private CompoundPredicate(boolean or, List<Holder<GamePredicate<?>>> conditions) {
 		this.or = or;
 		this.conditions = List.copyOf(conditions);
 	}
 
-	public static CompoundCondition of(boolean or, List<Holder<GameCondition<?>>> conditions) {
-		return new CompoundCondition(or, conditions);
+	public static CompoundPredicate of(boolean or, List<Holder<GamePredicate<?>>> conditions) {
+		return new CompoundPredicate(or, conditions);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static CompoundCondition of(boolean or, Holder<GameCondition<?>>... conditions) {
+	public static CompoundPredicate of(boolean or, Holder<GamePredicate<?>>... conditions) {
 		return of(or, List.of(conditions));
 	}
 
 	@SuppressWarnings("unchecked")
-	public static CompoundCondition of(Holder<GameCondition<?>>... conditions) {
+	public static CompoundPredicate of(Holder<GamePredicate<?>>... conditions) {
 		return of(false, List.of(conditions));
 	}
 
@@ -53,13 +53,13 @@ public class CompoundCondition implements GameCondition<CompoundCondition> {
 	}
 
 	@Override
-	public MapCodec<CompoundCondition> getCodec() {
+	public MapCodec<CompoundPredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public GameConditionType<CompoundCondition> getType() {
-		return GameConditionTypes.COMPOUND;
+	public PredicateType<CompoundPredicate> getType() {
+		return PredicateTypes.COMPOUND;
 	}
 
 	/**
@@ -70,9 +70,9 @@ public class CompoundCondition implements GameCondition<CompoundCondition> {
 	}
 
 	/**
-	 * @return {@link GameCondition}s that in the compound.
+	 * @return {@link GamePredicate}s that in the compound.
 	 */
-	public List<Holder<GameCondition<?>>> getConditions() {
+	public List<Holder<GamePredicate<?>>> getConditions() {
 		return conditions;
 	}
 }
