@@ -7,14 +7,14 @@ import lgbt.greenhouse.silicate.api.condition.PredicateType;
 import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 
 public record BlockStatePredicate(
-	GlobalParameterType<BlockState> paramType,
+	GlobalParameterKey<BlockState> paramType,
 	BlockState blockState
 ) implements TypedGamePredicate<BlockStatePredicate, BlockState> {
 	public static final MapCodec<BlockStatePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterType.getCodec(BlockState.class)
+		GlobalParameterKey.getCodec(BlockState.class)
 			.fieldOf("param_type")
 			.forGetter(BlockStatePredicate::paramType),
 		BlockState.CODEC
@@ -39,7 +39,7 @@ public record BlockStatePredicate(
 	}
 
 	@Override
-	public GlobalParameterType<BlockState> getParamType() {
+	public GlobalParameterKey<BlockState> getParamType() {
 		return paramType;
 	}
 }

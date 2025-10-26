@@ -7,28 +7,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A map of {@link GlobalParameterType} to {@link Parameter} values.
+ * A map of {@link GlobalParameterKey} to {@link Parameter} values.
  * That is, a class representing a map of all present context parameters.
  */
 public sealed class ParameterMap {
-	protected final Map<GlobalParameterType<?>, Parameter<?>> params;
+	protected final Map<GlobalParameterKey<?>, Parameter<?>> params;
 	private final ParameterSet paramSet;
 
-	private ParameterMap(Map<GlobalParameterType<?>, Parameter<?>> params, ParameterSet paramSet) {
+	private ParameterMap(Map<GlobalParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
 		this.params = params;
 		this.paramSet = paramSet;
 	}
 
-	private static ParameterMap ofImmutable(Map<GlobalParameterType<?>, Parameter<?>> params, ParameterSet paramSet) {
+	private static ParameterMap ofImmutable(Map<GlobalParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
 		return new ParameterMap(Map.copyOf(params), paramSet);
 	}
 
 	@SuppressWarnings("unchecked") // type is always correct
-	public <T> Parameter<T> get(GlobalParameterType<T> type) {
+	public <T> Parameter<T> get(GlobalParameterKey<T> type) {
 		return (Parameter<T>) params.get(type);
 	}
 
-	public <T> boolean has(GlobalParameterType<T> type) {
+	public <T> boolean has(GlobalParameterKey<T> type) {
 		return params.containsKey(type);
 	}
 
@@ -37,7 +37,7 @@ public sealed class ParameterMap {
 	}
 
 	public static final class Mutable extends ParameterMap {
-		private Mutable(Map<GlobalParameterType<?>, Parameter<?>> params, ParameterSet paramSet) {
+		private Mutable(Map<GlobalParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
 			super(new HashMap<>(params), paramSet);
 		}
 
@@ -46,16 +46,16 @@ public sealed class ParameterMap {
 		}
 
 		@SuppressWarnings("unchecked") // Always correct.
-		public <T> Parameter<T> set(GlobalParameterType<T> type, T param) {
+		public <T> Parameter<T> set(GlobalParameterKey<T> type, T param) {
 			return (Parameter<T>) params.put(type, new Parameter<>(param));
 		}
 	}
 
 	public static final class Builder {
-		private final Map<GlobalParameterType<?>, Parameter<?>> params;
+		private final Map<GlobalParameterKey<?>, Parameter<?>> params;
 		private final ParameterSet paramSet;
 
-		private Builder(ParameterSet paramSet, Map<GlobalParameterType<?>, Parameter<?>> params) {
+		private Builder(ParameterSet paramSet, Map<GlobalParameterKey<?>, Parameter<?>> params) {
 			this.paramSet = paramSet;
 			this.params = params;
 		}
@@ -68,12 +68,12 @@ public sealed class ParameterMap {
 			return new Builder(paramSet);
 		}
 
-		public <T> Builder withParameter(GlobalParameterType<T> type, @NotNull Parameter<T> param) {
+		public <T> Builder withParameter(GlobalParameterKey<T> type, @NotNull Parameter<T> param) {
 			params.put(type, param);
 			return this;
 		}
 
-		public <T> Builder withParameter(GlobalParameterType<T> type, T param) {
+		public <T> Builder withParameter(GlobalParameterKey<T> type, T param) {
 			return withParameter(type, new Parameter<>(param));
 		}
 

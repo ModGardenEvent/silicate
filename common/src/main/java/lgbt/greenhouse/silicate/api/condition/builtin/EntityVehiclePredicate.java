@@ -10,8 +10,8 @@ import lgbt.greenhouse.silicate.api.condition.MaybeTypedPredicate;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
 
 /**
  * A condition that tests {@link #condition} with the vehicle of {@link #paramType}.
@@ -19,11 +19,11 @@ import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
  * @param condition The game condition to check against.
  */
 public record EntityVehiclePredicate(
-		GlobalParameterType<Entity> paramType,
+		GlobalParameterKey<Entity> paramType,
 		MaybeTypedPredicate<Entity> condition
 ) implements TypedGamePredicate<EntityVehiclePredicate, Entity> {
 	public static final MapCodec<EntityVehiclePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			GlobalParameterType.getCodec(Entity.class)
+			GlobalParameterKey.getCodec(Entity.class)
 					.fieldOf("param_type")
 					.forGetter(EntityVehiclePredicate::paramType),
 			TypedGamePredicate.getMaybeTypedCodec(Entity.class)
@@ -44,7 +44,7 @@ public record EntityVehiclePredicate(
 	}
 
 	private boolean testVehicle(Level level, Entity vehicle, ParameterMap.Mutable paramMap) {
-		paramMap.set(GlobalParameterTypes.VEHICLE_ENTITY, vehicle);
+		paramMap.set(GlobalParameterKeys.VEHICLE_ENTITY, vehicle);
 		GameContext context = GameContext.of(level, paramMap);
 		return condition.test(context);
 	}
@@ -60,7 +60,7 @@ public record EntityVehiclePredicate(
 	}
 
 	@Override
-	public GlobalParameterType<Entity> getParamType() {
+	public GlobalParameterKey<Entity> getParamType() {
 		return paramType;
 	}
 }

@@ -11,7 +11,7 @@ import lgbt.greenhouse.silicate.api.condition.PredicateType;
 import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import lgbt.greenhouse.silicate.duck.Duck_AbstractClientPlayer;
 
 import java.util.List;
@@ -23,11 +23,11 @@ import java.util.Objects;
  * @param gameTypes The {@link GameType}s to equality against. Tests true if any are equal.
  */
 public record PlayerGameTypePredicate(
-	GlobalParameterType<Entity> paramType,
+	GlobalParameterKey<Entity> paramType,
 	List<GameType> gameTypes
 ) implements TypedGamePredicate<PlayerGameTypePredicate, Entity> {
 	public static final MapCodec<PlayerGameTypePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterType.getCodec(Entity.class)
+		GlobalParameterKey.getCodec(Entity.class)
 			.fieldOf("param_type")
 			.forGetter(PlayerGameTypePredicate::paramType),
 		Codec.mapEither(
@@ -41,7 +41,7 @@ public record PlayerGameTypePredicate(
 	).apply(instance, PlayerGameTypePredicate::of));
 	public static final List<GameType> SURVIVAL_LIKE = List.of(GameType.SURVIVAL, GameType.ADVENTURE);
 
-	private static PlayerGameTypePredicate of(GlobalParameterType<Entity> paramType, Either<List<GameType>, GameType> eitherGameType) {
+	private static PlayerGameTypePredicate of(GlobalParameterKey<Entity> paramType, Either<List<GameType>, GameType> eitherGameType) {
 		if (eitherGameType.left().isPresent()) {
 			return new PlayerGameTypePredicate(paramType, eitherGameType.left().get());
 		} else if (eitherGameType.right().isPresent()) {
@@ -91,7 +91,7 @@ public record PlayerGameTypePredicate(
 	}
 
 	@Override
-	public GlobalParameterType<Entity> getParamType() {
+	public GlobalParameterKey<Entity> getParamType() {
 		return paramType;
 	}
 }

@@ -11,8 +11,8 @@ import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
 
 /**
  * A predicate that tests {@link #condition} with the owner of {@link #paramType}.
@@ -21,11 +21,11 @@ import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
  * @param condition The game condition to check against.
  */
 public record EntityProjectileOwnerPredicate(
-		GlobalParameterType<Entity> paramType,
+		GlobalParameterKey<Entity> paramType,
 		Holder<TypedGamePredicate<?, Entity>> condition
 ) implements TypedGamePredicate<EntityProjectileOwnerPredicate, Entity> {
 	public static final MapCodec<EntityProjectileOwnerPredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			GlobalParameterType.getCodec(Entity.class)
+			GlobalParameterKey.getCodec(Entity.class)
 					.fieldOf("param_type")
 					.forGetter(EntityProjectileOwnerPredicate::paramType),
 			TypedGamePredicate.getTypedCodec(Entity.class)
@@ -33,7 +33,7 @@ public record EntityProjectileOwnerPredicate(
 					.forGetter(EntityProjectileOwnerPredicate::condition)
 	).apply(instance, EntityProjectileOwnerPredicate::of));
 
-	private static EntityProjectileOwnerPredicate of(GlobalParameterType<Entity> paramType, Holder<TypedGamePredicate<?, Entity>> condition) {
+	private static EntityProjectileOwnerPredicate of(GlobalParameterKey<Entity> paramType, Holder<TypedGamePredicate<?, Entity>> condition) {
 		return new EntityProjectileOwnerPredicate(
 				paramType,
 				condition
@@ -53,7 +53,7 @@ public record EntityProjectileOwnerPredicate(
 	}
 
 	private boolean testOwner(Level level, Entity owner, ParameterMap.Mutable paramMap) {
-		paramMap.set(GlobalParameterTypes.OWNER_ENTITY, owner);
+		paramMap.set(GlobalParameterKeys.OWNER_ENTITY, owner);
 		GameContext context = GameContext.of(level, paramMap);
 		return condition.value().test(context);
 	}
@@ -69,7 +69,7 @@ public record EntityProjectileOwnerPredicate(
 	}
 
 	@Override
-	public GlobalParameterType<Entity> getParamType() {
+	public GlobalParameterKey<Entity> getParamType() {
 		return paramType;
 	}
 }

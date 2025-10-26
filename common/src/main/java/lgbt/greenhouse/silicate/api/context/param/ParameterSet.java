@@ -9,10 +9,10 @@ import java.util.Set;
  * A set of all possible parameters in a context.
  */
 public final class ParameterSet {
-	private final Set<GlobalParameterType<?>> required;
-	private final Set<GlobalParameterType<?>> all;
+	private final Set<GlobalParameterKey<?>> required;
+	private final Set<GlobalParameterKey<?>> all;
 
-	private ParameterSet(Set<GlobalParameterType<?>> required, Set<GlobalParameterType<?>> optional) {
+	private ParameterSet(Set<GlobalParameterKey<?>> required, Set<GlobalParameterKey<?>> optional) {
 		this.required = required;
 		this.all = Sets.union(required, optional);
 	}
@@ -20,22 +20,22 @@ public final class ParameterSet {
 	/**
 	 * Whether the parameter type is present in this set and may be used.
 	 */
-	public <T> boolean hasParam(GlobalParameterType<T> type) {
+	public <T> boolean hasParam(GlobalParameterKey<T> type) {
 		return all.contains(type);
 	}
 
 	/**
 	 * If the parameter is mandatory.
 	 */
-	public <T> boolean isRequired(GlobalParameterType<T> type) {
+	public <T> boolean isRequired(GlobalParameterKey<T> type) {
 		return required.contains(type);
 	}
 
-	public Set<GlobalParameterType<?>> getRequired() {
+	public Set<GlobalParameterKey<?>> getRequired() {
 		return required;
 	}
 
-	public Set<GlobalParameterType<?>> getAll() {
+	public Set<GlobalParameterKey<?>> getAll() {
 		return all;
 	}
 
@@ -49,8 +49,8 @@ public final class ParameterSet {
 	}
 
 	public static final class Builder {
-		private final Set<GlobalParameterType<?>> required = new HashSet<>();
-		private final Set<GlobalParameterType<?>> optional = new HashSet<>();
+		private final Set<GlobalParameterKey<?>> required = new HashSet<>();
+		private final Set<GlobalParameterKey<?>> optional = new HashSet<>();
 
 		private Builder() {}
 
@@ -58,12 +58,12 @@ public final class ParameterSet {
 			return new Builder();
 		}
 
-		public <T> Builder required(GlobalParameterType<T> param) {
+		public <T> Builder required(GlobalParameterKey<T> param) {
 			required.add(param);
 			return this;
 		}
 
-		public <T> Builder optional(GlobalParameterType<T> param) {
+		public <T> Builder optional(GlobalParameterKey<T> param) {
 			optional.add(param);
 			return this;
 		}

@@ -10,7 +10,7 @@ import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -28,50 +28,50 @@ public class ContextParamTestinstance extends GameTestInstance {
 	@Override
 	public void run(@NotNull GameTestHelper helper) {
 		ParameterSet paramSet = ParameterSet.Builder.of()
-				.required(GlobalParameterTypes.ORIGIN)
-				.required(GlobalParameterTypes.BLOCK_STATE)
-				.optional(GlobalParameterTypes.BLOCK_ENTITY)
-				.optional(GlobalParameterTypes.THIS_ENTITY)
+				.required(GlobalParameterKeys.ORIGIN)
+				.required(GlobalParameterKeys.BLOCK_STATE)
+				.optional(GlobalParameterKeys.BLOCK_ENTITY)
+				.optional(GlobalParameterKeys.THIS_ENTITY)
 				.build();
 		helper.assertFalse(
-				paramSet.isRequired(GlobalParameterTypes.THIS_ENTITY),
+				paramSet.isRequired(GlobalParameterKeys.THIS_ENTITY),
 				Component.literal("ContextParamSet.isRequired(ContextParamTypes.THIS_ENTITY) != false")
 		);
 		helper.assertTrue(
 				paramSet.getRequired()
 						.containsAll(List.of(
-								GlobalParameterTypes.ORIGIN,
-								GlobalParameterTypes.BLOCK_STATE
+								GlobalParameterKeys.ORIGIN,
+								GlobalParameterKeys.BLOCK_STATE
 						)),
 				Component.literal("ContextParamSet.getRequired() does not contain required")
 		);
 		helper.assertTrue(
 				paramSet.getAll()
 						.containsAll(List.of(
-								GlobalParameterTypes.ORIGIN,
-								GlobalParameterTypes.BLOCK_STATE,
-								GlobalParameterTypes.THIS_ENTITY
+								GlobalParameterKeys.ORIGIN,
+								GlobalParameterKeys.BLOCK_STATE,
+								GlobalParameterKeys.THIS_ENTITY
 						)),
 				Component.literal("ContextParamSet.getAll() does not contain all")
 		);
 		helper.assertTrue(
-				paramSet.hasParam(GlobalParameterTypes.ORIGIN),
+				paramSet.hasParam(GlobalParameterKeys.ORIGIN),
 				Component.literal("ContextParamSet.hasParam(ContextParamTypes.ORIGIN) != true")
 		);
 		helper.assertTrue(
-				paramSet.hasParam(GlobalParameterTypes.BLOCK_STATE),
+				paramSet.hasParam(GlobalParameterKeys.BLOCK_STATE),
 				Component.literal("ContextParamSet.hasParam(ContextParamTypes.ORIGIN) != true")
 		);
 		helper.assertTrue(
-				paramSet.hasParam(GlobalParameterTypes.THIS_ENTITY),
+				paramSet.hasParam(GlobalParameterKeys.THIS_ENTITY),
 				Component.literal("ContextParamSet.hasParam(ContextParamTypes.ORIGIN) != true")
 		);
 		helper.assertTrue(
-				paramSet.hasParam(GlobalParameterTypes.BLOCK_ENTITY),
+				paramSet.hasParam(GlobalParameterKeys.BLOCK_ENTITY),
 				Component.literal("ContextParamSet.hasParam(ContextParamTypes.BLOCK_ENTITY) != true")
 		);
 		helper.assertFalse(
-				paramSet.hasParam(GlobalParameterTypes.UNIT),
+				paramSet.hasParam(GlobalParameterKeys.UNIT),
 				Component.literal("ContextParamSet.hasParam(ContextParamTypes.UNIT) != false")
 		);
 		helper.succeed();

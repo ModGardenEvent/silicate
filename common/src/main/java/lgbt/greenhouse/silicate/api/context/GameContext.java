@@ -3,7 +3,7 @@ package lgbt.greenhouse.silicate.api.context;
 import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -31,7 +31,7 @@ public class GameContext {
 		return params;
 	}
 
-	public <T> T getParam(GlobalParameterType<T> paramType) {
+	public <T> T getParam(GlobalParameterKey<T> paramType) {
 		return getParams().get(paramType).value();
 	}
 }

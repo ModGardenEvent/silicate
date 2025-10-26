@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,15 +57,15 @@ public class GameContextTestInstance extends GameTestInstance {
 	private static ParameterMap createParamMap(BlockState state, BlockPos origin, GameTestHelper helper) throws InvalidContextParameterException {
 		helper.setBlock(origin, state);
 		ParameterMap.Builder builder = ParameterMap.Builder.of(createParamSet())
-				.withParameter(GlobalParameterTypes.ORIGIN, origin.getCenter())
-				.withParameter(GlobalParameterTypes.BLOCK_STATE, state);
+				.withParameter(GlobalParameterKeys.ORIGIN, origin.getCenter())
+				.withParameter(GlobalParameterKeys.BLOCK_STATE, state);
 		return builder.build();
 	}
 
 	private static @NotNull ParameterSet createParamSet() {
 		return ParameterSet.Builder.of()
-				.required(GlobalParameterTypes.ORIGIN)
-				.required(GlobalParameterTypes.BLOCK_STATE)
+				.required(GlobalParameterKeys.ORIGIN)
+				.required(GlobalParameterKeys.BLOCK_STATE)
 				.build();
 	}
 

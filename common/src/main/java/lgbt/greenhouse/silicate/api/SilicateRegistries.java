@@ -5,14 +5,14 @@ import net.minecraft.resources.ResourceKey;
 import lgbt.greenhouse.silicate.Silicate;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.PredicateType;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 
 /**
  * {@link ResourceKey}s of registries used in Silicate.
  */
 public final class SilicateRegistries {
 	public static final ResourceKey<Registry<PredicateType<?>>> PREDICATE = create("predicate");
-	public static final ResourceKey<Registry<GlobalParameterType<?>>> CONTEXT_PARAM_TYPE = create("context_param_type");
+	public static final ResourceKey<Registry<GlobalParameterKey<?>>> CONTEXT_PARAM_TYPE = create("context_param_type");
 	public static final ResourceKey<Registry<GamePredicate<?>>> CONDITION_TEMPLATE = create("condition_template");
 
 	private static <T> ResourceKey<Registry<T>> create(String name) {

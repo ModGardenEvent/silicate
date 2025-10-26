@@ -29,7 +29,7 @@ import lgbt.greenhouse.silicate.Silicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
 import lgbt.greenhouse.silicate.test.SilicateTestContextParamTypes;
 import lgbt.greenhouse.silicate.test.util.ExpectedResultCondition;
@@ -115,12 +115,12 @@ public class ConditionsTestInstance extends GameTestInstance {
 
 	private static @NotNull ParameterSet createParamSet() {
 		return ParameterSet.Builder.of()
-				.required(GlobalParameterTypes.BLOCK_STATE)
-				.required(GlobalParameterTypes.ORIGIN)
-				.required(GlobalParameterTypes.THIS_ENTITY)
-				.optional(GlobalParameterTypes.BLOCK_ENTITY)
-				.optional(GlobalParameterTypes.ATTACKING_ENTITY)
-				.optional(GlobalParameterTypes.VICTIM_ENTITY)
+				.required(GlobalParameterKeys.BLOCK_STATE)
+				.required(GlobalParameterKeys.ORIGIN)
+				.required(GlobalParameterKeys.THIS_ENTITY)
+				.optional(GlobalParameterKeys.BLOCK_ENTITY)
+				.optional(GlobalParameterKeys.ATTACKING_ENTITY)
+				.optional(GlobalParameterKeys.VICTIM_ENTITY)
 				.optional(SilicateTestContextParamTypes.PROJECTILE)
 				.build();
 	}
@@ -131,13 +131,13 @@ public class ConditionsTestInstance extends GameTestInstance {
 		BlockPos entityBlockPos = origin.east();
 		helper.setBlock(entityBlockPos, entityBlock);
 		ParameterMap.Builder builder = ParameterMap.Builder.of(paramSet)
-				.withParameter(GlobalParameterTypes.BLOCK_STATE, state)
-				.withParameter(GlobalParameterTypes.ORIGIN, origin.getCenter())
-				.withParameter(GlobalParameterTypes.THIS_ENTITY, entity)
-				.withParameter(GlobalParameterTypes.VICTIM_ENTITY, entity2)
+				.withParameter(GlobalParameterKeys.BLOCK_STATE, state)
+				.withParameter(GlobalParameterKeys.ORIGIN, origin.getCenter())
+				.withParameter(GlobalParameterKeys.THIS_ENTITY, entity)
+				.withParameter(GlobalParameterKeys.VICTIM_ENTITY, entity2)
 				.withParameter(
-						GlobalParameterTypes.BLOCK_ENTITY, helper.getBlockEntity(entityBlockPos, FurnaceBlockEntity.class))
-				.withParameter(GlobalParameterTypes.ATTACKING_ENTITY, fakePlayer)
+						GlobalParameterKeys.BLOCK_ENTITY, helper.getBlockEntity(entityBlockPos, FurnaceBlockEntity.class))
+				.withParameter(GlobalParameterKeys.ATTACKING_ENTITY, fakePlayer)
 				.withParameter(SilicateTestContextParamTypes.PROJECTILE, projectile);
 		return builder.build();
 	}

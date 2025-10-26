@@ -5,17 +5,17 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 
 /**
- * A {@link GamePredicate} that has a {@link GlobalParameterType}.
+ * A {@link GamePredicate} that has a {@link GlobalParameterKey}.
  * @implSpec See the documentation on {@link #getParamType()}.
  * @see #getParamType()
  * @see MaybeTypedPredicate
  */
 public interface TypedGamePredicate<T extends GamePredicate<T>, P> extends GamePredicate<T> {
 	/**
-	 * @see GlobalParameterType#getCodec(Class)
+	 * @see GlobalParameterKey#getCodec(Class)
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes"}) // Checked at runtime.
 	private static <P> DataResult<Holder<TypedGamePredicate<?, P>>> validate(Holder<GamePredicate<?>> condition, Class<P> clazz) {
@@ -66,12 +66,12 @@ public interface TypedGamePredicate<T extends GamePredicate<T>, P> extends GameP
 	 * @implNote We have to give up type checking somewhere, so we do it here. The parameter type is checked later on, so this is fine. It also doesn't really matter what type the condition is since the caller provides us that condition's type.
 	 */
 	static <T extends GamePredicate<T>, P> TypedGamePredicate<T, P> retype(
-			GlobalParameterType<P> paramType,
+			GlobalParameterKey<P> paramType,
 			GamePredicate<?> untyped
 	) {
 		return new TypedGamePredicate<>() {
 			@Override
-			public GlobalParameterType<P> getParamType() {
+			public GlobalParameterKey<P> getParamType() {
 				return paramType;
 			}
 
@@ -98,5 +98,5 @@ public interface TypedGamePredicate<T extends GamePredicate<T>, P> extends GameP
 	 * For conditions with multiple parameter types, this would be the first or main parameter type. This is never the parameter type used in series with another condition.
 	 * @return The first or main parameter type.
 	 */
-	GlobalParameterType<P> getParamType();
+	GlobalParameterKey<P> getParamType();
 }

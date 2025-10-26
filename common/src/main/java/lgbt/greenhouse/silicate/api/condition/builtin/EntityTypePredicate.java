@@ -12,17 +12,17 @@ import lgbt.greenhouse.silicate.api.condition.PredicateType;
 import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 
 /**
  * A predicate to check an entity's {@link EntityType}.
  */
 public record EntityTypePredicate(
-	GlobalParameterType<Entity> paramType,
+	GlobalParameterKey<Entity> paramType,
 	HolderSet<EntityType<?>> entityTypes
 ) implements TypedGamePredicate<EntityTypePredicate, Entity> {
 	public static final MapCodec<EntityTypePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterType.getCodec(Entity.class)
+		GlobalParameterKey.getCodec(Entity.class)
 			.fieldOf("param_type")
 			.forGetter(EntityTypePredicate::paramType),
 		SilicateCodecs.ENTITY_TYPE_HOLDER_SET
@@ -31,7 +31,7 @@ public record EntityTypePredicate(
 	).apply(instance, EntityTypePredicate::new));
 
 	public static EntityTypePredicate of(
-		GlobalParameterType<Entity> paramType,
+		GlobalParameterKey<Entity> paramType,
 		EntityType<?> entityType
 	) {
 		//noinspection deprecation
@@ -42,7 +42,7 @@ public record EntityTypePredicate(
 	}
 
 	public static EntityTypePredicate of(
-		GlobalParameterType<Entity> paramType,
+		GlobalParameterKey<Entity> paramType,
 		TagKey<EntityType<?>> entityTag
 	) {
 		return new EntityTypePredicate(
@@ -70,7 +70,7 @@ public record EntityTypePredicate(
 	}
 
 	@Override
-	public GlobalParameterType<Entity> getParamType() {
+	public GlobalParameterKey<Entity> getParamType() {
 		return paramType;
 	}
 }

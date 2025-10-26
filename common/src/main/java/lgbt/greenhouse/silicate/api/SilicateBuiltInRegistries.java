@@ -12,8 +12,8 @@ import net.minecraft.resources.ResourceKey;
 import lgbt.greenhouse.silicate.Silicate;
 import lgbt.greenhouse.silicate.api.condition.PredicateType;
 import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Optional;
@@ -25,7 +25,7 @@ import static lgbt.greenhouse.silicate.Silicate.id;
  */
 public final class SilicateBuiltInRegistries {
 	public static final Registry<PredicateType<?>> PREDICATE = create(SilicateRegistries.PREDICATE);
-	public static final Registry<GlobalParameterType<?>> CONTEXT_PARAM_TYPE = create(SilicateRegistries.CONTEXT_PARAM_TYPE);
+	public static final Registry<GlobalParameterKey<?>> CONTEXT_PARAM_TYPE = create(SilicateRegistries.CONTEXT_PARAM_TYPE);
 
 	private SilicateBuiltInRegistries() {}
 
@@ -33,7 +33,7 @@ public final class SilicateBuiltInRegistries {
 	public static void registerAll() {
 		registerRegistries();
 		PredicateTypes.registerAll();
-		GlobalParameterTypes.registerAll();
+		GlobalParameterKeys.registerAll();
 	}
 
 	@SuppressWarnings("unchecked")
