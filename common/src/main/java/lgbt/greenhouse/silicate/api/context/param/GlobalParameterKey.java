@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.context.param;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
@@ -10,13 +11,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public record GlobalParameterKey<T>(ResourceLocation name, Class<T> clazz)
+public record GlobalParameterKey<T>(ResourceLocation name, ValueType<T> type)
 		implements ParameterKey<T> {
 	/**
 	 * The generic {@link Codec} for any {@link GlobalParameterKey}.
 	 * <br>
-	 * If implementing parameter types programmatically, use {@link #getCodec(Class)} instead!
-	 * @see #getCodec(Class)
+	 * If implementing parameter types programmatically, use {@link #getCodec(ValueType)} instead!
+	 * @see #getCodec(ValueType)
 	 */
 	public static final Codec<GlobalParameterKey<?>> ANY_CODEC = ResourceLocation.CODEC
 			.comapFlatMap(
@@ -26,23 +27,26 @@ public record GlobalParameterKey<T>(ResourceLocation name, Class<T> clazz)
 
 	/**
 	 * Get this parameter type's codec.
-	 * @param clazz The class of the type in {@link T}.
-	 * @return The parameter type's codec.
+	 *
 	 * @param <T> The value type of the parameter type.
-	 * @implNote Although potentially unsafe, this shouldn't result in any Mad Gadget situations given that the actual non-erased type at runtime will be checked. See the implementation of {@link TypedGamePredicate#validate(Holder, Class)} for further information.
+	 * @param type The class of the type in {@link T}.
+	 * @return The parameter type's codec.
+	 * @implNote Although potentially unsafe, this shouldn't result in any Mad Gadget situations given that the actual
+	 * non-erased type at runtime will be checked. See the implementation of
+	 * {@link TypedGamePredicate#validate(Holder, Class)} for further information.
 	 * @see TypedGamePredicate#validate(Holder, Class)
 	 */
 	@SuppressWarnings({"JavadocReference", "unchecked"})// We want people to be able to verify the underlying implementation.
-	public static <T> Codec<GlobalParameterKey<T>> getCodec(Class<T> clazz) {
+	public static <T> Codec<GlobalParameterKey<T>> getCodec(ValueType<T> type) {
 		// Spooky!
 		return ResourceLocation.CODEC
 				.flatXmap(name -> {
-					GlobalParameterKey<?> paramType = SilicateBuiltInRegistries.CONTEXT_PARAM_TYPE.getValue(name);
+					GlobalParameterKey<?> paramType = SilicateBuiltInRegistries.GLOBAL_PARAMETER_KEY.getValue(name);
 					if (paramType != null) {
-						if (clazz.equals(paramType.clazz()))
+						if (type.equals(paramType.type()))
 							return DataResult.success((GlobalParameterKey<T>)paramType);
-						if (clazz.isAssignableFrom(paramType.clazz())) // If the paramType extends the specified class...
-							return DataResult.success(new GlobalParameterKey<>(name, clazz)); // Create a new ContextParamType that may be used in place of the old one.
+						if (type.isAssignableFrom(paramType.type())) // If the paramType extends the specified class...
+							return DataResult.success(new GlobalParameterKey<>(name, type)); // Create a new ContextParamType that may be used in place of the old one.
 						return DataResult.error(() -> paramType + " is not of the proper parameter"); // Remapping is the reason why we don't tell which class.
 					}
 					return DataResult.error(() -> "Context Param Type '" + name + "' does not exist");
@@ -65,14 +69,14 @@ public record GlobalParameterKey<T>(ResourceLocation name, Class<T> clazz)
 
 	@Override
 	public @NotNull String toString() {
-		return "ContextParamType<" + this.name() + ">";
+		return "GlobalParameterKey<" + this.name() + ">";
 	}
 
 	private static @NotNull DataResult<? extends GlobalParameterKey<?>> validateParamType(ResourceLocation id) {
 		try {
 			return DataResult.success(Objects.requireNonNull(
-					SilicateBuiltInRegistries.CONTEXT_PARAM_TYPE.getValue(id),
-					"ContextParamType (" + id + ") is unregistered"
+					SilicateBuiltInRegistries.GLOBAL_PARAMETER_KEY.getValue(id),
+					"GlobalParameterKey (" + id + ") is unregistered"
 			));
 		} catch (NullPointerException e) {
 			return DataResult.error(e::getMessage);
@@ -90,7 +94,7 @@ public record GlobalParameterKey<T>(ResourceLocation name, Class<T> clazz)
 	}
 
 	@Override
-	public Class<T> getType() {
-		return this.clazz;
+	public ValueType<T> getType() {
+		return this.type;
 	}
 }

@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +19,7 @@ public record BlockEntityTypePredicate(
 	BlockEntityType<?> blockEntityType
 ) implements TypedGamePredicate<BlockEntityTypePredicate, BlockEntity> {
 	public static final MapCodec<BlockEntityTypePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterKey.getCodec(BlockEntity.class)
+		GlobalParameterKey.getCodec(SilicateValueTypes.BLOCK_ENTITY)
 				.fieldOf("param_type")
 				.forGetter(BlockEntityTypePredicate::paramType),
 		ResourceLocation.CODEC

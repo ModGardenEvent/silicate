@@ -5,7 +5,8 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Internal
 public class SilicateGameTests {
 	public static void registerAll() {
+		SilicateTestValueTypes.registerAll();
 		SilicateTestInstanceTypes.registerAll();
-		SilicateTestContextParamTypes.registerAll();
+		SilicateTestGlobalParameterKeys.registerAll();
 	}
 }

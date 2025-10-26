@@ -1,6 +1,7 @@
 package lgbt.greenhouse.silicate.api;
 
 import com.mojang.serialization.Lifecycle;
+import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.HolderLookup;
@@ -25,7 +26,8 @@ import static lgbt.greenhouse.silicate.Silicate.id;
  */
 public final class SilicateBuiltInRegistries {
 	public static final Registry<PredicateType<?>> PREDICATE = create(SilicateRegistries.PREDICATE);
-	public static final Registry<GlobalParameterKey<?>> CONTEXT_PARAM_TYPE = create(SilicateRegistries.CONTEXT_PARAM_TYPE);
+	public static final Registry<GlobalParameterKey<?>> GLOBAL_PARAMETER_KEY = create(SilicateRegistries.CONTEXT_PARAM_TYPE);
+	public static final Registry<ValueType<?>> VALUE_TYPE = create(SilicateRegistries.VALUE_TYPE);
 
 	private SilicateBuiltInRegistries() {}
 
@@ -39,8 +41,9 @@ public final class SilicateBuiltInRegistries {
 	@SuppressWarnings("unchecked")
 	private static void registerRegistries() {
 		Registry<Registry<?>> registryRegistry = (Registry<Registry<?>>) BuiltInRegistries.REGISTRY;
-		Registry.register(registryRegistry, id("context_param_type"), CONTEXT_PARAM_TYPE);
+		Registry.register(registryRegistry, id("context_param_type"), GLOBAL_PARAMETER_KEY);
 		Registry.register(registryRegistry, id("predicate"), PREDICATE);
+		Registry.register(registryRegistry, id("value_type"), VALUE_TYPE);
 	}
 
 	/**

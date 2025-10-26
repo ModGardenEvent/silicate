@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import lgbt.greenhouse.silicate.api.condition.PredicateType;
 import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
@@ -14,7 +15,7 @@ public record BlockStatePredicate(
 	BlockState blockState
 ) implements TypedGamePredicate<BlockStatePredicate, BlockState> {
 	public static final MapCodec<BlockStatePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterKey.getCodec(BlockState.class)
+		GlobalParameterKey.getCodec(SilicateValueTypes.BLOCK_STATE)
 			.fieldOf("param_type")
 			.forGetter(BlockStatePredicate::paramType),
 		BlockState.CODEC

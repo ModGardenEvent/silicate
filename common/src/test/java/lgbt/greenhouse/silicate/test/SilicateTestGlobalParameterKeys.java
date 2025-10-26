@@ -1,5 +1,6 @@
 package lgbt.greenhouse.silicate.test;
 
+import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -9,21 +10,21 @@ import org.jetbrains.annotations.ApiStatus;
 
 import static lgbt.greenhouse.silicate.Silicate.MOD_ID;
 
-public class SilicateTestContextParamTypes {
-	public static final GlobalParameterKey<Projectile> PROJECTILE = register("projectile", Projectile.class);
+public class SilicateTestGlobalParameterKeys {
+	public static final GlobalParameterKey<Projectile> PROJECTILE = register("projectile", SilicateTestValueTypes.PROJECTILE);
 
-	private SilicateTestContextParamTypes() {}
+	private SilicateTestGlobalParameterKeys() {}
 
 	@ApiStatus.Internal
 	public static void registerAll() {}
 
 	@SuppressWarnings("SameParameterValue") // Shush.
-	private static <T> GlobalParameterKey<T> register(String name, Class<T> clazz) {
+	private static <T> GlobalParameterKey<T> register(String name, ValueType<T> type) {
 		ResourceLocation id = ResourceLocation.fromNamespaceAndPath(MOD_ID + "_test", name);
 		return Registry.register(
-				SilicateBuiltInRegistries.CONTEXT_PARAM_TYPE,
+				SilicateBuiltInRegistries.GLOBAL_PARAMETER_KEY,
 				id,
-				new GlobalParameterKey<>(id, clazz)
+				new GlobalParameterKey<>(id, type)
 		);
 	}
 }

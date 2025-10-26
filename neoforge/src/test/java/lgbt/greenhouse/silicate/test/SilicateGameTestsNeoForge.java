@@ -1,7 +1,5 @@
 package lgbt.greenhouse.silicate.test;
 
-import lgbt.greenhouse.silicate.test.SilicateTestContextParamTypes;
-import lgbt.greenhouse.silicate.test.SilicateTestInstanceTypes;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -22,7 +20,7 @@ public class SilicateGameTestsNeoForge {
 		@SubscribeEvent
 		public static void registerContents(RegisterEvent event) {
 			register(event, Registries.TEST_INSTANCE_TYPE, SilicateTestInstanceTypes::registerAll);
-			register(event, SilicateRegistries.CONTEXT_PARAM_TYPE, SilicateTestContextParamTypes::registerAll);
+			register(event, SilicateRegistries.CONTEXT_PARAM_TYPE, SilicateTestGlobalParameterKeys::registerAll);
 		}
 
 		private static void register(RegisterEvent event, ResourceKey<? extends Registry<?>> requiredKey,

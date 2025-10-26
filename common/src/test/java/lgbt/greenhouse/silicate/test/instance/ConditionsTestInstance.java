@@ -31,7 +31,7 @@ import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
-import lgbt.greenhouse.silicate.test.SilicateTestContextParamTypes;
+import lgbt.greenhouse.silicate.test.SilicateTestGlobalParameterKeys;
 import lgbt.greenhouse.silicate.test.util.ExpectedResultCondition;
 import org.jetbrains.annotations.NotNull;
 
@@ -121,7 +121,7 @@ public class ConditionsTestInstance extends GameTestInstance {
 				.optional(GlobalParameterKeys.BLOCK_ENTITY)
 				.optional(GlobalParameterKeys.ATTACKING_ENTITY)
 				.optional(GlobalParameterKeys.VICTIM_ENTITY)
-				.optional(SilicateTestContextParamTypes.PROJECTILE)
+				.optional(SilicateTestGlobalParameterKeys.PROJECTILE)
 				.build();
 	}
 
@@ -138,7 +138,7 @@ public class ConditionsTestInstance extends GameTestInstance {
 				.withParameter(
 						GlobalParameterKeys.BLOCK_ENTITY, helper.getBlockEntity(entityBlockPos, FurnaceBlockEntity.class))
 				.withParameter(GlobalParameterKeys.ATTACKING_ENTITY, fakePlayer)
-				.withParameter(SilicateTestContextParamTypes.PROJECTILE, projectile);
+				.withParameter(SilicateTestGlobalParameterKeys.PROJECTILE, projectile);
 		return builder.build();
 	}
 

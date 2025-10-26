@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.GameType;
@@ -27,7 +28,7 @@ public record PlayerGameTypePredicate(
 	List<GameType> gameTypes
 ) implements TypedGamePredicate<PlayerGameTypePredicate, Entity> {
 	public static final MapCodec<PlayerGameTypePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterKey.getCodec(Entity.class)
+		GlobalParameterKey.getCodec(SilicateValueTypes.ENTITY)
 			.fieldOf("param_type")
 			.forGetter(PlayerGameTypePredicate::paramType),
 		Codec.mapEither(

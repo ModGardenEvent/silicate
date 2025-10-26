@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.TagKey;
@@ -22,7 +23,7 @@ public record EntityTypePredicate(
 	HolderSet<EntityType<?>> entityTypes
 ) implements TypedGamePredicate<EntityTypePredicate, Entity> {
 	public static final MapCodec<EntityTypePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterKey.getCodec(Entity.class)
+		GlobalParameterKey.getCodec(SilicateValueTypes.ENTITY)
 			.fieldOf("param_type")
 			.forGetter(EntityTypePredicate::paramType),
 		SilicateCodecs.ENTITY_TYPE_HOLDER_SET

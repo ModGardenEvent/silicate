@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.phys.Vec3;
 import lgbt.greenhouse.silicate.api.condition.PredicateType;
 import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
@@ -21,7 +22,7 @@ public record Vec3Predicate(
 	Vec3 latterOperand
 ) implements TypedGamePredicate<Vec3Predicate, Vec3> {
 	public static final MapCodec<Vec3Predicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterKey.getCodec(Vec3.class)
+		GlobalParameterKey.getCodec(SilicateValueTypes.VEC3)
 			.fieldOf("param_type")
 			.forGetter(Vec3Predicate::paramType),
 		Vec3Comparison.CODEC

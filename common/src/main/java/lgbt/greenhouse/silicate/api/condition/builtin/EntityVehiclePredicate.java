@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.PredicateType;
@@ -23,10 +24,10 @@ public record EntityVehiclePredicate(
 		MaybeTypedPredicate<Entity> condition
 ) implements TypedGamePredicate<EntityVehiclePredicate, Entity> {
 	public static final MapCodec<EntityVehiclePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			GlobalParameterKey.getCodec(Entity.class)
+			GlobalParameterKey.getCodec(SilicateValueTypes.ENTITY)
 					.fieldOf("param_type")
 					.forGetter(EntityVehiclePredicate::paramType),
-			TypedGamePredicate.getMaybeTypedCodec(Entity.class)
+			TypedGamePredicate.getMaybeTypedCodec(SilicateValueTypes.ENTITY)
 					.fieldOf("condition")
 					.forGetter(EntityVehiclePredicate::condition)
 	).apply(instance, EntityVehiclePredicate::new));

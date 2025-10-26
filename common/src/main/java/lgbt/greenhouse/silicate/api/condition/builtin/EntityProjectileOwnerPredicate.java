@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.TraceableEntity;
@@ -25,10 +26,10 @@ public record EntityProjectileOwnerPredicate(
 		Holder<TypedGamePredicate<?, Entity>> condition
 ) implements TypedGamePredicate<EntityProjectileOwnerPredicate, Entity> {
 	public static final MapCodec<EntityProjectileOwnerPredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			GlobalParameterKey.getCodec(Entity.class)
+			GlobalParameterKey.getCodec(SilicateValueTypes.ENTITY)
 					.fieldOf("param_type")
 					.forGetter(EntityProjectileOwnerPredicate::paramType),
-			TypedGamePredicate.getTypedCodec(Entity.class)
+			TypedGamePredicate.getTypedCodec(SilicateValueTypes.ENTITY)
 					.fieldOf("condition")
 					.forGetter(EntityProjectileOwnerPredicate::condition)
 	).apply(instance, EntityProjectileOwnerPredicate::of));

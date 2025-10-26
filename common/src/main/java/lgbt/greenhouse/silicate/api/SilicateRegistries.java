@@ -1,5 +1,6 @@
 package lgbt.greenhouse.silicate.api;
 
+import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import lgbt.greenhouse.silicate.Silicate;
@@ -14,6 +15,7 @@ public final class SilicateRegistries {
 	public static final ResourceKey<Registry<PredicateType<?>>> PREDICATE = create("predicate");
 	public static final ResourceKey<Registry<GlobalParameterKey<?>>> CONTEXT_PARAM_TYPE = create("context_param_type");
 	public static final ResourceKey<Registry<GamePredicate<?>>> CONDITION_TEMPLATE = create("condition_template");
+	public static final ResourceKey<Registry<ValueType<?>>> VALUE_TYPE = create("type");
 
 	private static <T> ResourceKey<Registry<T>> create(String name) {
 		return ResourceKey.createRegistryKey(Silicate.id(name));

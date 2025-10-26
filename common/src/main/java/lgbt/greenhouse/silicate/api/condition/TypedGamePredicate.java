@@ -3,6 +3,7 @@ package lgbt.greenhouse.silicate.api.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.core.Holder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
@@ -15,15 +16,15 @@ import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
  */
 public interface TypedGamePredicate<T extends GamePredicate<T>, P> extends GamePredicate<T> {
 	/**
-	 * @see GlobalParameterKey#getCodec(Class)
+	 * @see GlobalParameterKey#getCodec(ValueType)
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes"}) // Checked at runtime.
-	private static <P> DataResult<Holder<TypedGamePredicate<?, P>>> validate(Holder<GamePredicate<?>> condition, Class<P> clazz) {
+	private static <P> DataResult<Holder<TypedGamePredicate<?, P>>> validate(Holder<GamePredicate<?>> condition, ValueType<P> type) {
 		// Extra Spooky!
-		if (condition.isBound() && condition.value() instanceof TypedGamePredicate<?, ?> typedCondition && typedCondition.getParamType().clazz().equals(clazz)) {
+		if (condition.isBound() && condition.value() instanceof TypedGamePredicate<?, ?> typedCondition && typedCondition.getParamType().type().equals(type)) {
 			return DataResult.success((Holder) condition);
 		} else {
-			return DataResult.error(() -> "GameCondition is not a TypedGameCondition");
+			return DataResult.error(() -> "GamePredicate is not a TypedGamePredicate");
 		}
 	}
 
@@ -34,27 +35,29 @@ public interface TypedGamePredicate<T extends GamePredicate<T>, P> extends GameP
 
 	/**
 	 * Return the codec for this {@link TypedGamePredicate}.
-	 * @param clazz The class of the type in {@link P}.
-	 * @return The typed codec.
+	 *
 	 * @param <P> The value type of the parameter type.
+	 * @param type The class of the type in {@link P}.
+	 * @return The typed codec.
 	 */
-	static <P> Codec<Holder<TypedGamePredicate<?, P>>> getTypedCodec(Class<P> clazz) {
+	static <P> Codec<Holder<TypedGamePredicate<?, P>>> getTypedCodec(ValueType<P> type) {
 		return GamePredicate.CODEC
 				.comapFlatMap(
-						condition -> validate(condition, clazz),
+						condition -> validate(condition, type),
 						TypedGamePredicate::toGameCondition
 				);
 	}
 
 	/**
 	 * Return the codec for this {@link TypedGamePredicate} that also accepts a {@link GamePredicate}.
-	 * @param clazz The class of the type in {@link P}.
-	 * @return The typed or untyped codec.
+	 *
 	 * @param <P> The value type of the parameter type.
+	 * @param type The class of the type in {@link P}.
+	 * @return The typed or untyped codec.
 	 */
-	static <P> Codec<MaybeTypedPredicate<P>> getMaybeTypedCodec(Class<P> clazz) {
+	static <P> Codec<MaybeTypedPredicate<P>> getMaybeTypedCodec(ValueType<P> type) {
 		return Codec.either(
-				getTypedCodec(clazz),
+				getTypedCodec(type),
 				GamePredicate.CODEC
 		).xmap(MaybeTypedPredicate::new, MaybeTypedPredicate::either);
 	}

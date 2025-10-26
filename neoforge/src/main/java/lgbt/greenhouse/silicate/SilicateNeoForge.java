@@ -47,7 +47,7 @@ public class SilicateNeoForge {
 
 		@SubscribeEvent
 		public static void newRegistry(NewRegistryEvent event) {
-			event.register(SilicateBuiltInRegistries.CONTEXT_PARAM_TYPE);
+			event.register(SilicateBuiltInRegistries.GLOBAL_PARAMETER_KEY);
 			event.register(SilicateBuiltInRegistries.PREDICATE);
 		}
 
