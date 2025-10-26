@@ -7,82 +7,82 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A map of {@link ContextParamType} to {@link ContextParam} values.
+ * A map of {@link GlobalParameterType} to {@link Parameter} values.
  * That is, a class representing a map of all present context parameters.
  */
-public sealed class ContextParamMap {
-	protected final Map<ContextParamType<?>, ContextParam<?>> params;
-	private final ContextParamSet paramSet;
+public sealed class ParameterMap {
+	protected final Map<GlobalParameterType<?>, Parameter<?>> params;
+	private final ParameterSet paramSet;
 
-	private ContextParamMap(Map<ContextParamType<?>, ContextParam<?>> params, ContextParamSet paramSet) {
+	private ParameterMap(Map<GlobalParameterType<?>, Parameter<?>> params, ParameterSet paramSet) {
 		this.params = params;
 		this.paramSet = paramSet;
 	}
 
-	private static ContextParamMap ofImmutable(Map<ContextParamType<?>, ContextParam<?>> params, ContextParamSet paramSet) {
-		return new ContextParamMap(Map.copyOf(params), paramSet);
+	private static ParameterMap ofImmutable(Map<GlobalParameterType<?>, Parameter<?>> params, ParameterSet paramSet) {
+		return new ParameterMap(Map.copyOf(params), paramSet);
 	}
 
 	@SuppressWarnings("unchecked") // type is always correct
-	public <T> ContextParam<T> get(ContextParamType<T> type) {
-		return (ContextParam<T>) params.get(type);
+	public <T> Parameter<T> get(GlobalParameterType<T> type) {
+		return (Parameter<T>) params.get(type);
 	}
 
-	public <T> boolean has(ContextParamType<T> type) {
+	public <T> boolean has(GlobalParameterType<T> type) {
 		return params.containsKey(type);
 	}
 
-	public ContextParamSet getParamSet() {
+	public ParameterSet getParamSet() {
 		return paramSet;
 	}
 
-	public static final class Mutable extends ContextParamMap {
-		private Mutable(Map<ContextParamType<?>, ContextParam<?>> params, ContextParamSet paramSet) {
+	public static final class Mutable extends ParameterMap {
+		private Mutable(Map<GlobalParameterType<?>, Parameter<?>> params, ParameterSet paramSet) {
 			super(new HashMap<>(params), paramSet);
 		}
 
-		public static Mutable of(ContextParamMap paramMap) {
+		public static Mutable of(ParameterMap paramMap) {
 			return new Mutable(new HashMap<>(paramMap.params), paramMap.paramSet);
 		}
 
 		@SuppressWarnings("unchecked") // Always correct.
-		public <T> ContextParam<T> set(ContextParamType<T> type, T param) {
-			return (ContextParam<T>) params.put(type, new ContextParam<>(param));
+		public <T> Parameter<T> set(GlobalParameterType<T> type, T param) {
+			return (Parameter<T>) params.put(type, new Parameter<>(param));
 		}
 	}
 
 	public static final class Builder {
-		private final Map<ContextParamType<?>, ContextParam<?>> params;
-		private final ContextParamSet paramSet;
+		private final Map<GlobalParameterType<?>, Parameter<?>> params;
+		private final ParameterSet paramSet;
 
-		private Builder(ContextParamSet paramSet, Map<ContextParamType<?>, ContextParam<?>> params) {
+		private Builder(ParameterSet paramSet, Map<GlobalParameterType<?>, Parameter<?>> params) {
 			this.paramSet = paramSet;
 			this.params = params;
 		}
 
-		private Builder(ContextParamSet paramSet) {
+		private Builder(ParameterSet paramSet) {
 			this(paramSet, new HashMap<>());
 		}
 
-		public static Builder of(ContextParamSet paramSet) {
+		public static Builder of(ParameterSet paramSet) {
 			return new Builder(paramSet);
 		}
 
-		public <T> Builder withParameter(ContextParamType<T> type, @NotNull ContextParam<T> param) {
+		public <T> Builder withParameter(GlobalParameterType<T> type, @NotNull Parameter<T> param) {
 			params.put(type, param);
 			return this;
 		}
 
-		public <T> Builder withParameter(ContextParamType<T> type, T param) {
-			return withParameter(type, new ContextParam<>(param));
+		public <T> Builder withParameter(GlobalParameterType<T> type, T param) {
+			return withParameter(type, new Parameter<>(param));
 		}
 
 		/**
 		 * @throws InvalidContextParameterException if a parameter is invalid or missing.
 		 */
-		public ContextParamMap build() throws InvalidContextParameterException {
+		public ParameterMap build() throws InvalidContextParameterException {
 			validate();
-			return ContextParamMap.ofImmutable(params, paramSet);
+			return ParameterMap.ofImmutable(params, paramSet);
 		}
 
 		/**

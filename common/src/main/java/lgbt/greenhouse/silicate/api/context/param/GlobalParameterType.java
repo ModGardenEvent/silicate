@@ -10,17 +10,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public record ContextParamType<T>(ResourceLocation name, Class<T> clazz) {
+public record GlobalParameterType<T>(ResourceLocation name, Class<T> clazz) {
 	/**
-	 * The generic {@link Codec} for any {@link ContextParamType}.
+	 * The generic {@link Codec} for any {@link GlobalParameterType}.
 	 * <br>
 	 * If implementing parameter types programmatically, use {@link #getCodec(Class)} instead!
 	 * @see #getCodec(Class)
 	 */
-	public static final Codec<ContextParamType<?>> ANY_CODEC = ResourceLocation.CODEC
+	public static final Codec<GlobalParameterType<?>> ANY_CODEC = ResourceLocation.CODEC
 			.comapFlatMap(
-					ContextParamType::validateParamType,
-					ContextParamType::name
+					GlobalParameterType::validateParamType,
+					GlobalParameterType::name
 			);
 
 	/**
@@ -32,16 +32,16 @@ public record ContextParamType<T>(ResourceLocation name, Class<T> clazz) {
 	 * @see TypedGamePredicate#validate(Holder, Class)
 	 */
 	@SuppressWarnings({"JavadocReference", "unchecked"})// We want people to be able to verify the underlying implementation.
-	public static <T> Codec<ContextParamType<T>> getCodec(Class<T> clazz) {
+	public static <T> Codec<GlobalParameterType<T>> getCodec(Class<T> clazz) {
 		// Spooky!
 		return ResourceLocation.CODEC
 				.flatXmap(name -> {
-					ContextParamType<?> paramType = SilicateBuiltInRegistries.CONTEXT_PARAM_TYPE.getValue(name);
+					GlobalParameterType<?> paramType = SilicateBuiltInRegistries.CONTEXT_PARAM_TYPE.getValue(name);
 					if (paramType != null) {
 						if (clazz.equals(paramType.clazz()))
-							return DataResult.success((ContextParamType<T>)paramType);
+							return DataResult.success((GlobalParameterType<T>)paramType);
 						if (clazz.isAssignableFrom(paramType.clazz())) // If the paramType extends the specified class...
-							return DataResult.success(new ContextParamType<>(name, clazz)); // Create a new ContextParamType that may be used in place of the old one.
+							return DataResult.success(new GlobalParameterType<>(name, clazz)); // Create a new ContextParamType that may be used in place of the old one.
 						return DataResult.error(() -> paramType + " is not of the proper parameter"); // Remapping is the reason why we don't tell which class.
 					}
 					return DataResult.error(() -> "Context Param Type '" + name + "' does not exist");
@@ -52,9 +52,9 @@ public record ContextParamType<T>(ResourceLocation name, Class<T> clazz) {
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
-		if (!(obj instanceof ContextParamType<?> contextParamType))
+		if (!(obj instanceof GlobalParameterType<?> globalParameterType))
 			return false;
-		return contextParamType.name().equals(this.name());
+		return globalParameterType.name().equals(this.name());
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public record ContextParamType<T>(ResourceLocation name, Class<T> clazz) {
 		return "ContextParamType<" + this.name() + ">";
 	}
 
-	private static @NotNull DataResult<? extends ContextParamType<?>> validateParamType(ResourceLocation id) {
+	private static @NotNull DataResult<? extends GlobalParameterType<?>> validateParamType(ResourceLocation id) {
 		try {
 			return DataResult.success(Objects.requireNonNull(
 					SilicateBuiltInRegistries.CONTEXT_PARAM_TYPE.getValue(id),

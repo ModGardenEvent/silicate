@@ -8,7 +8,7 @@ import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
 
 /**
  * Allows the caller to check if the value of a {@link Vec3} passes equality/inequality comparisons with {@link #latterOperand}.
@@ -16,12 +16,12 @@ import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
  * @param latterOperand The {@link Vec3} to do operations on (to the right).
  */
 public record Vec3Predicate(
-	ContextParamType<Vec3> paramType,
+	GlobalParameterType<Vec3> paramType,
 	Vec3Comparison comparison,
 	Vec3 latterOperand
 ) implements TypedGamePredicate<Vec3Predicate, Vec3> {
 	public static final MapCodec<Vec3Predicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		ContextParamType.getCodec(Vec3.class)
+		GlobalParameterType.getCodec(Vec3.class)
 			.fieldOf("param_type")
 			.forGetter(Vec3Predicate::paramType),
 		Vec3Comparison.CODEC
@@ -49,7 +49,7 @@ public record Vec3Predicate(
 	}
 
 	@Override
-	public ContextParamType<Vec3> getParamType() {
+	public GlobalParameterType<Vec3> getParamType() {
 		return paramType;
 	}
 }

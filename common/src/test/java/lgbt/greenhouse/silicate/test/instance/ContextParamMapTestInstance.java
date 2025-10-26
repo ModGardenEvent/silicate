@@ -11,10 +11,10 @@ import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.phys.Vec3;
-import lgbt.greenhouse.silicate.api.context.param.ContextParam;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamMap;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamSet;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamTypes;
+import lgbt.greenhouse.silicate.api.context.param.Parameter;
+import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
+import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
 import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,44 +31,44 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 	@Override
 	public void run(@NotNull GameTestHelper helper) {
 		try {
-			ContextParamSet paramSet = createParamSet();
-			ContextParamMap paramMap = createParamMap(createOrigin());
+			ParameterSet paramSet = createParamSet();
+			ParameterMap paramMap = createParamMap(createOrigin());
 			helper.assertTrue(
 					paramMap.getParamSet().equals(paramSet),
 					Component.literal("ContextParamMap.getParamSet() does not equal paramSet")
 			);
 			helper.assertTrue(
-					paramMap.get(ContextParamTypes.BLOCK_ENTITY) == null,
+					paramMap.get(GlobalParameterTypes.BLOCK_ENTITY) == null,
 					Component.literal("ContextParamMap.get(ContextParamTypes.BLOCK_ENTITY) != null")
 			);
 			helper.assertTrue(
-					paramMap.get(ContextParamTypes.ORIGIN)
+					paramMap.get(GlobalParameterTypes.ORIGIN)
 							.value()
 							.equals(createOrigin().getCenter()),
 					Component.literal("ContextParamTypes.ORIGIN is not equal to origin")
 			);
 			helper.assertFalse(
-					paramMap.has(ContextParamTypes.BLOCK_ENTITY),
+					paramMap.has(GlobalParameterTypes.BLOCK_ENTITY),
 					Component.literal("ContextParamMap.has(ContextParamTypes.BLOCK_ENTITY) != false")
 			);
 			helper.assertTrue(
-					paramMap.has(ContextParamTypes.ORIGIN),
+					paramMap.has(GlobalParameterTypes.ORIGIN),
 					Component.literal("ContextParamMap.has(ContextParamTypes.ORIGIN) != true")
 			);
-			ContextParamMap.Mutable mutableParamMap = ContextParamMap.Mutable.of(paramMap);
+			ParameterMap.Mutable mutableParamMap = ParameterMap.Mutable.of(paramMap);
 			Vec3 newOrigin = createOrigin().getBottomCenter();
 			helper.assertTrue(
-					mutableParamMap.get(ContextParamTypes.ORIGIN)
-							.equals(paramMap.get(ContextParamTypes.ORIGIN)),
+					mutableParamMap.get(GlobalParameterTypes.ORIGIN)
+							.equals(paramMap.get(GlobalParameterTypes.ORIGIN)),
 					Component.literal("ContextParamMap.Mutable.get(ContextParamTypes.ORIGIN) != oldOrigin")
 			);
-			ContextParam<Vec3> oldOrigin = mutableParamMap.set(ContextParamTypes.ORIGIN, newOrigin);
+			Parameter<Vec3> oldOrigin = mutableParamMap.set(GlobalParameterTypes.ORIGIN, newOrigin);
 			helper.assertTrue(
-					paramMap.get(ContextParamTypes.ORIGIN).equals(oldOrigin),
+					paramMap.get(GlobalParameterTypes.ORIGIN).equals(oldOrigin),
 					Component.literal("ContextParamMap.get(ContextParamTypes.ORIGIN) != oldOrigin")
 			);
 			helper.assertTrue(
-					mutableParamMap.get(ContextParamTypes.ORIGIN)
+					mutableParamMap.get(GlobalParameterTypes.ORIGIN)
 							.value()
 							.equals(newOrigin),
 					Component.literal("ContextParamMap.Mutable.get(ContextParamTypes.ORIGIN) != newOrigin")
@@ -89,35 +89,35 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 		}
 	}
 
-	private static @NotNull ContextParamSet createParamSet() {
-		return ContextParamSet.Builder.of()
-				.required(ContextParamTypes.ORIGIN)
+	private static @NotNull ParameterSet createParamSet() {
+		return ParameterSet.Builder.of()
+				.required(GlobalParameterTypes.ORIGIN)
 				.build();
 	}
 
-	private static ContextParamMap createParamMap(BlockPos origin) throws InvalidContextParameterException {
-		ContextParamSet paramSet = createParamSet();
-		ContextParamMap.Builder builder = ContextParamMap.Builder.of(paramSet)
-				.withParameter(ContextParamTypes.ORIGIN, origin.getCenter());
+	private static ParameterMap createParamMap(BlockPos origin) throws InvalidContextParameterException {
+		ParameterSet paramSet = createParamSet();
+		ParameterMap.Builder builder = ParameterMap.Builder.of(paramSet)
+				.withParameter(GlobalParameterTypes.ORIGIN, origin.getCenter());
 		return builder.build();
 	}
 
 	private static void createInvalidParamMap() throws InvalidContextParameterException {
-		ContextParamSet paramSet = ContextParamSet.Builder.of()
-				.required(ContextParamTypes.BLOCK_STATE)
-				.required(ContextParamTypes.ORIGIN)
+		ParameterSet paramSet = ParameterSet.Builder.of()
+				.required(GlobalParameterTypes.BLOCK_STATE)
+				.required(GlobalParameterTypes.ORIGIN)
 				.build();
-		ContextParamMap.Builder.of(paramSet)
-				.withParameter(ContextParamTypes.THIS_ENTITY, new ContextParam<>(null))
+		ParameterMap.Builder.of(paramSet)
+				.withParameter(GlobalParameterTypes.THIS_ENTITY, new Parameter<>(null))
 				.build();
 	}
 
 	private static void createMissingParamMap() throws InvalidContextParameterException {
-		ContextParamSet paramSet = ContextParamSet.Builder.of()
-				.required(ContextParamTypes.BLOCK_STATE)
-				.required(ContextParamTypes.ORIGIN)
+		ParameterSet paramSet = ParameterSet.Builder.of()
+				.required(GlobalParameterTypes.BLOCK_STATE)
+				.required(GlobalParameterTypes.ORIGIN)
 				.build();
-		ContextParamMap.Builder.of(paramSet)
+		ParameterMap.Builder.of(paramSet)
 				.build();
 	}
 

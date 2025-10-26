@@ -4,18 +4,18 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
 
 /**
  * Implements {@link TypedGamePredicate} on a regular {@link GamePredicate}.
  * This is meant for use by datapacks.
  */
 public record RetypedPredicate(
-		ContextParamType<?> paramType,
+		GlobalParameterType<?> paramType,
 		Holder<GamePredicate<?>> condition
 ) implements TypedGamePredicate<RetypedPredicate, Object> {
 	public static final MapCodec<RetypedPredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			ContextParamType.ANY_CODEC
+			GlobalParameterType.ANY_CODEC
 					.fieldOf("param_type")
 					.forGetter(RetypedPredicate::paramType),
 			GamePredicate.CODEC
@@ -25,8 +25,8 @@ public record RetypedPredicate(
 
 	@SuppressWarnings("unchecked") // Checked at runtime.
 	@Override
-	public ContextParamType<Object> getParamType() {
-		return (ContextParamType<Object>) paramType;
+	public GlobalParameterType<Object> getParamType() {
+		return (GlobalParameterType<Object>) paramType;
 	}
 
 	@Override

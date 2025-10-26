@@ -27,9 +27,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import lgbt.greenhouse.silicate.Silicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamMap;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamSet;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamTypes;
+import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
+import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
 import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
 import lgbt.greenhouse.silicate.test.SilicateTestContextParamTypes;
 import lgbt.greenhouse.silicate.test.util.ExpectedResultCondition;
@@ -68,7 +68,7 @@ public class ConditionsTestInstance extends GameTestInstance {
 		skeleton.startRiding(skeletonHorse);
 		arrow.setOwner(skeleton);
 		try {
-			ContextParamMap paramMap = createParamMap(
+			ParameterMap paramMap = createParamMap(
 					createState(),
 					createOrigin(),
 					skeletonHorse,
@@ -113,30 +113,31 @@ public class ConditionsTestInstance extends GameTestInstance {
 		return Component.literal("Silicate Conditions Test");
 	}
 
-	private static @NotNull ContextParamSet createParamSet() {
-		return ContextParamSet.Builder.of()
-				.required(ContextParamTypes.BLOCK_STATE)
-				.required(ContextParamTypes.ORIGIN)
-				.required(ContextParamTypes.THIS_ENTITY)
-				.optional(ContextParamTypes.BLOCK_ENTITY)
-				.optional(ContextParamTypes.ATTACKING_ENTITY)
-				.optional(ContextParamTypes.VICTIM_ENTITY)
+	private static @NotNull ParameterSet createParamSet() {
+		return ParameterSet.Builder.of()
+				.required(GlobalParameterTypes.BLOCK_STATE)
+				.required(GlobalParameterTypes.ORIGIN)
+				.required(GlobalParameterTypes.THIS_ENTITY)
+				.optional(GlobalParameterTypes.BLOCK_ENTITY)
+				.optional(GlobalParameterTypes.ATTACKING_ENTITY)
+				.optional(GlobalParameterTypes.VICTIM_ENTITY)
 				.optional(SilicateTestContextParamTypes.PROJECTILE)
 				.build();
 	}
 
-	private static ContextParamMap createParamMap(BlockState state, BlockPos origin, Entity entity, Entity entity2, BlockState entityBlock, ServerPlayer fakePlayer, Projectile projectile, GameTestHelper helper) throws InvalidContextParameterException {
-		ContextParamSet paramSet = createParamSet();
+	private static ParameterMap createParamMap(BlockState state, BlockPos origin, Entity entity, Entity entity2, BlockState entityBlock, ServerPlayer fakePlayer, Projectile projectile, GameTestHelper helper) throws InvalidContextParameterException {
+		ParameterSet paramSet = createParamSet();
 		helper.setBlock(origin, state);
 		BlockPos entityBlockPos = origin.east();
 		helper.setBlock(entityBlockPos, entityBlock);
-		ContextParamMap.Builder builder = ContextParamMap.Builder.of(paramSet)
-				.withParameter(ContextParamTypes.BLOCK_STATE, state)
-				.withParameter(ContextParamTypes.ORIGIN, origin.getCenter())
-				.withParameter(ContextParamTypes.THIS_ENTITY, entity)
-				.withParameter(ContextParamTypes.VICTIM_ENTITY, entity2)
-				.withParameter(ContextParamTypes.BLOCK_ENTITY, helper.getBlockEntity(entityBlockPos, FurnaceBlockEntity.class))
-				.withParameter(ContextParamTypes.ATTACKING_ENTITY, fakePlayer)
+		ParameterMap.Builder builder = ParameterMap.Builder.of(paramSet)
+				.withParameter(GlobalParameterTypes.BLOCK_STATE, state)
+				.withParameter(GlobalParameterTypes.ORIGIN, origin.getCenter())
+				.withParameter(GlobalParameterTypes.THIS_ENTITY, entity)
+				.withParameter(GlobalParameterTypes.VICTIM_ENTITY, entity2)
+				.withParameter(
+						GlobalParameterTypes.BLOCK_ENTITY, helper.getBlockEntity(entityBlockPos, FurnaceBlockEntity.class))
+				.withParameter(GlobalParameterTypes.ATTACKING_ENTITY, fakePlayer)
 				.withParameter(SilicateTestContextParamTypes.PROJECTILE, projectile);
 		return builder.build();
 	}

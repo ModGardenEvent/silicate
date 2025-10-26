@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
 
 import java.util.function.Predicate;
 
@@ -46,10 +46,10 @@ public record MaybeTypedPredicate<P>(
 
 	/**
 	 * Return either the parameter type of the {@link TypedGamePredicate} or the default parameter type.
-	 * @param defaultParamType The default {@link ContextParamType}. This is typically the caller's parameter type.
+	 * @param defaultParamType The default {@link GlobalParameterType}. This is typically the caller's parameter type.
 	 * @return The condition's parameter type or the default parameter type.
 	 */
-	public ContextParamType<P> getParamTypeOrDefault(ContextParamType<P> defaultParamType) {
+	public GlobalParameterType<P> getParamTypeOrDefault(GlobalParameterType<P> defaultParamType) {
 		return either.map(holder -> holder.value().getParamType(), untyped -> defaultParamType);
 	}
 }

@@ -7,5 +7,5 @@ import lgbt.greenhouse.silicate.api.context.GameContext;
  * @param value the value of the parameter.
  * @param <T> type of the value.
  */
-public record ContextParam<T>(T value) {
+public record Parameter<T>(T value) {
 }

@@ -2,8 +2,8 @@ package lgbt.greenhouse.silicate.api.context;
 
 import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamMap;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
+import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -12,14 +12,14 @@ import org.jetbrains.annotations.Nullable;
 public class GameContext {
 	@Nullable
 	private final Level level;
-	private final ContextParamMap params;
+	private final ParameterMap params;
 
-	protected GameContext(@Nullable Level level, ContextParamMap params) {
+	protected GameContext(@Nullable Level level, ParameterMap params) {
 		this.level = level;
 		this.params = params;
 	}
 
-	public static GameContext of(@Nullable Level level, ContextParamMap params) {
+	public static GameContext of(@Nullable Level level, ParameterMap params) {
 		return new GameContext(level, params);
 	}
 
@@ -27,11 +27,11 @@ public class GameContext {
 		return level;
 	}
 
-	public ContextParamMap getParams() {
+	public ParameterMap getParams() {
 		return params;
 	}
 
-	public <T> T getParam(ContextParamType<T> paramType) {
+	public <T> T getParam(GlobalParameterType<T> paramType) {
 		return getParams().get(paramType).value();
 	}
 }

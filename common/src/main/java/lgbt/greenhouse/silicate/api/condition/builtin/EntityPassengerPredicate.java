@@ -10,9 +10,9 @@ import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.MaybeTypedPredicate;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamMap;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamType;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamTypes;
+import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterType;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +24,12 @@ import java.util.Optional;
  * @param matchAll Whether to check if all passengers match or if any match.
  */
 public record EntityPassengerPredicate(
-		ContextParamType<Entity> paramType,
+		GlobalParameterType<Entity> paramType,
 		MaybeTypedPredicate<Entity> condition,
 		boolean matchAll
 ) implements TypedGamePredicate<EntityPassengerPredicate, Entity> {
 	public static final MapCodec<EntityPassengerPredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			ContextParamType.getCodec(Entity.class)
+			GlobalParameterType.getCodec(Entity.class)
 					.fieldOf("param_type")
 					.forGetter(EntityPassengerPredicate::paramType),
 			TypedGamePredicate.getMaybeTypedCodec(Entity.class)
@@ -41,7 +41,7 @@ public record EntityPassengerPredicate(
 	).apply(instance, EntityPassengerPredicate::of));
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	private static EntityPassengerPredicate of(ContextParamType<Entity> paramType, MaybeTypedPredicate<Entity> condition, Optional<Boolean> matchAll) {
+	private static EntityPassengerPredicate of(GlobalParameterType<Entity> paramType, MaybeTypedPredicate<Entity> condition, Optional<Boolean> matchAll) {
 		return new EntityPassengerPredicate(
 				paramType,
 				condition,
@@ -52,8 +52,8 @@ public record EntityPassengerPredicate(
 	@Override
 	public boolean test(GameContext oldContext) {
 		List<Entity> passengers = oldContext.getParam(paramType).getPassengers();
-		ContextParamMap oldParamMap = oldContext.getParams();
-		ContextParamMap.Mutable paramMap = ContextParamMap.Mutable.of(oldParamMap);
+		ParameterMap oldParamMap = oldContext.getParams();
+		ParameterMap.Mutable paramMap = ParameterMap.Mutable.of(oldParamMap);
 		if (matchAll) {
 			return !passengers.isEmpty() && passengers.stream().allMatch(passenger -> testPassenger(oldContext.getLevel(), passenger, paramMap));
 		} else {
@@ -61,8 +61,8 @@ public record EntityPassengerPredicate(
 		}
 	}
 
-	private boolean testPassenger(Level level, Entity passenger, ContextParamMap.Mutable paramMap) {
-		paramMap.set(ContextParamTypes.PASSENGER_ENTITY, passenger);
+	private boolean testPassenger(Level level, Entity passenger, ParameterMap.Mutable paramMap) {
+		paramMap.set(GlobalParameterTypes.PASSENGER_ENTITY, passenger);
 		GameContext context = GameContext.of(level, paramMap);
 		return condition.test(context);
 	}
@@ -78,7 +78,7 @@ public record EntityPassengerPredicate(
 	}
 
 	@Override
-	public ContextParamType<Entity> getParamType() {
+	public GlobalParameterType<Entity> getParamType() {
 		return paramType;
 	}
 }

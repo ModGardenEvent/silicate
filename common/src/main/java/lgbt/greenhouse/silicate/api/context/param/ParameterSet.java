@@ -8,11 +8,11 @@ import java.util.Set;
 /**
  * A set of all possible parameters in a context.
  */
-public final class ContextParamSet {
-	private final Set<ContextParamType<?>> required;
-	private final Set<ContextParamType<?>> all;
+public final class ParameterSet {
+	private final Set<GlobalParameterType<?>> required;
+	private final Set<GlobalParameterType<?>> all;
 
-	private ContextParamSet(Set<ContextParamType<?>> required, Set<ContextParamType<?>> optional) {
+	private ParameterSet(Set<GlobalParameterType<?>> required, Set<GlobalParameterType<?>> optional) {
 		this.required = required;
 		this.all = Sets.union(required, optional);
 	}
@@ -20,28 +20,28 @@ public final class ContextParamSet {
 	/**
 	 * Whether the parameter type is present in this set and may be used.
 	 */
-	public <T> boolean hasParam(ContextParamType<T> type) {
+	public <T> boolean hasParam(GlobalParameterType<T> type) {
 		return all.contains(type);
 	}
 
 	/**
 	 * If the parameter is mandatory.
 	 */
-	public <T> boolean isRequired(ContextParamType<T> type) {
+	public <T> boolean isRequired(GlobalParameterType<T> type) {
 		return required.contains(type);
 	}
 
-	public Set<ContextParamType<?>> getRequired() {
+	public Set<GlobalParameterType<?>> getRequired() {
 		return required;
 	}
 
-	public Set<ContextParamType<?>> getAll() {
+	public Set<GlobalParameterType<?>> getAll() {
 		return all;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof ContextParamSet set) {
+		if (obj instanceof ParameterSet set) {
 			return getRequired().equals(set.getRequired()) && getAll().equals(set.getAll());
 		} else {
 			return false;
@@ -49,8 +49,8 @@ public final class ContextParamSet {
 	}
 
 	public static final class Builder {
-		private final Set<ContextParamType<?>> required = new HashSet<>();
-		private final Set<ContextParamType<?>> optional = new HashSet<>();
+		private final Set<GlobalParameterType<?>> required = new HashSet<>();
+		private final Set<GlobalParameterType<?>> optional = new HashSet<>();
 
 		private Builder() {}
 
@@ -58,18 +58,18 @@ public final class ContextParamSet {
 			return new Builder();
 		}
 
-		public <T> Builder required(ContextParamType<T> param) {
+		public <T> Builder required(GlobalParameterType<T> param) {
 			required.add(param);
 			return this;
 		}
 
-		public <T> Builder optional(ContextParamType<T> param) {
+		public <T> Builder optional(GlobalParameterType<T> param) {
 			optional.add(param);
 			return this;
 		}
 
-		public ContextParamSet build() {
-			return new ContextParamSet(Set.copyOf(required), Set.copyOf(optional));
+		public ParameterSet build() {
+			return new ParameterSet(Set.copyOf(required), Set.copyOf(optional));
 		}
 	}
 }

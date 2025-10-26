@@ -15,9 +15,9 @@ import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamMap;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamSet;
-import lgbt.greenhouse.silicate.api.context.param.ContextParamTypes;
+import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
+import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
+import lgbt.greenhouse.silicate.api.context.param.GlobalParameterTypes;
 import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +34,7 @@ public class GameContextTestInstance extends GameTestInstance {
 	@Override
 	public void run(@NotNull GameTestHelper helper) {
 		try {
-			ContextParamMap paramMap = createParamMap(createState(), createOrigin(), helper);
+			ParameterMap paramMap = createParamMap(createState(), createOrigin(), helper);
 			GameContext context = GameContext.of(helper.getLevel(), paramMap);
 			helper.assertTrue(
 					context.getLevel() != null,
@@ -54,18 +54,18 @@ public class GameContextTestInstance extends GameTestInstance {
 		}
 	}
 
-	private static ContextParamMap createParamMap(BlockState state, BlockPos origin, GameTestHelper helper) throws InvalidContextParameterException {
+	private static ParameterMap createParamMap(BlockState state, BlockPos origin, GameTestHelper helper) throws InvalidContextParameterException {
 		helper.setBlock(origin, state);
-		ContextParamMap.Builder builder = ContextParamMap.Builder.of(createParamSet())
-				.withParameter(ContextParamTypes.ORIGIN, origin.getCenter())
-				.withParameter(ContextParamTypes.BLOCK_STATE, state);
+		ParameterMap.Builder builder = ParameterMap.Builder.of(createParamSet())
+				.withParameter(GlobalParameterTypes.ORIGIN, origin.getCenter())
+				.withParameter(GlobalParameterTypes.BLOCK_STATE, state);
 		return builder.build();
 	}
 
-	private static @NotNull ContextParamSet createParamSet() {
-		return ContextParamSet.Builder.of()
-				.required(ContextParamTypes.ORIGIN)
-				.required(ContextParamTypes.BLOCK_STATE)
+	private static @NotNull ParameterSet createParamSet() {
+		return ParameterSet.Builder.of()
+				.required(GlobalParameterTypes.ORIGIN)
+				.required(GlobalParameterTypes.BLOCK_STATE)
 				.build();
 	}
 
