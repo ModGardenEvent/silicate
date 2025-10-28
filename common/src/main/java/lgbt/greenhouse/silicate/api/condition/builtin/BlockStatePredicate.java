@@ -4,11 +4,11 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.level.block.state.BlockState;
-import lgbt.greenhouse.silicate.api.condition.PredicateType;
-import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import org.jetbrains.annotations.NotNull;
 
 public record BlockStatePredicate(
 	GlobalParameterKey<BlockState> paramType,
@@ -30,13 +30,13 @@ public record BlockStatePredicate(
 	}
 
 	@Override
-	public MapCodec<BlockStatePredicate> getCodec() {
+	public @NotNull MapCodec<BlockStatePredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public PredicateType<BlockStatePredicate> getType() {
-		return PredicateTypes.BLOCK_STATE;
+	public @NotNull Type<BlockStatePredicate> getType() {
+		return SilicatePredicateTypes.BLOCK_STATE;
 	}
 
 	@Override

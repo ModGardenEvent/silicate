@@ -7,6 +7,8 @@ import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandle;
+
 @ApiStatus.Internal
 public class Silicate {
 	public static final String MOD_ID = "silicate";
@@ -38,5 +40,13 @@ public class Silicate {
 
 	public static ResourceLocation id(String name) {
 		return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
+	}
+
+	public static ResourceLocation parseId(String value) {
+		if (!value.contains(":")) {
+			return id(value);
+		} else {
+			return ResourceLocation.parse(value);
+		}
 	}
 }

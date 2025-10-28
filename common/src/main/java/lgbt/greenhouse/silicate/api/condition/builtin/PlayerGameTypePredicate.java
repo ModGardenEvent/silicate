@@ -8,12 +8,12 @@ import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.GameType;
-import lgbt.greenhouse.silicate.api.condition.PredicateType;
-import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import lgbt.greenhouse.silicate.duck.Duck_AbstractClientPlayer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -82,13 +82,13 @@ public record PlayerGameTypePredicate(
 	}
 
 	@Override
-	public MapCodec<PlayerGameTypePredicate> getCodec() {
+	public @NotNull MapCodec<PlayerGameTypePredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public PredicateType<PlayerGameTypePredicate> getType() {
-		return PredicateTypes.PLAYER_GAME_TYPE;
+	public @NotNull Type<PlayerGameTypePredicate> getType() {
+		return SilicatePredicateTypes.PLAYER_GAME_TYPE;
 	}
 
 	@Override

@@ -1,28 +1,27 @@
 package lgbt.greenhouse.silicate.api.type;
 
+import com.mojang.serialization.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
-import java.lang.constant.Constable;
-import java.lang.constant.ConstantDesc;
 import java.lang.invoke.TypeDescriptor;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.util.Optional;
 
 /**
  * A type wrapping a {@link Class}.
  * @param clazz underlying class
+ * @param codec optional underlying codec
  * @param <T> underlying type
  */
-public record ValueType<T>(Class<T> clazz) implements
+public record ValueType<T>(Class<T> clazz, @Nullable Codec<T> codec) implements
 		GenericDeclaration,
 		Type,
 		AnnotatedElement,
-		TypeDescriptor.OfField<Class<?>>,
-		Constable {
+		TypeDescriptor.OfField<Class<?>> {
 	/**
 	 * @see Class#isAssignableFrom(Class)
 	 */
@@ -33,11 +32,6 @@ public record ValueType<T>(Class<T> clazz) implements
 	@Override
 	public String getTypeName() {
 		return this.clazz.getTypeName();
-	}
-
-	@Override
-	public Optional<? extends ConstantDesc> describeConstable() {
-		return this.clazz.describeConstable();
 	}
 
 	@Override

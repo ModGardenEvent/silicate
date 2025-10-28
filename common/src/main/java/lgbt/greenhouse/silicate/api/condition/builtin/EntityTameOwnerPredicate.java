@@ -7,13 +7,13 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.level.Level;
-import lgbt.greenhouse.silicate.api.condition.PredicateType;
-import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A predicate that tests {@link #condition} with the owner of {@link #paramType}.
@@ -60,13 +60,13 @@ public record EntityTameOwnerPredicate(
 	}
 
 	@Override
-	public MapCodec<EntityTameOwnerPredicate> getCodec() {
+	public @NotNull MapCodec<EntityTameOwnerPredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public PredicateType<EntityTameOwnerPredicate> getType() {
-		return PredicateTypes.ENTITY_TAME_OWNER;
+	public @NotNull Type<EntityTameOwnerPredicate> getType() {
+		return SilicatePredicateTypes.ENTITY_TAME_OWNER;
 	}
 
 	@Override

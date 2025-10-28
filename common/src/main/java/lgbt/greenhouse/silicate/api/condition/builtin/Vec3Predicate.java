@@ -4,12 +4,12 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.phys.Vec3;
-import lgbt.greenhouse.silicate.api.condition.PredicateType;
-import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Allows the caller to check if the value of a {@link Vec3} passes equality/inequality comparisons with {@link #latterOperand}.
@@ -40,13 +40,13 @@ public record Vec3Predicate(
 	}
 
 	@Override
-	public MapCodec<Vec3Predicate> getCodec() {
+	public @NotNull MapCodec<Vec3Predicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public PredicateType<Vec3Predicate> getType() {
-		return PredicateTypes.VEC3;
+	public @NotNull Type<Vec3Predicate> getType() {
+		return SilicatePredicateTypes.VEC3;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Implements {@link TypedGamePredicate} on a regular {@link GamePredicate}.
@@ -35,12 +36,13 @@ public record RetypedPredicate(
 	}
 
 	@Override
-	public MapCodec<RetypedPredicate> getCodec() {
+	public @NotNull MapCodec<RetypedPredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public PredicateType<RetypedPredicate> getType() {
-		return PredicateTypes.RETYPED;
+	public @NotNull Type<RetypedPredicate> getType() {
+		return SilicatePredicateTypes.RETYPED;
 	}
+
 }

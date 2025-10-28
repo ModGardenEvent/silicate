@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A set of all possible parameters in a context.
+ * A set of all possible global parameters in a context.
  */
 public final class ParameterSet {
 	private final Set<GlobalParameterKey<?>> required;
@@ -18,17 +18,17 @@ public final class ParameterSet {
 	}
 
 	/**
-	 * Whether the parameter type is present in this set and may be used.
+	 * Whether the parameter key is present in this set and may be used.
 	 */
-	public <T> boolean hasParam(GlobalParameterKey<T> type) {
-		return all.contains(type);
+	public <T> boolean hasParam(GlobalParameterKey<T> key) {
+		return all.contains(key);
 	}
 
 	/**
 	 * If the parameter is mandatory.
 	 */
-	public <T> boolean isRequired(GlobalParameterKey<T> type) {
-		return required.contains(type);
+	public <T> boolean isRequired(GlobalParameterKey<T> key) {
+		return required.contains(key);
 	}
 
 	public Set<GlobalParameterKey<?>> getRequired() {
@@ -58,13 +58,13 @@ public final class ParameterSet {
 			return new Builder();
 		}
 
-		public <T> Builder required(GlobalParameterKey<T> param) {
-			required.add(param);
+		public <T> Builder required(GlobalParameterKey<T> key) {
+			required.add(key);
 			return this;
 		}
 
-		public <T> Builder optional(GlobalParameterKey<T> param) {
-			optional.add(param);
+		public <T> Builder optional(GlobalParameterKey<T> key) {
+			optional.add(key);
 			return this;
 		}
 

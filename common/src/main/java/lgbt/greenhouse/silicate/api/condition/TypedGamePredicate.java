@@ -2,10 +2,8 @@ package lgbt.greenhouse.silicate.api.condition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.core.Holder;
-import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 
 /**
@@ -60,41 +58,6 @@ public interface TypedGamePredicate<T extends GamePredicate<T>, P> extends GameP
 				getTypedCodec(type),
 				GamePredicate.CODEC
 		).xmap(MaybeTypedPredicate::new, MaybeTypedPredicate::either);
-	}
-
-	/**
-	 * Creates an anonymous {@link TypedGamePredicate} from an untyped {@link GamePredicate}.
-	 * @return The anonymous {@link TypedGamePredicate} delegate.
-	 * @param <P> The value type of the parameter type.
-	 * @implNote We have to give up type checking somewhere, so we do it here. The parameter type is checked later on, so this is fine. It also doesn't really matter what type the condition is since the caller provides us that condition's type.
-	 */
-	static <T extends GamePredicate<T>, P> TypedGamePredicate<T, P> retype(
-			GlobalParameterKey<P> paramType,
-			GamePredicate<?> untyped
-	) {
-		return new TypedGamePredicate<>() {
-			@Override
-			public GlobalParameterKey<P> getParamType() {
-				return paramType;
-			}
-
-			@Override
-			public boolean test(GameContext context) {
-				return untyped.test(context);
-			}
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public MapCodec<T> getCodec() {
-				return (MapCodec<T>) untyped.getCodec();
-			}
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public PredicateType<T> getType() {
-				return (PredicateType<T>) untyped.getType();
-			}
-		};
 	}
 
 	/**

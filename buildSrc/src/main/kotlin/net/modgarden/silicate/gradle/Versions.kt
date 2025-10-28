@@ -21,6 +21,8 @@ object Versions {
 	const val FABRIC_MIXIN = "0.15.5+mixin.0.8.7"
 	const val MIXIN_EXTRAS = "0.4.1"
 
+	const val CODEC_EXTRAS = "3.0.0"
+
 	const val MOD_PUBLISH_PLUGIN = "1.0.0-forgejo.1"
 
 	const val JAVA = 21

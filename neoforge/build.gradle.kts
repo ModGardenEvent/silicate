@@ -63,6 +63,10 @@ neoForge {
 	}
 }
 
+dependencies {
+	jarJar("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
+}
+
 tasks {
 	named<ProcessResources>("processResources").configure {
 		filesMatching("*.mixins.json") {

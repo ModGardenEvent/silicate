@@ -5,14 +5,14 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import lgbt.greenhouse.silicate.api.condition.PredicateType;
-import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.MaybeTypedPredicate;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A condition that tests {@link #condition} with the vehicle of {@link #paramType}.
@@ -51,13 +51,13 @@ public record EntityVehiclePredicate(
 	}
 
 	@Override
-	public MapCodec<EntityVehiclePredicate> getCodec() {
+	public @NotNull MapCodec<EntityVehiclePredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public PredicateType<EntityVehiclePredicate> getType() {
-		return PredicateTypes.ENTITY_VEHICLE;
+	public @NotNull Type<EntityVehiclePredicate> getType() {
+		return SilicatePredicateTypes.ENTITY_VEHICLE;
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.SilicateRegistries;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
-import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.platform.SilicatePlatformHelperNeoForge;
 import net.neoforged.bus.api.IEventBus;
@@ -35,7 +35,7 @@ public class SilicateNeoForge {
 		@SubscribeEvent
 		public static void registerContents(RegisterEvent event) {
 			register(event, SilicateRegistries.CONTEXT_PARAM_TYPE, GlobalParameterKeys::registerAll);
-			register(event, SilicateRegistries.PREDICATE, PredicateTypes::registerAll);
+			register(event, SilicateRegistries.PREDICATE, SilicatePredicateTypes::registerAll);
 		}
 
 		private static void register(RegisterEvent event, ResourceKey<? extends Registry<?>> requiredKey,

@@ -8,11 +8,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import lgbt.greenhouse.silicate.api.condition.PredicateType;
-import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import org.jetbrains.annotations.NotNull;
 
 public record BlockEntityTypePredicate(
 	GlobalParameterKey<BlockEntity> paramType,
@@ -42,13 +42,13 @@ public record BlockEntityTypePredicate(
 	}
 
 	@Override
-	public MapCodec<BlockEntityTypePredicate> getCodec() {
+	public @NotNull MapCodec<BlockEntityTypePredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public PredicateType<BlockEntityTypePredicate> getType() {
-		return PredicateTypes.BLOCK_ENTITY_TYPE;
+	public @NotNull Type<BlockEntityTypePredicate> getType() {
+		return SilicatePredicateTypes.BLOCK_ENTITY_TYPE;
 	}
 
 	@Override

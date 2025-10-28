@@ -9,11 +9,11 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import lgbt.greenhouse.silicate.SilicateCodecs;
-import lgbt.greenhouse.silicate.api.condition.PredicateType;
-import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A predicate to check an entity's {@link EntityType}.
@@ -61,13 +61,13 @@ public record EntityTypePredicate(
 	}
 
 	@Override
-	public MapCodec<EntityTypePredicate> getCodec() {
+	public @NotNull MapCodec<EntityTypePredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public PredicateType<EntityTypePredicate> getType() {
-		return PredicateTypes.ENTITY_TYPE;
+	public @NotNull Type<EntityTypePredicate> getType() {
+		return SilicatePredicateTypes.ENTITY_TYPE;
 	}
 
 	@Override

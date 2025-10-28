@@ -33,6 +33,8 @@ dependencies {
 	compileOnly("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
 	annotationProcessor("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
 	compileOnly("net.fabricmc:sponge-mixin:${Versions.FABRIC_MIXIN}")
+
+	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 }
 
 configurations {

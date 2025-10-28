@@ -1,61 +1,60 @@
 package lgbt.greenhouse.silicate.api.context.param;
 
 import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A map of {@link GlobalParameterKey} to {@link Parameter} values.
- * That is, a class representing a map of all present context parameters.
+ * A map of {@link ParameterKey} to {@link Parameter} values.
+ * That is, a class representing a map of all present parameters.
  */
 public sealed class ParameterMap {
-	protected final Map<GlobalParameterKey<?>, Parameter<?>> params;
+	protected final Map<ParameterKey<?>, Parameter<?>> params;
 	private final ParameterSet paramSet;
 
-	private ParameterMap(Map<GlobalParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
+	private ParameterMap(Map<ParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
 		this.params = params;
 		this.paramSet = paramSet;
 	}
 
-	private static ParameterMap ofImmutable(Map<GlobalParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
-		return new ParameterMap(Map.copyOf(params), paramSet);
-	}
-
 	@SuppressWarnings("unchecked") // type is always correct
-	public <T> Parameter<T> get(GlobalParameterKey<T> type) {
-		return (Parameter<T>) params.get(type);
+	public <T> Parameter<T> get(ParameterKey<T> key) {
+		return (Parameter<T>) params.get(key);
 	}
 
-	public <T> boolean has(GlobalParameterKey<T> type) {
-		return params.containsKey(type);
+	public <T> boolean has(ParameterKey<T> key) {
+		return params.containsKey(key);
 	}
 
 	public ParameterSet getParamSet() {
 		return paramSet;
 	}
 
+	@SuppressWarnings("unchecked") // Always correct.
+	public <T> Parameter<T> set(ParameterKey<T> type, T param) {
+		return (Parameter<T>) params.put(type, new Parameter<>(param));
+	}
+
+	// todo: nuke this class. everything is mutable now
+	@ApiStatus.Internal
 	public static final class Mutable extends ParameterMap {
-		private Mutable(Map<GlobalParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
+		private Mutable(Map<ParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
 			super(new HashMap<>(params), paramSet);
 		}
 
 		public static Mutable of(ParameterMap paramMap) {
 			return new Mutable(new HashMap<>(paramMap.params), paramMap.paramSet);
 		}
-
-		@SuppressWarnings("unchecked") // Always correct.
-		public <T> Parameter<T> set(GlobalParameterKey<T> type, T param) {
-			return (Parameter<T>) params.put(type, new Parameter<>(param));
-		}
 	}
 
 	public static final class Builder {
-		private final Map<GlobalParameterKey<?>, Parameter<?>> params;
+		private final Map<ParameterKey<?>, Parameter<?>> params;
 		private final ParameterSet paramSet;
 
-		private Builder(ParameterSet paramSet, Map<GlobalParameterKey<?>, Parameter<?>> params) {
+		private Builder(ParameterSet paramSet, Map<ParameterKey<?>, Parameter<?>> params) {
 			this.paramSet = paramSet;
 			this.params = params;
 		}
@@ -68,13 +67,13 @@ public sealed class ParameterMap {
 			return new Builder(paramSet);
 		}
 
-		public <T> Builder withParameter(GlobalParameterKey<T> type, @NotNull Parameter<T> param) {
-			params.put(type, param);
+		public <T> Builder withParameter(GlobalParameterKey<T> key, @NotNull Parameter<T> param) {
+			params.put(key, param);
 			return this;
 		}
 
-		public <T> Builder withParameter(GlobalParameterKey<T> type, T param) {
-			return withParameter(type, new Parameter<>(param));
+		public <T> Builder withParameter(GlobalParameterKey<T> key, T param) {
+			return withParameter(key, new Parameter<>(param));
 		}
 
 		/**
@@ -82,7 +81,7 @@ public sealed class ParameterMap {
 		 */
 		public ParameterMap build() throws InvalidContextParameterException {
 			validate();
-			return ParameterMap.ofImmutable(params, paramSet);
+			return new ParameterMap(params, paramSet);
 		}
 
 		/**
@@ -90,14 +89,14 @@ public sealed class ParameterMap {
 		 */
 		private void validate() throws InvalidContextParameterException {
 			try {
-				params.forEach((type, param) -> {
-					if (!paramSet.hasParam(type)) {
-						throw new RuntimeException(new InvalidContextParameterException("Context parameter " + type + " does not exist in this set"));
+				params.forEach((key, param) -> {
+					if (!paramSet.hasParam((GlobalParameterKey<?>) key)) {
+						throw new RuntimeException(new InvalidContextParameterException("Context parameter " + key + " does not exist in this set"));
 					}
 				});
-				paramSet.getRequired().forEach(type -> {
-					if (!params.containsKey(type)) {
-						throw new RuntimeException(new InvalidContextParameterException("Context parameter " + type + " is missing; required in set"));
+				paramSet.getRequired().forEach(key -> {
+					if (!params.containsKey(key)) {
+						throw new RuntimeException(new InvalidContextParameterException("Context parameter " + key + " is missing; required in set"));
 					}
 				});
 			} catch (RuntimeException e) {

@@ -6,14 +6,14 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import lgbt.greenhouse.silicate.api.condition.PredicateType;
-import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.MaybeTypedPredicate;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -69,13 +69,13 @@ public record EntityPassengerPredicate(
 	}
 
 	@Override
-	public MapCodec<EntityPassengerPredicate> getCodec() {
+	public @NotNull MapCodec<EntityPassengerPredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public PredicateType<EntityPassengerPredicate> getType() {
-		return PredicateTypes.ENTITY_PASSENGER;
+	public @NotNull Type<EntityPassengerPredicate> getType() {
+		return SilicatePredicateTypes.ENTITY_PASSENGER;
 	}
 
 	@Override

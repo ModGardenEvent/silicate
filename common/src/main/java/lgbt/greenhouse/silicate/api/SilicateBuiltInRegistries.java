@@ -1,6 +1,7 @@
 package lgbt.greenhouse.silicate.api;
 
 import com.mojang.serialization.Lifecycle;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -11,8 +12,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import lgbt.greenhouse.silicate.Silicate;
-import lgbt.greenhouse.silicate.api.condition.PredicateType;
-import lgbt.greenhouse.silicate.api.condition.PredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
 import org.jetbrains.annotations.ApiStatus;
@@ -25,7 +25,7 @@ import static lgbt.greenhouse.silicate.Silicate.id;
  * Built-in Registries for Silicate.
  */
 public final class SilicateBuiltInRegistries {
-	public static final Registry<PredicateType<?>> PREDICATE = create(SilicateRegistries.PREDICATE);
+	public static final Registry<GamePredicate.Type<?>> PREDICATE = create(SilicateRegistries.PREDICATE);
 	public static final Registry<GlobalParameterKey<?>> GLOBAL_PARAMETER_KEY = create(SilicateRegistries.CONTEXT_PARAM_TYPE);
 	public static final Registry<ValueType<?>> VALUE_TYPE = create(SilicateRegistries.VALUE_TYPE);
 
@@ -34,7 +34,7 @@ public final class SilicateBuiltInRegistries {
 	@ApiStatus.Internal
 	public static void registerAll() {
 		registerRegistries();
-		PredicateTypes.registerAll();
+		SilicatePredicateTypes.registerAll();
 		GlobalParameterKeys.registerAll();
 	}
 
