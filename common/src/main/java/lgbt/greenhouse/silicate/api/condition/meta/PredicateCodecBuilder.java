@@ -213,7 +213,8 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 						//noinspection unchecked
 						FieldEntry<T, Object> field = (FieldEntry<T, Object>) entry.getValue();
 						MapCodec<Object> fieldCodec;
-						if (field.optional) {
+						if (field.codec == null || field.getter == null) continue;
+						if (!field.optional) {
 							fieldCodec = field.codec.fieldOf(key);
 						} else {
 							if (field.defaultValue.isEmpty()) {
