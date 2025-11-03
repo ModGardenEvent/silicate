@@ -3,6 +3,7 @@ package lgbt.greenhouse.silicate.api.condition;
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
+import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +19,8 @@ public final class AllPredicate extends CompoundPredicate<AllPredicate> {
 
 	@Override
 	public boolean test(GameContext context) {
-		return false;
+		return this.getConditions().stream()
+				.allMatch(condition -> condition.value().test(context));
 	}
 
 	@Override
@@ -28,13 +30,10 @@ public final class AllPredicate extends CompoundPredicate<AllPredicate> {
 
 	public static final class Type extends CompoundPredicate.Type<AllPredicate> {
 		@Override
-		public MapCodec<AllPredicate> getCodec() {
+		public MapCodec<AllPredicate> createCodec() {
 			return this.createBaseCodec()
 					.apply(PredicateCodecBuilder.of(AllPredicate.class))
-					.build(PredicateCodecBuilder.findConstructor(
-							AllPredicate.class,
-							List.class
-					));
+					.build();
 		}
 	}
 }

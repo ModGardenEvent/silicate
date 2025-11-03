@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import dev.lukebemish.codecextras.record.KeyedRecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.type.ValueType;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -100,25 +101,16 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 
 	/**
 	 * Add a field to this predicate.
+	 * <br>
+	 * A field is a type of value in a predicate that cannot be represented constantly.
+	 * Instead, it is represented by parameter keys.
 	 * @param key field key
 	 * @param type value type
-	 * @param getter getter in {@link GamePredicate}
 	 * @param <V> underlying type of field
 	 */
-	public <V> PredicateCodecBuilder<T> withField(String key, ValueType<V> type,  Function<T, V> getter) {
-		return withField(key, type, Objects.requireNonNull(type.codec(), "ValueType must have a codec"), getter);
-	}
-
-	/**
-	 * Add a field to this predicate.
-	 * @param key field key
-	 * @param type value type
-	 * @param codec field codec
-	 * @param getter getter in {@link GamePredicate}
-	 * @param <V> underlying type of field
-	 */
-	public <V> PredicateCodecBuilder<T> withField(String key, ValueType<V> type, Codec<V> codec,  Function<T, V> getter) {
-		this.fields.put(key, new FieldEntry<>(type, codec, getter, false, Optional.empty(), false));
+	// todo: perhaps rename this to withParameter?
+	public <V> PredicateCodecBuilder<T> withField(String key, ValueType<V> type) {
+		this.fields.put(key, new FieldEntry<>(type, null, null, false, Optional.empty(), true));
 		return this;
 	}
 
@@ -142,7 +134,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param <V> underlying type of value
 	 */
 	public <V> PredicateCodecBuilder<T> withValue(String key, ValueType<V> type, Codec<V> codec,  Function<T, V> getter) {
-		this.fields.put(key, new FieldEntry<>(type, codec, getter, false, Optional.empty(), true));
+		this.fields.put(key, new FieldEntry<>(type, codec, getter, false, Optional.empty(), false));
 		return this;
 	}
 
@@ -178,7 +170,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param <V> underlying type of value
 	 */
 	public <V> PredicateCodecBuilder<T> withOptionalValue(String key, ValueType<V> type, Codec<V> codec,  Function<T, V> getter) {
-		this.fields.put(key, new FieldEntry<>(type, codec, getter, true, Optional.empty(), true));
+		this.fields.put(key, new FieldEntry<>(type, codec, getter, true, Optional.empty(), false));
 		return this;
 	}
 
@@ -192,8 +184,20 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param <V> underlying type of value
 	 */
 	public <V> PredicateCodecBuilder<T> withOptionalValue(String key, ValueType<V> type, Codec<V> codec, Function<T, V> getter, V defaultValue) {
-		this.fields.put(key, new FieldEntry<>(type, codec, getter, true, Optional.of(defaultValue), true));
+		this.fields.put(key, new FieldEntry<>(type, codec, getter, true, Optional.of(defaultValue), false));
 		return this;
+	}
+
+	/**
+	 * Build this codec into a {@link MapCodec}.
+	 * @return a {@link MapCodec} for the {@link GamePredicate}
+	 */
+	public MapCodec<T> build() {
+		Class<?>[] parameters = this.fields.values().stream()
+				.map(FieldEntry::type)
+				.map(ValueType::clazz)
+				.toArray(i -> new Class<?>[i]);
+		return this.build(findConstructor(this.clazz, parameters));
 	}
 
 	/**
@@ -203,7 +207,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	@SuppressWarnings("UnstableApiUsage") // it's okay
 	public MapCodec<T> build(MethodHandle constructor) {
-		this.validateSignature(constructor);
+		//this.validateSignature(constructor); // fixme: broken, see method
 		return KeyedRecordCodecBuilder.mapCodec(
 				builder -> {
 					List<KeyedRecordCodecBuilder.Key<?>> keys = new ArrayList<>();
@@ -213,6 +217,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 						//noinspection unchecked
 						FieldEntry<T, Object> field = (FieldEntry<T, Object>) entry.getValue();
 						MapCodec<Object> fieldCodec;
+						// fixme: when these are null, add it as a codec for a ParameterTemplate, then figure out how to get the GameContext or at least the current ParameterMap
 						if (field.codec == null || field.getter == null) continue;
 						if (!field.optional) {
 							fieldCodec = field.codec.fieldOf(key);
@@ -245,6 +250,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 		);
 	}
 
+	// fixme: this is broken because of parameters that don't have ValueTypes
 	private void validateSignature(MethodHandle constructor) {
 		if (constructor.type().parameterCount() != this.fields.size()) {
 			throw new IllegalArgumentException(clazz.getTypeName() + ": Predicate constructor's parameter count does not match its field count");
@@ -273,5 +279,5 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 		}
 	}
 
-	private record FieldEntry<O, T>(ValueType<T> type, Codec<T> codec, Function<O, T> getter, boolean optional, Optional<T> defaultValue, boolean allowTemplates) {}
+	private record FieldEntry<O, T>(ValueType<T> type, @Nullable Codec<T> codec, @Nullable Function<O, T> getter, boolean optional, Optional<T> defaultValue, boolean requiresTemplateValues) {}
 }

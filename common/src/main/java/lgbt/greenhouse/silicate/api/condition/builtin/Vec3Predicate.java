@@ -2,6 +2,9 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
+import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.phys.Vec3;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
@@ -12,45 +15,46 @@ import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Allows the caller to check if the value of a {@link Vec3} passes equality/inequality comparisons with {@link #latterOperand}.
- * @param paramType The parameter type.
- * @param latterOperand The {@link Vec3} to do operations on (to the right).
+ * Allows the caller to check if the value of a {@link Vec3} passes equality/inequality comparisons with {@link #right}.
+ * @param left The left operand.
+ * @param right The {@link Vec3} to do operations on (to the right).
  */
 public record Vec3Predicate(
-	GlobalParameterKey<Vec3> paramType,
+	ParameterKey<Vec3> left,
 	Vec3Comparison comparison,
-	Vec3 latterOperand
+	Vec3 right
 ) implements TypedGamePredicate<Vec3Predicate, Vec3> {
-	public static final MapCodec<Vec3Predicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterKey.getCodec(SilicateValueTypes.VEC3)
-			.fieldOf("param_type")
-			.forGetter(Vec3Predicate::paramType),
-		Vec3Comparison.CODEC
-			.fieldOf("comparison")
-			.forGetter(Vec3Predicate::comparison),
-		Vec3.CODEC
-			.fieldOf("latter_operand")
-			.forGetter(Vec3Predicate::latterOperand)
-	).apply(instance, Vec3Predicate::new));
-
 	@Override
 	public boolean test(GameContext context) {
-		Vec3 formerOperand = context.getParam(paramType);
-		return comparison.compare(formerOperand, latterOperand);
+		Vec3 formerOperand = context.getParam(left);
+		return comparison.compare(formerOperand, right);
 	}
 
 	@Override
-	public @NotNull MapCodec<Vec3Predicate> getCodec() {
-		return CODEC;
-	}
-
-	@Override
-	public @NotNull Type<Vec3Predicate> getType() {
+	public @NotNull GamePredicate.Type<Vec3Predicate> getType() {
 		return SilicatePredicateTypes.VEC3;
 	}
 
-	@Override
-	public GlobalParameterKey<Vec3> getParamType() {
-		return paramType;
+	public static final class Type extends GamePredicate.Type<Vec3Predicate> {
+		@Override
+		protected MapCodec<Vec3Predicate> createCodec() {
+			return this.createBaseCodec()
+					.apply(PredicateCodecBuilder.of(Vec3Predicate.class))
+					.withField(
+							"left",
+							SilicateValueTypes.VEC3
+					)
+					.withValue(
+							"comparison",
+							SilicateValueTypes.VEC3_COMPARISON,
+							Vec3Predicate::comparison
+					)
+					.withValue(
+							"right",
+							SilicateValueTypes.VEC3,
+							Vec3Predicate::right
+					)
+					.build();
+		}
 	}
 }

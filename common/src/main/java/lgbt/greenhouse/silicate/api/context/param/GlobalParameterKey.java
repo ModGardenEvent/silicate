@@ -7,11 +7,15 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public record GlobalParameterKey<T>(ResourceLocation name, ValueType<T> type)
+public record GlobalParameterKey<T>(
+		@ApiStatus.Internal ResourceLocation name,
+		@ApiStatus.Internal ValueType<T> type
+)
 		implements ParameterKey<T> {
 	/**
 	 * The generic {@link Codec} for any {@link GlobalParameterKey}.
@@ -22,7 +26,7 @@ public record GlobalParameterKey<T>(ResourceLocation name, ValueType<T> type)
 	public static final Codec<GlobalParameterKey<?>> ANY_CODEC = ResourceLocation.CODEC
 			.comapFlatMap(
 					GlobalParameterKey::validateParamType,
-					GlobalParameterKey::name
+					GlobalParameterKey::getId
 			);
 
 	/**
@@ -31,26 +35,24 @@ public record GlobalParameterKey<T>(ResourceLocation name, ValueType<T> type)
 	 * @param <T> The value type of the parameter type.
 	 * @param type The class of the type in {@link T}.
 	 * @return The parameter type's codec.
-	 * @implNote Although potentially unsafe, this shouldn't result in any Mad Gadget situations given that the actual
-	 * non-erased type at runtime will be checked. See the implementation of
-	 * {@link TypedGamePredicate#validate(Holder, Class)} for further information.
-	 * @see TypedGamePredicate#validate(Holder, Class)
 	 */
-	@SuppressWarnings({"JavadocReference", "unchecked"})// We want people to be able to verify the underlying implementation.
+	@Deprecated
+	@SuppressWarnings({"unchecked"})// if the types are equal, we can safely cast
 	public static <T> Codec<GlobalParameterKey<T>> getCodec(ValueType<T> type) {
 		// Spooky!
+		// edit: less spooky
 		return ResourceLocation.CODEC
 				.flatXmap(name -> {
 					GlobalParameterKey<?> paramType = SilicateBuiltInRegistries.GLOBAL_PARAMETER_KEY.getValue(name);
 					if (paramType != null) {
 						if (type.equals(paramType.type()))
-							return DataResult.success((GlobalParameterKey<T>)paramType);
-						if (type.isAssignableFrom(paramType.type())) // If the paramType extends the specified class...
+							return DataResult.success((GlobalParameterKey<T>) paramType);
+						if (type.isAssignableFrom(paramType.type())) // If the paramKey extends the specified class...
 							return DataResult.success(new GlobalParameterKey<>(name, type)); // Create a new ContextParamType that may be used in place of the old one.
 						return DataResult.error(() -> paramType + " is not of the proper parameter"); // Remapping is the reason why we don't tell which class.
 					}
 					return DataResult.error(() -> "Context Param Type '" + name + "' does not exist");
-				}, paramType -> DataResult.success(paramType.name()));
+				}, paramType -> DataResult.success(paramType.getId()));
 	}
 
 	@Override // Makes sure that values return the correct value within the context when clazz is cast.
@@ -59,17 +61,17 @@ public record GlobalParameterKey<T>(ResourceLocation name, ValueType<T> type)
 			return true;
 		if (!(obj instanceof GlobalParameterKey<?> globalParameterKey))
 			return false;
-		return globalParameterKey.name().equals(this.name());
+		return globalParameterKey.getId().equals(this.getId());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(name());
+		return Objects.hash(this.name);
 	}
 
 	@Override
 	public @NotNull String toString() {
-		return "GlobalParameterKey<" + this.name() + ">";
+		return "GlobalParameterKey<" + this.name + ">";
 	}
 
 	private static @NotNull DataResult<? extends GlobalParameterKey<?>> validateParamType(ResourceLocation id) {

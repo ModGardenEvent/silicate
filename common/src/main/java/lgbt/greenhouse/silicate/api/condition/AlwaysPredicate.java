@@ -3,7 +3,9 @@ package lgbt.greenhouse.silicate.api.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
+import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -28,7 +30,21 @@ public record AlwaysPredicate(boolean value) implements GamePredicate<AlwaysPred
 	}
 
 	@Override
-	public @NotNull Type<AlwaysPredicate> getType() {
+	public @NotNull GamePredicate.Type<AlwaysPredicate> getType() {
 		return SilicatePredicateTypes.ALWAYS;
+	}
+
+	public static class Type extends GamePredicate.Type<AlwaysPredicate> {
+		@Override
+		protected MapCodec<AlwaysPredicate> createCodec() {
+			return this.createBaseCodec()
+					.apply(PredicateCodecBuilder.of(AlwaysPredicate.class))
+					.withValue(
+							"value",
+							SilicatePrimitives.BOOLEAN,
+							AlwaysPredicate::value
+					)
+					.build();
+		}
 	}
 }

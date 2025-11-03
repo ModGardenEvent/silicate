@@ -17,53 +17,53 @@ public final class SilicatePredicateTypes {
 			"all",
 			AllPredicate.Type::new
 	);
+	public static final GamePredicate.Type<AnyPredicate> ANY = register(
+			"any",
+			AnyPredicate.Type::new
+	);
 	public static final GamePredicate.Type<NotPredicate> NOT = register(
 			"not",
-			NotPredicate.CODEC
-	);
-	public static final GamePredicate.Type<RetypedPredicate> RETYPED = register(
-			"retyped",
-			RetypedPredicate.CODEC
+			NotPredicate.Type::new
 	);
 	public static final GamePredicate.Type<AlwaysPredicate> ALWAYS = register(
 			"always",
-			AlwaysPredicate.CODEC
+			AlwaysPredicate.Type::new
 	);
 	public static final GamePredicate.Type<EntityTypePredicate> ENTITY_TYPE = register(
 			"entity_type",
-			EntityTypePredicate.CODEC
+			EntityTypePredicate.Type::new
 	);
 	public static final GamePredicate.Type<EntityPassengerPredicate> ENTITY_PASSENGER = register(
 			"entity_passenger",
-			EntityPassengerPredicate.CODEC
+			EntityPassengerPredicate.Type::new
 	);
 	public static final GamePredicate.Type<EntityProjectileOwnerPredicate> ENTITY_PROJECTILE_OWNER = register(
 			"entity_projectile_owner",
-			EntityProjectileOwnerPredicate.CODEC
+			EntityProjectileOwnerPredicate.Type::new
 	);
 	public static final GamePredicate.Type<EntityTameOwnerPredicate> ENTITY_TAME_OWNER = register(
 			"entity_tame_owner",
-			EntityTameOwnerPredicate.CODEC
+			EntityTameOwnerPredicate.Type::new
 	);
 	public static final GamePredicate.Type<EntityVehiclePredicate> ENTITY_VEHICLE = register(
 			"entity_vehicle",
-			EntityVehiclePredicate.CODEC
+			EntityVehiclePredicate.Type::new
 	);
 	public static final GamePredicate.Type<BlockStatePredicate> BLOCK_STATE = register(
 			"block_state",
-			BlockStatePredicate.CODEC
+			BlockStatePredicate.Type::new
 	);
 	public static final GamePredicate.Type<Vec3Predicate> VEC3 = register(
 			"vec3",
-			Vec3Predicate.CODEC
+			Vec3Predicate.Type::new
 	);
 	public static final GamePredicate.Type<BlockEntityTypePredicate> BLOCK_ENTITY_TYPE = register(
 			"block_entity_type",
-			BlockEntityTypePredicate.CODEC
+			BlockEntityTypePredicate.Type::new
 	);
 	public static final GamePredicate.Type<PlayerGameTypePredicate> PLAYER_GAME_TYPE = register(
 			"player_game_type",
-			PlayerGameTypePredicate.CODEC
+			PlayerGameTypePredicate.Type::new
 	);
 
 	private SilicatePredicateTypes() {}

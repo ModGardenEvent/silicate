@@ -2,6 +2,9 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
+import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,44 +18,35 @@ import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import org.jetbrains.annotations.NotNull;
 
 public record BlockEntityTypePredicate(
-	GlobalParameterKey<BlockEntity> paramType,
+	ParameterKey<BlockEntity> blockEntity,
 	BlockEntityType<?> blockEntityType
 ) implements TypedGamePredicate<BlockEntityTypePredicate, BlockEntity> {
-	public static final MapCodec<BlockEntityTypePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterKey.getCodec(SilicateValueTypes.BLOCK_ENTITY)
-				.fieldOf("param_type")
-				.forGetter(BlockEntityTypePredicate::paramType),
-		ResourceLocation.CODEC
-				.fieldOf("block_entity_type")
-				.forGetter((t) -> BlockEntityType.getKey(t.blockEntityType()))
-	).apply(instance, BlockEntityTypePredicate::of));
-
-	private static BlockEntityTypePredicate of(GlobalParameterKey<BlockEntity> paramType, ResourceLocation blockEntityTypeId) {
-		return of(paramType, ResourceKey.create(BuiltInRegistries.BLOCK_ENTITY_TYPE.key(), blockEntityTypeId));
-	}
-
-	private static BlockEntityTypePredicate of(GlobalParameterKey<BlockEntity> paramType, ResourceKey<BlockEntityType<?>> blockEntityTypeKey) {
-		return new BlockEntityTypePredicate(paramType, BuiltInRegistries.BLOCK_ENTITY_TYPE.getValueOrThrow(blockEntityTypeKey));
-	}
-
 	@Override
 	public boolean test(GameContext context) {
-		BlockEntity blockEntity = context.getParam(paramType);
+		BlockEntity blockEntity = context.getParam(this.blockEntity);
 		return blockEntity.getType().equals(blockEntityType);
 	}
 
 	@Override
-	public @NotNull MapCodec<BlockEntityTypePredicate> getCodec() {
-		return CODEC;
-	}
-
-	@Override
-	public @NotNull Type<BlockEntityTypePredicate> getType() {
+	public @NotNull GamePredicate.Type<BlockEntityTypePredicate> getType() {
 		return SilicatePredicateTypes.BLOCK_ENTITY_TYPE;
 	}
 
-	@Override
-	public GlobalParameterKey<BlockEntity> getParamType() {
-		return paramType;
+	public static final class Type extends GamePredicate.Type<BlockEntityTypePredicate> {
+		@Override
+		protected MapCodec<BlockEntityTypePredicate> createCodec() {
+			return this.createBaseCodec()
+					.apply(PredicateCodecBuilder.of(BlockEntityTypePredicate.class))
+					.withField(
+							"block_entity",
+							SilicateValueTypes.BLOCK_ENTITY
+					)
+					.withValue(
+							"block_entity_type",
+							SilicateValueTypes.BLOCK_ENTITY_TYPE,
+							BlockEntityTypePredicate::blockEntityType
+					)
+					.build();
+		}
 	}
 }

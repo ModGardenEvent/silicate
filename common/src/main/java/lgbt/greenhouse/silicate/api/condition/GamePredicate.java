@@ -31,9 +31,12 @@ import java.util.function.Predicate;
  * @see MaybeTypedPredicate
  */
 public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<GameContext> {
-	Codec<GamePredicate<?>> TYPED_CODEC = SilicateBuiltInRegistries.PREDICATE.byNameCodec()
-			.dispatch("predicate", GamePredicate::getType, GamePredicate.Type::getCodec);
-	Codec<Holder<GamePredicate<?>>> CODEC = RegistryFileCodec.create(SilicateRegistries.CONDITION_TEMPLATE, TYPED_CODEC);
+	Codec<GamePredicate<?>> DISPATCH_CODEC = SilicateBuiltInRegistries.PREDICATE.byNameCodec()
+			.dispatch("predicate", GamePredicate::getType, GamePredicate.Type::createCodec);
+	Codec<Holder<GamePredicate<?>>> CODEC = RegistryFileCodec.create(
+			SilicateRegistries.CONDITION_TEMPLATE,
+			DISPATCH_CODEC
+	);
 
 	@Override
 	boolean test(GameContext context);
@@ -53,7 +56,7 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 	 * @see SilicateBuiltInRegistries#PREDICATE
 	 */
 	abstract class Type<T extends GamePredicate<T>> {
-		private final MapCodec<T> codec = this.getCodec();
+		private final MapCodec<T> codec = this.createCodec();
 
 		/**
 		 * Creates a {@link BaseCodec} for inheritors of a predicate to append
@@ -79,6 +82,7 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 			return builder -> builder;
 		}
 
+		// don't ask why the javadoc snippet is like that - Oliver
 		/**
 		 * The {@link MapCodec} of the {@link GamePredicate}, built with {@link #createBaseCodec()}.
 		 * <h2>Usage</h2>
@@ -86,8 +90,44 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 		 * <h2>Example</h2>
 		 * {@snippet lang=java :
 		 *
+import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
+@Override
+public MapCodec<AllPredicate> createCodec() {
+	return this.createBaseCodec()
+		.apply(PredicateCodecBuilder.of(AlwaysPredicate.class))
+		.withValue(
+			"value",
+			SilicatePrimitives.BOOLEAN,
+			AlwaysPredicate::value
+		)
+		.build(PredicateCodecBuilder.findConstructor(AlwaysPredicate.class, boolean.class));
+}
+		 * }
+		 * <br>
+		 * If you only have a public constructor, you can just use {@link PredicateCodecBuilder#build()} without any parameters.
+		 * {@snippet lang=java :
+import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
+@Override
+public MapCodec<NotPredicate> createCodec() {
+	return createBaseCodec()
+		.apply(PredicateCodecBuilder.of(NotPredicate.class))
+		.withValue(
+			"condition",
+			SilicateValueTypes.CONDITION,
+			GamePredicate.CODEC,
+			NotPredicate::condition
+		)
+		.build();
+}
 		 * }
 		 */
-		public abstract MapCodec<T> getCodec();
+		protected abstract MapCodec<T> createCodec();
+
+		/**
+		 * The {@link MapCodec} of the {@link GamePredicate}, built with {@link #createCodec()}.
+		 */
+		public final MapCodec<T> getCodec() {
+			return this.codec;
+		}
 	}
 }

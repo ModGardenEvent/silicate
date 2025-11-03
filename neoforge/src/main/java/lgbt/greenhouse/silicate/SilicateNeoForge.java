@@ -53,7 +53,7 @@ public class SilicateNeoForge {
 
 		@SubscribeEvent
 		public static void newDataPackRegistry(DataPackRegistryEvent.NewRegistry event) {
-			event.dataPackRegistry(SilicateRegistries.CONDITION_TEMPLATE, GamePredicate.TYPED_CODEC, GamePredicate.TYPED_CODEC);
+			event.dataPackRegistry(SilicateRegistries.CONDITION_TEMPLATE, GamePredicate.DISPATCH_CODEC, GamePredicate.DISPATCH_CODEC);
 		}
 	}
 }

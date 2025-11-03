@@ -19,6 +19,6 @@ public class SilicateFabric implements ModInitializer {
 		Silicate.init();
 		SilicateBuiltInRegistries.registerAll();
 
-		DynamicRegistries.registerSynced(SilicateRegistries.CONDITION_TEMPLATE, GamePredicate.TYPED_CODEC);
+		DynamicRegistries.registerSynced(SilicateRegistries.CONDITION_TEMPLATE, GamePredicate.DISPATCH_CODEC);
 	}
 }

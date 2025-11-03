@@ -13,6 +13,7 @@ import java.util.function.Predicate;
  * @param <P> The type of parameter.
  */
 @SuppressWarnings("rawtypes") // This class does not care about the type and does not require it.
+// todo: i'm useless, please put me out of my misery
 public record MaybeTypedPredicate<P>(
 		Either<Holder<TypedGamePredicate<?, P>>, Holder<GamePredicate<?>>> either
 ) implements GamePredicate, Predicate {

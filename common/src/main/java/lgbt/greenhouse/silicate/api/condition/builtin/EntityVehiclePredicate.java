@@ -2,7 +2,10 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
@@ -21,17 +24,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public record EntityVehiclePredicate(
 		GlobalParameterKey<Entity> paramType,
-		MaybeTypedPredicate<Entity> condition
+		Holder<GamePredicate<?>> condition
 ) implements TypedGamePredicate<EntityVehiclePredicate, Entity> {
-	public static final MapCodec<EntityVehiclePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			GlobalParameterKey.getCodec(SilicateValueTypes.ENTITY)
-					.fieldOf("param_type")
-					.forGetter(EntityVehiclePredicate::paramType),
-			TypedGamePredicate.getMaybeTypedCodec(SilicateValueTypes.ENTITY)
-					.fieldOf("condition")
-					.forGetter(EntityVehiclePredicate::condition)
-	).apply(instance, EntityVehiclePredicate::new));
-
 	@Override
 	public boolean test(GameContext oldContext) {
 		Entity entity = oldContext.getParam(paramType);
@@ -47,21 +41,29 @@ public record EntityVehiclePredicate(
 	private boolean testVehicle(Level level, Entity vehicle, ParameterMap.Mutable paramMap) {
 		paramMap.set(GlobalParameterKeys.VEHICLE_ENTITY, vehicle);
 		GameContext context = GameContext.of(level, paramMap);
-		return condition.test(context);
+		return condition.value().test(context);
 	}
 
 	@Override
-	public @NotNull MapCodec<EntityVehiclePredicate> getCodec() {
-		return CODEC;
-	}
-
-	@Override
-	public @NotNull Type<EntityVehiclePredicate> getType() {
+	public @NotNull GamePredicate.Type<EntityVehiclePredicate> getType() {
 		return SilicatePredicateTypes.ENTITY_VEHICLE;
 	}
 
-	@Override
-	public GlobalParameterKey<Entity> getParamType() {
-		return paramType;
+	public static final class Type extends GamePredicate.Type<EntityVehiclePredicate> {
+		@Override
+		protected MapCodec<EntityVehiclePredicate> createCodec() {
+			return this.createBaseCodec()
+					.apply(PredicateCodecBuilder.of(EntityVehiclePredicate.class))
+					.withField(
+							"player",
+							SilicateValueTypes.ENTITY
+					)
+					.withValue(
+							"condition",
+							SilicateValueTypes.CONDITION,
+							EntityVehiclePredicate::condition
+					)
+					.build();
+		}
 	}
 }

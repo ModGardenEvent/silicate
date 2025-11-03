@@ -43,7 +43,7 @@ public interface SilicatePlatformHelper {
 	boolean isDevelopmentEnvironment();
 
 	/**
-	 * Creates a fake player entity. This is a platform-dependent operation.
+	 * Creates a fake player player. This is a platform-dependent operation.
 	 * @return The fake player.
 	 */
 	ServerPlayer createFakePlayer(ServerLevel level);

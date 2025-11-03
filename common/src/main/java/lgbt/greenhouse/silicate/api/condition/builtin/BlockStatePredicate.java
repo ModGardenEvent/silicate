@@ -1,7 +1,9 @@
 package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
+import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
@@ -11,36 +13,35 @@ import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import org.jetbrains.annotations.NotNull;
 
 public record BlockStatePredicate(
-	GlobalParameterKey<BlockState> paramType,
-	BlockState blockState
+	ParameterKey<BlockState> left,
+	BlockState right
 ) implements TypedGamePredicate<BlockStatePredicate, BlockState> {
-	public static final MapCodec<BlockStatePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterKey.getCodec(SilicateValueTypes.BLOCK_STATE)
-			.fieldOf("param_type")
-			.forGetter(BlockStatePredicate::paramType),
-		BlockState.CODEC
-			.fieldOf("block_state")
-			.forGetter(BlockStatePredicate::blockState)
-	).apply(instance, BlockStatePredicate::new));
-
 	@Override
 	public boolean test(GameContext context) {
-		BlockState state = context.getParam(paramType);
-		return state.equals(blockState);
+		BlockState state = context.getParam(left);
+		return state.equals(right);
 	}
 
 	@Override
-	public @NotNull MapCodec<BlockStatePredicate> getCodec() {
-		return CODEC;
-	}
-
-	@Override
-	public @NotNull Type<BlockStatePredicate> getType() {
+	public @NotNull GamePredicate.Type<BlockStatePredicate> getType() {
 		return SilicatePredicateTypes.BLOCK_STATE;
 	}
 
-	@Override
-	public GlobalParameterKey<BlockState> getParamType() {
-		return paramType;
+	public static final class Type extends GamePredicate.Type<BlockStatePredicate> {
+		@Override
+		protected MapCodec<BlockStatePredicate> createCodec() {
+			return this.createBaseCodec()
+					.apply(PredicateCodecBuilder.of(BlockStatePredicate.class))
+					.withField(
+							"left",
+							SilicateValueTypes.BLOCK_STATE
+					)
+					.withValue(
+							"right",
+							SilicateValueTypes.BLOCK_STATE,
+							BlockStatePredicate::right
+					)
+					.build();
+		}
 	}
 }

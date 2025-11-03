@@ -1,53 +1,44 @@
 package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
+import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import lgbt.greenhouse.silicate.SilicateCodecs;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A predicate to check an entity's {@link EntityType}.
+ * A predicate to check an player's {@link EntityType}.
  */
 public record EntityTypePredicate(
-	GlobalParameterKey<Entity> paramType,
+	ParameterKey<Entity> paramKey,
 	HolderSet<EntityType<?>> entityTypes
 ) implements TypedGamePredicate<EntityTypePredicate, Entity> {
-	public static final MapCodec<EntityTypePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterKey.getCodec(SilicateValueTypes.ENTITY)
-			.fieldOf("param_type")
-			.forGetter(EntityTypePredicate::paramType),
-		SilicateCodecs.ENTITY_TYPE_HOLDER_SET
-			.fieldOf("entity_type")
-			.forGetter(EntityTypePredicate::entityTypes)
-	).apply(instance, EntityTypePredicate::new));
-
 	public static EntityTypePredicate of(
-		GlobalParameterKey<Entity> paramType,
+		ParameterKey<Entity> paramKey,
 		EntityType<?> entityType
 	) {
 		//noinspection deprecation
 		return new EntityTypePredicate(
-			paramType,
+			paramKey,
 			HolderSet.direct(entityType.builtInRegistryHolder())
 		);
 	}
 
 	public static EntityTypePredicate of(
-		GlobalParameterKey<Entity> paramType,
+		ParameterKey<Entity> paramKey,
 		TagKey<EntityType<?>> entityTag
 	) {
 		return new EntityTypePredicate(
-			paramType,
+			paramKey,
 			BuiltInRegistries.ENTITY_TYPE.getOrThrow(entityTag)
 		);
 	}
@@ -55,23 +46,31 @@ public record EntityTypePredicate(
 	@Override
 	public boolean test(GameContext context) {
 		return context
-			.getParam(paramType)
+			.getParam(paramKey)
 			.getType()
 			.is(entityTypes);
 	}
 
 	@Override
-	public @NotNull MapCodec<EntityTypePredicate> getCodec() {
-		return CODEC;
-	}
-
-	@Override
-	public @NotNull Type<EntityTypePredicate> getType() {
+	public @NotNull GamePredicate.Type<EntityTypePredicate> getType() {
 		return SilicatePredicateTypes.ENTITY_TYPE;
 	}
 
-	@Override
-	public GlobalParameterKey<Entity> getParamType() {
-		return paramType;
+	public static class Type extends GamePredicate.Type<EntityTypePredicate> {
+		@Override
+		protected MapCodec<EntityTypePredicate> createCodec() {
+			return this.createBaseCodec()
+					.apply(PredicateCodecBuilder.of(EntityTypePredicate.class))
+					.withField(
+							"player",
+							SilicateValueTypes.ENTITY
+					)
+					.withValue(
+							"entity_types",
+							SilicateValueTypes.HOLDER_SET_ENTITY_TYPE,
+							EntityTypePredicate::entityTypes
+					)
+					.build();
+		}
 	}
 }

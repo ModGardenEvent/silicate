@@ -2,8 +2,12 @@ package lgbt.greenhouse.silicate.api.context.param;
 
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.ApiStatus;
 
-public record LocalParameterKey<T>(ResourceLocation name, ValueType<T> type) implements ParameterKey<T> {
+public record LocalParameterKey<T>(
+		@ApiStatus.Internal ResourceLocation name,
+		@ApiStatus.Internal ValueType<T> type
+) implements ParameterKey<T> {
 	@Override
 	public ParameterScope scope() {
 		return ParameterScope.LOCAL;

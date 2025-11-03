@@ -2,6 +2,8 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
@@ -23,24 +25,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public record EntityTameOwnerPredicate(
 		GlobalParameterKey<Entity> paramType,
-		Holder<TypedGamePredicate<?, Entity>> condition
+		Holder<GamePredicate<?>> condition
 ) implements TypedGamePredicate<EntityTameOwnerPredicate, Entity> {
-	public static final MapCodec<EntityTameOwnerPredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			GlobalParameterKey.getCodec(SilicateValueTypes.ENTITY)
-					.fieldOf("param_type")
-					.forGetter(EntityTameOwnerPredicate::paramType),
-			TypedGamePredicate.getTypedCodec(SilicateValueTypes.ENTITY)
-					.fieldOf("condition")
-					.forGetter(EntityTameOwnerPredicate::condition)
-	).apply(instance, EntityTameOwnerPredicate::of));
-
-	private static EntityTameOwnerPredicate of(GlobalParameterKey<Entity> paramType, Holder<TypedGamePredicate<?, Entity>> condition) {
-		return new EntityTameOwnerPredicate(
-				paramType,
-				condition
-		);
-	}
-
 	@Override
 	public boolean test(GameContext oldContext) {
 		Entity entity = oldContext.getParam(paramType);
@@ -60,17 +46,25 @@ public record EntityTameOwnerPredicate(
 	}
 
 	@Override
-	public @NotNull MapCodec<EntityTameOwnerPredicate> getCodec() {
-		return CODEC;
-	}
-
-	@Override
-	public @NotNull Type<EntityTameOwnerPredicate> getType() {
+	public @NotNull GamePredicate.Type<EntityTameOwnerPredicate> getType() {
 		return SilicatePredicateTypes.ENTITY_TAME_OWNER;
 	}
 
-	@Override
-	public GlobalParameterKey<Entity> getParamType() {
-		return paramType;
+	public static final class Type extends GamePredicate.Type<EntityTameOwnerPredicate> {
+		@Override
+		protected MapCodec<EntityTameOwnerPredicate> createCodec() {
+			return this.createBaseCodec()
+					.apply(PredicateCodecBuilder.of(EntityTameOwnerPredicate.class))
+					.withField(
+							"player",
+							SilicateValueTypes.ENTITY
+					)
+					.withValue(
+							"condition",
+							SilicateValueTypes.CONDITION,
+							EntityTameOwnerPredicate::condition
+					)
+					.build();
+		}
 	}
 }

@@ -26,13 +26,15 @@ public record NotPredicate(
 
 	public static final class Type extends GamePredicate.Type<NotPredicate> {
 		@Override
-		public MapCodec<NotPredicate> getCodec() {
+		public MapCodec<NotPredicate> createCodec() {
 			return createBaseCodec()
 					.apply(PredicateCodecBuilder.of(NotPredicate.class))
-					.withField(
+					.withValue(
 							"condition",
 							SilicateValueTypes.CONDITION,
-					);
+							NotPredicate::condition
+					)
+					.build();
 		}
 	}
 }

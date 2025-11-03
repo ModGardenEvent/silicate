@@ -4,9 +4,13 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
+import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
@@ -20,38 +24,13 @@ import java.util.Objects;
 
 /**
  * Checks a player's {@link GameType} or "gamemode".
- * @param paramType The type of parameter.
+ * @param player The player.
  * @param gameTypes The {@link GameType}s to equality against. Tests true if any are equal.
  */
 public record PlayerGameTypePredicate(
-	GlobalParameterKey<Entity> paramType,
+	ParameterKey<Player> player,
 	List<GameType> gameTypes
 ) implements TypedGamePredicate<PlayerGameTypePredicate, Entity> {
-	public static final MapCodec<PlayerGameTypePredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		GlobalParameterKey.getCodec(SilicateValueTypes.ENTITY)
-			.fieldOf("param_type")
-			.forGetter(PlayerGameTypePredicate::paramType),
-		Codec.mapEither(
-			GameType.CODEC
-				.listOf()
-				.fieldOf("game_types"),
-				GameType.CODEC
-					.fieldOf("game_type")
-		)
-			.forGetter(PlayerGameTypePredicate::eitherGameType)
-	).apply(instance, PlayerGameTypePredicate::of));
-	public static final List<GameType> SURVIVAL_LIKE = List.of(GameType.SURVIVAL, GameType.ADVENTURE);
-
-	private static PlayerGameTypePredicate of(GlobalParameterKey<Entity> paramType, Either<List<GameType>, GameType> eitherGameType) {
-		if (eitherGameType.left().isPresent()) {
-			return new PlayerGameTypePredicate(paramType, eitherGameType.left().get());
-		} else if (eitherGameType.right().isPresent()) {
-			return new PlayerGameTypePredicate(paramType, List.of(eitherGameType.right().get()));
-		} else {
-			throw new IllegalArgumentException("No value for Either (`game_types` or `game_type`) object: " + eitherGameType);
-		}
-	}
-
 	private Either<List<GameType>, GameType> eitherGameType() {
 		if (gameTypes.size() == 1) {
 			return Either.right(gameTypes.getFirst());
@@ -62,37 +41,45 @@ public record PlayerGameTypePredicate(
 
 	@Override
 	public boolean test(GameContext context) {
-		Entity entity = context.getParam(paramType);
-		if (entity instanceof Duck_AbstractClientPlayer player) {
+		Entity entity = context.getParam(this.player);
+		if (entity instanceof Duck_AbstractClientPlayer duck) {
 			return gameTypes
 				.stream()
 				.anyMatch(
 					Objects.requireNonNull(
-						player.silicate$getPlayerInfo(),
+						duck.silicate$getPlayerInfo(),
 						"Player has no GameType"
 					).getGameMode()::equals
 				);
-		} else if (entity instanceof ServerPlayer player) {
+		} else if (entity instanceof ServerPlayer serverPlayer) {
 			return gameTypes
 				.stream()
-				.anyMatch(player.gameMode.getGameModeForPlayer()::equals);
+				.anyMatch(serverPlayer.gameMode.getGameModeForPlayer()::equals);
 		} else {
 			return false;
 		}
 	}
 
 	@Override
-	public @NotNull MapCodec<PlayerGameTypePredicate> getCodec() {
-		return CODEC;
-	}
-
-	@Override
-	public @NotNull Type<PlayerGameTypePredicate> getType() {
+	public @NotNull GamePredicate.Type<PlayerGameTypePredicate> getType() {
 		return SilicatePredicateTypes.PLAYER_GAME_TYPE;
 	}
 
-	@Override
-	public GlobalParameterKey<Entity> getParamType() {
-		return paramType;
+	public static final class Type extends GamePredicate.Type<PlayerGameTypePredicate> {
+		@Override
+		protected MapCodec<PlayerGameTypePredicate> createCodec() {
+			return this.createBaseCodec()
+					.apply(PredicateCodecBuilder.of(PlayerGameTypePredicate.class))
+					.withField(
+							"player",
+							SilicateValueTypes.PLAYER
+					)
+					.withValue(
+							"game_type",
+							SilicateValueTypes.LIST_GAME_TYPE,
+							PlayerGameTypePredicate::gameTypes
+					)
+					.build();
+		}
 	}
 }

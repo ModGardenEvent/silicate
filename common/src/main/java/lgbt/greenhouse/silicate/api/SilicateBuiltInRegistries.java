@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api;
 
 import com.mojang.serialization.Lifecycle;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -34,6 +35,7 @@ public final class SilicateBuiltInRegistries {
 	@ApiStatus.Internal
 	public static void registerAll() {
 		registerRegistries();
+		SilicateValueTypes.registerAll();
 		SilicatePredicateTypes.registerAll();
 		GlobalParameterKeys.registerAll();
 	}

@@ -64,5 +64,7 @@ public interface TypedGamePredicate<T extends GamePredicate<T>, P> extends GameP
 	 * For conditions with multiple parameter types, this would be the first or main parameter type. This is never the parameter type used in series with another condition.
 	 * @return The first or main parameter type.
 	 */
-	GlobalParameterKey<P> getParamType();
+	default GlobalParameterKey<P> getParamType() {
+		return null; // we removin' this soon dw
+	}
 }
