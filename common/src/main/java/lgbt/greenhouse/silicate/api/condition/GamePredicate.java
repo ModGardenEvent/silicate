@@ -28,7 +28,6 @@ import java.util.function.Predicate;
  * @see EntityPassengerPredicate
  * @see EntityVehiclePredicate
  * @see TypedGamePredicate
- * @see MaybeTypedPredicate
  */
 public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<GameContext> {
 	Codec<GamePredicate<?>> DISPATCH_CODEC = SilicateBuiltInRegistries.PREDICATE.byNameCodec()
