@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import dev.lukebemish.codecextras.record.KeyedRecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.context.param.ParameterTemplate;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import org.jetbrains.annotations.Nullable;
 
@@ -100,16 +101,16 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	}
 
 	/**
-	 * Add a field to this predicate.
+	 * Add a parameter to this predicate.
 	 * <br>
-	 * A field is a type of value in a predicate that cannot be represented constantly.
+	 * A parameter is a type of value in a predicate that cannot be represented constantly.
 	 * Instead, it is represented by parameter keys.
 	 * @param key field key
 	 * @param type value type
 	 * @param <V> underlying type of field
+	 * @see ParameterTemplate
 	 */
-	// todo: perhaps rename this to withParameter?
-	public <V> PredicateCodecBuilder<T> withField(String key, ValueType<V> type) {
+	public <V> PredicateCodecBuilder<T> withParameter(String key, ValueType<V> type) {
 		this.fields.put(key, new FieldEntry<>(type, null, null, false, Optional.empty(), true));
 		return this;
 	}

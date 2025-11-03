@@ -1,7 +1,6 @@
 package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
@@ -55,7 +54,7 @@ public record EntityTameOwnerPredicate(
 		protected MapCodec<EntityTameOwnerPredicate> createCodec() {
 			return this.createBaseCodec()
 					.apply(PredicateCodecBuilder.of(EntityTameOwnerPredicate.class))
-					.withField(
+					.withParameter(
 							"player",
 							SilicateValueTypes.ENTITY
 					)

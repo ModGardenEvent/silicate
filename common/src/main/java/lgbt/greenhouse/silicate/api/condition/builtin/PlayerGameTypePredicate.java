@@ -1,9 +1,7 @@
 package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
@@ -15,7 +13,6 @@ import net.minecraft.world.level.GameType;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import lgbt.greenhouse.silicate.duck.Duck_AbstractClientPlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,7 +67,7 @@ public record PlayerGameTypePredicate(
 		protected MapCodec<PlayerGameTypePredicate> createCodec() {
 			return this.createBaseCodec()
 					.apply(PredicateCodecBuilder.of(PlayerGameTypePredicate.class))
-					.withField(
+					.withParameter(
 							"player",
 							SilicateValueTypes.PLAYER
 					)

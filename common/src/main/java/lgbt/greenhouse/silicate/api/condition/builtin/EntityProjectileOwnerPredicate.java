@@ -54,7 +54,7 @@ public record EntityProjectileOwnerPredicate(
 		protected MapCodec<EntityProjectileOwnerPredicate> createCodec() {
 			return this.createBaseCodec()
 					.apply(PredicateCodecBuilder.of(EntityProjectileOwnerPredicate.class))
-					.withField(
+					.withParameter(
 							"player",
 							SilicateValueTypes.ENTITY
 					)

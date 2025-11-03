@@ -1,7 +1,6 @@
 package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
@@ -11,7 +10,6 @@ import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -40,7 +38,7 @@ public record Vec3Predicate(
 		protected MapCodec<Vec3Predicate> createCodec() {
 			return this.createBaseCodec()
 					.apply(PredicateCodecBuilder.of(Vec3Predicate.class))
-					.withField(
+					.withParameter(
 							"left",
 							SilicateValueTypes.VEC3
 					)

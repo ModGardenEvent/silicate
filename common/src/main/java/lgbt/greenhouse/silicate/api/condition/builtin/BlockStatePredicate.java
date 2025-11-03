@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import org.jetbrains.annotations.NotNull;
 
 public record BlockStatePredicate(
@@ -32,7 +31,7 @@ public record BlockStatePredicate(
 		protected MapCodec<BlockStatePredicate> createCodec() {
 			return this.createBaseCodec()
 					.apply(PredicateCodecBuilder.of(BlockStatePredicate.class))
-					.withField(
+					.withParameter(
 							"left",
 							SilicateValueTypes.BLOCK_STATE
 					)

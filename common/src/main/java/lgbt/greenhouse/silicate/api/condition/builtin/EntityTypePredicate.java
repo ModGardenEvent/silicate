@@ -61,7 +61,7 @@ public record EntityTypePredicate(
 		protected MapCodec<EntityTypePredicate> createCodec() {
 			return this.createBaseCodec()
 					.apply(PredicateCodecBuilder.of(EntityTypePredicate.class))
-					.withField(
+					.withParameter(
 							"player",
 							SilicateValueTypes.ENTITY
 					)
