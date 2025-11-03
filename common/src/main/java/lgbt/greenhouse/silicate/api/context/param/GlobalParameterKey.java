@@ -3,10 +3,8 @@ package lgbt.greenhouse.silicate.api.context.param;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import lgbt.greenhouse.silicate.api.type.ValueType;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
-import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 

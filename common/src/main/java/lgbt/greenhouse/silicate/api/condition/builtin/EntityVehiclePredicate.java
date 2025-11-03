@@ -8,7 +8,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
@@ -23,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 public record EntityVehiclePredicate(
 		GlobalParameterKey<Entity> paramType,
 		Holder<GamePredicate<?>> condition
-) implements TypedGamePredicate<EntityVehiclePredicate, Entity> {
+) implements GamePredicate<EntityVehiclePredicate> {
 	@Override
 	public boolean test(GameContext oldContext) {
 		Entity entity = oldContext.getParam(paramType);

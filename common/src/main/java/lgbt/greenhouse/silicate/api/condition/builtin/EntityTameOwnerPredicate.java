@@ -9,7 +9,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
@@ -25,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 public record EntityTameOwnerPredicate(
 		GlobalParameterKey<Entity> paramType,
 		Holder<GamePredicate<?>> condition
-) implements TypedGamePredicate<EntityTameOwnerPredicate, Entity> {
+) implements GamePredicate<EntityTameOwnerPredicate> {
 	@Override
 	public boolean test(GameContext oldContext) {
 		Entity entity = oldContext.getParam(paramType);

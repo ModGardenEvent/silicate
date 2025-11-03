@@ -11,7 +11,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public record EntityTypePredicate(
 	ParameterKey<Entity> paramKey,
 	HolderSet<EntityType<?>> entityTypes
-) implements TypedGamePredicate<EntityTypePredicate, Entity> {
+) implements GamePredicate<EntityTypePredicate> {
 	public static EntityTypePredicate of(
 		ParameterKey<Entity> paramKey,
 		EntityType<?> entityType

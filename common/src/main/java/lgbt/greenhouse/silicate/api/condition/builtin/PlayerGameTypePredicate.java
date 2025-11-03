@@ -11,7 +11,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.duck.Duck_AbstractClientPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +26,7 @@ import java.util.Objects;
 public record PlayerGameTypePredicate(
 	ParameterKey<Player> player,
 	List<GameType> gameTypes
-) implements TypedGamePredicate<PlayerGameTypePredicate, Entity> {
+) implements GamePredicate<PlayerGameTypePredicate> {
 	private Either<List<GameType>, GameType> eitherGameType() {
 		if (gameTypes.size() == 1) {
 			return Either.right(gameTypes.getFirst());

@@ -8,14 +8,13 @@ import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import org.jetbrains.annotations.NotNull;
 
 public record BlockEntityTypePredicate(
 	ParameterKey<BlockEntity> blockEntity,
 	BlockEntityType<?> blockEntityType
-) implements TypedGamePredicate<BlockEntityTypePredicate, BlockEntity> {
+) implements GamePredicate<BlockEntityTypePredicate> {
 	@Override
 	public boolean test(GameContext context) {
 		BlockEntity blockEntity = context.getParam(this.blockEntity);

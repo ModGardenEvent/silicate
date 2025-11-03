@@ -10,7 +10,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
@@ -28,7 +27,7 @@ public record EntityPassengerPredicate(
 		ParameterKey<Entity> parameterKey,
 		Holder<GamePredicate<?>> condition,
 		boolean matchAll
-) implements TypedGamePredicate<EntityPassengerPredicate, Entity> {
+) implements GamePredicate<EntityPassengerPredicate> {
 	@Override
 	public boolean test(GameContext oldContext) {
 		List<Entity> passengers = oldContext.getParam(parameterKey).getPassengers();

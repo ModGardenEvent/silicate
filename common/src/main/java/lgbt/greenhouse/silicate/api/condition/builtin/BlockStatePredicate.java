@@ -7,14 +7,13 @@ import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import org.jetbrains.annotations.NotNull;
 
 public record BlockStatePredicate(
 	ParameterKey<BlockState> left,
 	BlockState right
-) implements TypedGamePredicate<BlockStatePredicate, BlockState> {
+) implements GamePredicate<BlockStatePredicate> {
 	@Override
 	public boolean test(GameContext context) {
 		BlockState state = context.getParam(left);

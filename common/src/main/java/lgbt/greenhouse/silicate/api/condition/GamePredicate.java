@@ -20,14 +20,11 @@ import java.util.function.Predicate;
  * A distribution-agnostic contextual {@link Predicate} used to determine game behavior.
  * <br>
  * This is the main type in Silicate.
- * <h2>{@link TypedGamePredicate}</h2>
- * If a predicate has a parameter type, it is recommended to implement {@link TypedGamePredicate} so that conditions that chain it can automatically determine their parameter type.
  * <h2>{@link Type}</h2>
  * This is a class required for registering a {@link GamePredicate} as it holds
  * important information such as codecs.
  * @see EntityPassengerPredicate
  * @see EntityVehiclePredicate
- * @see TypedGamePredicate
  */
 public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<GameContext> {
 	Codec<GamePredicate<?>> DISPATCH_CODEC = SilicateBuiltInRegistries.PREDICATE.byNameCodec()

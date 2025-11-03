@@ -7,7 +7,6 @@ import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.phys.Vec3;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +20,7 @@ public record Vec3Predicate(
 	ParameterKey<Vec3> left,
 	Vec3Comparison comparison,
 	Vec3 right
-) implements TypedGamePredicate<Vec3Predicate, Vec3> {
+) implements GamePredicate<Vec3Predicate> {
 	@Override
 	public boolean test(GameContext context) {
 		Vec3 formerOperand = context.getParam(left);

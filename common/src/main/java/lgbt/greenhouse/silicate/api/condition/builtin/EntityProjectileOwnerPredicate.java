@@ -10,7 +10,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.condition.TypedGamePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
@@ -25,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 public record EntityProjectileOwnerPredicate(
 		ParameterKey<Entity> entity,
 		Holder<GamePredicate<?>> condition
-) implements TypedGamePredicate<EntityProjectileOwnerPredicate, Entity> {
+) implements GamePredicate<EntityProjectileOwnerPredicate> {
 	@Override
 	public boolean test(GameContext oldContext) {
 		Entity entity = oldContext.getParam(this.entity);
