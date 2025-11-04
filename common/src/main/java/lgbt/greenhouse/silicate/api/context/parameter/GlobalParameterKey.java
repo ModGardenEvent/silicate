@@ -1,9 +1,7 @@
 package lgbt.greenhouse.silicate.api.context.parameter;
 
-import com.mojang.serialization.DataResult;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.resources.ResourceLocation;
-import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,17 +29,6 @@ public record GlobalParameterKey<T>(
 	@Override
 	public @NotNull String toString() {
 		return "GlobalParameterKey<" + this.name + ">";
-	}
-
-	private static @NotNull DataResult<? extends GlobalParameterKey<?>> validateParamType(ResourceLocation id) {
-		try {
-			return DataResult.success(Objects.requireNonNull(
-					SilicateBuiltInRegistries.GLOBAL_PARAMETER_KEY.getValue(id),
-					"GlobalParameterKey (" + id + ") is unregistered"
-			));
-		} catch (NullPointerException e) {
-			return DataResult.error(e::getMessage);
-		}
 	}
 
 	@Override
