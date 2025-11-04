@@ -75,6 +75,11 @@ public record ValueType<T>(Class<T> clazz, @Nullable Codec<T> codec) implements
 	}
 
 	@Override
+	public @NotNull String toString() {
+		return this.clazz.toGenericString();
+	}
+
+	@Override
 	public @NotNull Annotation @NotNull [] getDeclaredAnnotations() {
 		return this.clazz.getDeclaredAnnotations();
 	}
