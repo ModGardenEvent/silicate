@@ -8,12 +8,12 @@ import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 public class InvalidParameterException extends Exception {
 	private static final String DEFAULT_MESSAGE = "Invalid context parameter: ";
 
-	public InvalidParameterException(GlobalParameterKey<?> paramType) {
-		super(DEFAULT_MESSAGE + paramType);
+	public InvalidParameterException(GlobalParameterKey<?> parameterKey) {
+		super(DEFAULT_MESSAGE + parameterKey);
 	}
 
-	public InvalidParameterException(GlobalParameterKey<?> paramType, Throwable cause) {
-		super(DEFAULT_MESSAGE + paramType, cause);
+	public InvalidParameterException(GlobalParameterKey<?> parameterKey, Throwable cause) {
+		super(DEFAULT_MESSAGE + parameterKey, cause);
 	}
 
 	public InvalidParameterException(String message) {
