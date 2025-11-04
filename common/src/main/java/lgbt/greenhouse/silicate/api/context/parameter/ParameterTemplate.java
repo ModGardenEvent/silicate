@@ -5,7 +5,7 @@ import com.mojang.serialization.DataResult;
 import lgbt.greenhouse.silicate.Silicate;
 import net.minecraft.resources.ResourceLocation;
 
-public record ParameterTemplate(ResourceLocation location) {
+public record ParameterTemplate(ResourceLocation id) {
 	public static final Codec<ParameterTemplate> CODEC = Codec.STRING
 			.comapFlatMap(string -> {
 				if (string.startsWith("${") && string.endsWith("}")) {
@@ -14,5 +14,5 @@ public record ParameterTemplate(ResourceLocation location) {
 					return DataResult.error(() -> "no template");
 				}
 			}, template -> "${" + template.toString() + "}")
-			.xmap(ParameterTemplate::new, ParameterTemplate::location);
+			.xmap(ParameterTemplate::new, ParameterTemplate::id);
 }

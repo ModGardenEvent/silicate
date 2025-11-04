@@ -27,11 +27,11 @@ public interface Mixin_Registry<T> {
 	private Codec<ResourceLocation> silicate$overrideDefaultNamespace(Codec<ResourceLocation> original) {
 		if (!this.key().location().getNamespace().equals(Silicate.MOD_ID)) return original;
 
-		Function<ResourceLocation, ResourceLocation> namespaceTransformer = location -> {
-			if (location.getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
-				return Silicate.id(location.getPath());
+		Function<ResourceLocation, ResourceLocation> namespaceTransformer = id -> {
+			if (id.getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
+				return Silicate.id(id.getPath());
 			} else {
-				return location;
+				return id;
 			}
 		};
 		return original.xmap(namespaceTransformer, namespaceTransformer);

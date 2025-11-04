@@ -13,16 +13,16 @@ import java.util.Map;
  * That is, a class representing a map of all present parameters.
  */
 public sealed class ParameterMap {
-	private final Map<ResourceLocation, ParameterKey<?>> location2Keys;
+	private final Map<ResourceLocation, ParameterKey<?>> id2Keys;
 	protected final Map<ParameterKey<?>, Parameter<?>> params;
 	private final ParameterSet paramSet;
 
 	private ParameterMap(Map<ParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
-		this.location2Keys = new HashMap<>();
+		this.id2Keys = new HashMap<>();
 		this.params = params;
 		this.paramSet = paramSet;
 		for (ParameterKey<?> key : this.params.keySet()) {
-			this.location2Keys.put(key.getId(), key);
+			this.id2Keys.put(key.getId(), key);
 		}
 	}
 
@@ -37,7 +37,7 @@ public sealed class ParameterMap {
 
 	@SuppressWarnings("unchecked") // type is always correct
 	public <T> Parameter<T> get(ParameterKey.Reference<T> key) {
-		return (Parameter<T>) params.get(this.location2Keys.get(key.getId()));
+		return (Parameter<T>) params.get(this.id2Keys.get(key.getId()));
 	}
 
 	public <T> boolean has(ParameterKey<T> key) {
@@ -50,7 +50,7 @@ public sealed class ParameterMap {
 
 	@SuppressWarnings("unchecked") // Always correct.
 	public <T> Parameter<T> set(ParameterKey<T> key, T param) {
-		this.location2Keys.put(key.getId(), key);
+		this.id2Keys.put(key.getId(), key);
 		return (Parameter<T>) params.put(key, new Parameter<>(param));
 	}
 

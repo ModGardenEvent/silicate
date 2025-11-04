@@ -99,9 +99,9 @@ public final class SilicateValueTypes {
 	public static <T> ValueType<T> fromResourceLocation(Class<? super T> clazz, Registry<T> registry) {
 		Codec<T> codec = ResourceLocation.CODEC
 				.comapFlatMap(
-						location -> {
+						id -> {
 							try {
-								ResourceKey<T> resourceKey = ResourceKey.create(registry.key(), location);
+								ResourceKey<T> resourceKey = ResourceKey.create(registry.key(), id);
 								return DataResult.success(registry.getValueOrThrow(resourceKey));
 							} catch (IllegalStateException e) {
 								return DataResult.error(e::getMessage);

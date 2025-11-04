@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public interface ParameterKey<T> {
 	Codec<ParameterKey<?>> CODEC = ParameterTemplate.CODEC
 			.xmap(
-					template -> new Reference<>(template.location()),
+					template -> new Reference<>(template.id()),
 					key -> new ParameterTemplate(key.getId())
 			);
 
