@@ -9,8 +9,8 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterSet;
+import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

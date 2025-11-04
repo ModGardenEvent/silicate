@@ -3,7 +3,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
-import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
@@ -11,8 +11,8 @@ import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
+import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import org.jetbrains.annotations.NotNull;
 
 /**

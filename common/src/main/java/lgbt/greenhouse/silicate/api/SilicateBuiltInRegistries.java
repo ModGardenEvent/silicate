@@ -14,8 +14,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import lgbt.greenhouse.silicate.Silicate;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
+import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKey;
+import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Optional;

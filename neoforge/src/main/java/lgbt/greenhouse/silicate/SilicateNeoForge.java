@@ -7,7 +7,7 @@ import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.SilicateRegistries;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
+import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.platform.SilicatePlatformHelperNeoForge;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;

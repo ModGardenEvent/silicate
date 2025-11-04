@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import dev.lukebemish.codecextras.record.KeyedRecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
-import lgbt.greenhouse.silicate.api.context.param.ParameterTemplate;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterTemplate;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import org.jetbrains.annotations.Nullable;
 

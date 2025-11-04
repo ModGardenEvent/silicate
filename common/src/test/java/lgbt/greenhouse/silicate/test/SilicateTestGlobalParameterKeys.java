@@ -5,7 +5,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.projectile.Projectile;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKey;
 import org.jetbrains.annotations.ApiStatus;
 
 import static lgbt.greenhouse.silicate.Silicate.MOD_ID;

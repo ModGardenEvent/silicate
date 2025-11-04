@@ -3,7 +3,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
-import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;

@@ -5,7 +5,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import lgbt.greenhouse.silicate.Silicate;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKey;
 
 /**
  * {@link ResourceKey}s of registries used in Silicate.

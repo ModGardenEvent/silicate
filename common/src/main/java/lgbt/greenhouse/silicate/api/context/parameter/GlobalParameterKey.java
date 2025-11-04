@@ -1,4 +1,4 @@
-package lgbt.greenhouse.silicate.api.context.param;
+package lgbt.greenhouse.silicate.api.context.parameter;
 
 import com.mojang.serialization.DataResult;
 import lgbt.greenhouse.silicate.api.type.ValueType;

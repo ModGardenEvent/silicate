@@ -15,9 +15,9 @@ import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
-import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterSet;
+import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import org.jetbrains.annotations.NotNull;
 

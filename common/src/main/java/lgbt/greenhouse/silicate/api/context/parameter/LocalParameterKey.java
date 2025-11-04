@@ -1,4 +1,4 @@
-package lgbt.greenhouse.silicate.api.context.param;
+package lgbt.greenhouse.silicate.api.context.parameter;
 
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.resources.ResourceLocation;

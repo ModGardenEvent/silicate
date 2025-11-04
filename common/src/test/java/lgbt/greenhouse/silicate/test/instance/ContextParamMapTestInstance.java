@@ -11,10 +11,10 @@ import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.phys.Vec3;
-import lgbt.greenhouse.silicate.api.context.param.Parameter;
-import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
-import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
+import lgbt.greenhouse.silicate.api.context.parameter.Parameter;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterSet;
+import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import org.jetbrains.annotations.NotNull;
 

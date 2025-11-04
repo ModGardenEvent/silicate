@@ -1,4 +1,4 @@
-package lgbt.greenhouse.silicate.api.context.param;
+package lgbt.greenhouse.silicate.api.context.parameter;
 
 import lgbt.greenhouse.silicate.api.condition.builtin.EntityPassengerPredicate;
 import lgbt.greenhouse.silicate.api.condition.builtin.EntityProjectileOwnerPredicate;

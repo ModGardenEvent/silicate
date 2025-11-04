@@ -1,6 +1,6 @@
 package lgbt.greenhouse.silicate.api.exception;
 
-import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 
 /**
  * An exception that is thrown when an invalid {@link ParameterKey} is provided or when a {@link ParameterKey} is missing.

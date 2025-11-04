@@ -1,10 +1,9 @@
 package lgbt.greenhouse.silicate.api.context;
 
-import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
-import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 import org.jetbrains.annotations.Nullable;
 
 /**
