@@ -26,7 +26,7 @@ public final class GlobalParameterKey<T>
 	}
 
 	@Override
-	public ParameterScope scope() {
+	public ParameterScope getScope() {
 		return ParameterScope.GLOBAL;
 	}
 

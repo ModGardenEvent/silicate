@@ -16,7 +16,7 @@ public interface ParameterKey<T> {
 					key -> new ParameterTemplate(key.getId())
 			);
 
-	ParameterScope scope();
+	ParameterScope getScope();
 
 	ResourceLocation getId();
 
@@ -38,7 +38,7 @@ public interface ParameterKey<T> {
 		}
 
 		@Override
-		public ParameterScope scope() {
+		public ParameterScope getScope() {
 			return ParameterScope.REFERENCE;
 		}
 

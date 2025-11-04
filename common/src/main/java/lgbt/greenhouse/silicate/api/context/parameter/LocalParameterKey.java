@@ -20,7 +20,7 @@ public final class LocalParameterKey<T> implements ParameterKey<T> {
 	}
 
 	@Override
-	public ParameterScope scope() {
+	public ParameterScope getScope() {
 		return ParameterScope.LOCAL;
 	}
 
