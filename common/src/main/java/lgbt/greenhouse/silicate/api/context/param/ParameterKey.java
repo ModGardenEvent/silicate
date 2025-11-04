@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <T> type of {@link ValueType}
  */
 public interface ParameterKey<T> {
-	Codec<ParameterKey.Reference<?>> CODEC = ParameterTemplate.CODEC
+	Codec<ParameterKey<?>> CODEC = ParameterTemplate.CODEC
 			.xmap(
 					template -> new Reference<>(template.location()),
 					key -> new ParameterTemplate(key.getId())
