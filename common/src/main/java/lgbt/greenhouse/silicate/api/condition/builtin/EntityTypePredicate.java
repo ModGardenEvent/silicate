@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  * A predicate to check an entity's {@link EntityType}.
  */
 public record EntityTypePredicate(
-	ParameterKey<Entity> paramKey,
+	ParameterKey<Entity> entity,
 	HolderSet<EntityType<?>> entityTypes
 ) implements GamePredicate<EntityTypePredicate> {
 	public static EntityTypePredicate of(
@@ -45,9 +45,9 @@ public record EntityTypePredicate(
 	@Override
 	public boolean test(GameContext context) {
 		return context
-			.getParam(paramKey)
+			.getParam(this.entity)
 			.getType()
-			.is(entityTypes);
+			.is(this.entityTypes);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
+import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
@@ -10,22 +11,21 @@ import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A condition that tests {@link #condition} with the vehicle of {@link #paramType}.
- * @param paramType The parameter type that has a vehicle.
+ * A condition that tests {@link #condition} with the vehicle of {@link #entity}.
+ * @param entity The vehicle.
  * @param condition The game condition to check against.
  */
 public record EntityVehiclePredicate(
-		GlobalParameterKey<Entity> paramType,
+		ParameterKey<Entity> entity,
 		Holder<GamePredicate<?>> condition
 ) implements GamePredicate<EntityVehiclePredicate> {
 	@Override
 	public boolean test(GameContext oldContext) {
-		Entity entity = oldContext.getParam(paramType);
+		Entity entity = oldContext.getParam(this.entity);
 		if (entity.getVehicle() == null) {
 			return false;
 		} else {

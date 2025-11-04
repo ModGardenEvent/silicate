@@ -18,19 +18,19 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * A condition that tests {@link #condition} with the passengers of {@link #parameterKey}.
- * @param parameterKey The parameter key that has a passenger.
+ * A condition that tests {@link #condition} with the passengers of {@link #entity}.
+ * @param entity The parameter key that has a passenger.
  * @param condition The game condition to check against.
  * @param matchAll Whether to check if all passengers match or if any match.
  */
 public record EntityPassengerPredicate(
-		ParameterKey<Entity> parameterKey,
+		ParameterKey<Entity> entity,
 		Holder<GamePredicate<?>> condition,
 		boolean matchAll
 ) implements GamePredicate<EntityPassengerPredicate> {
 	@Override
 	public boolean test(GameContext oldContext) {
-		List<Entity> passengers = oldContext.getParam(parameterKey).getPassengers();
+		List<Entity> passengers = oldContext.getParam(this.entity).getPassengers();
 		ParameterMap oldParamMap = oldContext.getParams();
 		ParameterMap.Mutable paramMap = ParameterMap.Mutable.of(oldParamMap);
 		if (matchAll) {
