@@ -1,6 +1,7 @@
 package lgbt.greenhouse.silicate.api.context.param;
 
 import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,17 +13,31 @@ import java.util.Map;
  * That is, a class representing a map of all present parameters.
  */
 public sealed class ParameterMap {
+	private final Map<ResourceLocation, ParameterKey<?>> location2Keys;
 	protected final Map<ParameterKey<?>, Parameter<?>> params;
 	private final ParameterSet paramSet;
 
 	private ParameterMap(Map<ParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
+		this.location2Keys = new HashMap<>();
 		this.params = params;
 		this.paramSet = paramSet;
+		for (ParameterKey<?> key : this.params.keySet()) {
+			this.location2Keys.put(key.getId(), key);
+		}
 	}
 
 	@SuppressWarnings("unchecked") // type is always correct
 	public <T> Parameter<T> get(ParameterKey<T> key) {
+		if (key instanceof ParameterKey.Reference<T> referenceKey) {
+			return this.get(referenceKey);
+		}
+
 		return (Parameter<T>) params.get(key);
+	}
+
+	@SuppressWarnings("unchecked") // type is always correct
+	public <T> Parameter<T> get(ParameterKey.Reference<T> key) {
+		return (Parameter<T>) params.get(this.location2Keys.get(key.getId()));
 	}
 
 	public <T> boolean has(ParameterKey<T> key) {
@@ -34,8 +49,9 @@ public sealed class ParameterMap {
 	}
 
 	@SuppressWarnings("unchecked") // Always correct.
-	public <T> Parameter<T> set(ParameterKey<T> type, T param) {
-		return (Parameter<T>) params.put(type, new Parameter<>(param));
+	public <T> Parameter<T> set(ParameterKey<T> key, T param) {
+		this.location2Keys.put(key.getId(), key);
+		return (Parameter<T>) params.put(key, new Parameter<>(param));
 	}
 
 	// todo: nuke this class. everything is mutable now
