@@ -54,7 +54,7 @@ public record EntityProjectileOwnerPredicate(
 			return this.createBaseCodec()
 					.apply(PredicateCodecBuilder.of(EntityProjectileOwnerPredicate.class))
 					.withParameter(
-							"player",
+							"entity",
 							SilicateValueTypes.ENTITY
 					)
 					.withValue(

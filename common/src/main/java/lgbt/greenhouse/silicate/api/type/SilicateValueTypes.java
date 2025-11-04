@@ -43,7 +43,7 @@ public final class SilicateValueTypes {
 			BlockState.class,
 			BlockState.CODEC
 	);
-	public static final ValueType<Entity> ENTITY = register("player", Entity.class);
+	public static final ValueType<Entity> ENTITY = register("entity", Entity.class);
 	public static final ValueType<Player> PLAYER = register("player", Player.class);
 	public static final ValueType<Mob> MOB = register("mob", Mob.class);
 	public static final ValueType<Monster> HOSTILE_MOB = register(

@@ -52,7 +52,7 @@ public record EntityVehiclePredicate(
 			return this.createBaseCodec()
 					.apply(PredicateCodecBuilder.of(EntityVehiclePredicate.class))
 					.withParameter(
-							"player",
+							"entity",
 							SilicateValueTypes.ENTITY
 					)
 					.withValue(

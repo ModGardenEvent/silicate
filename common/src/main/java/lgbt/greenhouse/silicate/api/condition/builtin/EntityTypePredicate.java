@@ -15,7 +15,7 @@ import lgbt.greenhouse.silicate.api.context.GameContext;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A predicate to check an player's {@link EntityType}.
+ * A predicate to check an entity's {@link EntityType}.
  */
 public record EntityTypePredicate(
 	ParameterKey<Entity> paramKey,
@@ -61,7 +61,7 @@ public record EntityTypePredicate(
 			return this.createBaseCodec()
 					.apply(PredicateCodecBuilder.of(EntityTypePredicate.class))
 					.withParameter(
-							"player",
+							"entity",
 							SilicateValueTypes.ENTITY
 					)
 					.withValue(
