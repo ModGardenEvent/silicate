@@ -28,7 +28,7 @@ public record GlobalParameterKey<T>(
 
 	@Override
 	public @NotNull String toString() {
-		return "GlobalParameterKey<" + this.name + ">";
+		return "GlobalParameterKey<" + this.type + ">(" + this.name + ")";
 	}
 
 	@Override

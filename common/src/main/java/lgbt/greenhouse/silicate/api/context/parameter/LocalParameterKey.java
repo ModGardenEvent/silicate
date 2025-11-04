@@ -26,6 +26,6 @@ public record LocalParameterKey<T>(
 
 	@Override
 	public @NotNull String toString() {
-		return "LocalParameterKey<" + this.name + ">";
+		return "LocalParameterKey<" + this.type + ">(" + this.name + ")";
 	}
 }
