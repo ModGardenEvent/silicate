@@ -5,10 +5,20 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-public record LocalParameterKey<T>(
-		@ApiStatus.Internal ResourceLocation name,
-		@ApiStatus.Internal ValueType<T> type
-) implements ParameterKey<T> {
+import java.util.Objects;
+
+public final class LocalParameterKey<T> implements ParameterKey<T> {
+	private final ResourceLocation name;
+	private final ValueType<T> type;
+
+	public LocalParameterKey(
+			ResourceLocation name,
+			ValueType<T> type
+	) {
+		this.name = name;
+		this.type = type;
+	}
+
 	@Override
 	public ParameterScope scope() {
 		return ParameterScope.LOCAL;

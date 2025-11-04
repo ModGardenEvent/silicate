@@ -7,23 +7,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public record GlobalParameterKey<T>(
-		@ApiStatus.Internal ResourceLocation name,
-		@ApiStatus.Internal ValueType<T> type
-)
+public final class GlobalParameterKey<T>
 		implements ParameterKey<T> {
-	@Override // Makes sure that values return the correct value within the context when clazz is cast.
-	public boolean equals(Object obj) {
-		if (obj == this)
-			return true;
-		if (!(obj instanceof GlobalParameterKey<?> globalParameterKey))
-			return false;
-		return globalParameterKey.getId().equals(this.getId());
-	}
+	private final ResourceLocation name;
+	private final ValueType<T> type;
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(this.name);
+	public GlobalParameterKey(
+			ResourceLocation name,
+			ValueType<T> type
+	) {
+		this.name = name;
+		this.type = type;
 	}
 
 	@Override
