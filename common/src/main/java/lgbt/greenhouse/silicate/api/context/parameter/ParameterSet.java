@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A set of all possible global parameters in a context.
+ * A set of all possible global parameters in a new context.
  */
 public final class ParameterSet {
 	private final Set<GlobalParameterKey<?>> required;
