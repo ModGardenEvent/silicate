@@ -3,6 +3,7 @@ package lgbt.greenhouse.silicate.api.context.parameter;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 public record LocalParameterKey<T>(
 		@ApiStatus.Internal ResourceLocation name,
@@ -21,5 +22,10 @@ public record LocalParameterKey<T>(
 	@Override
 	public ValueType<T> getType() {
 		return this.type;
+	}
+
+	@Override
+	public @NotNull String toString() {
+		return "LocalParameterKey<" + this.name + ">";
 	}
 }
