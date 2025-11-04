@@ -1,17 +1,18 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "net.modgarden.silicate.mixin",
-  "refmap": "${mod_id}.refmap.json",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
-		"lgbt.greenhouse.silicate.mixin.Mixin_MinecraftServer"
-  ],
-  "client": [
-		"lgbt.greenhouse.silicate.mixin.client.Mixin_AbstractClientPlayer"
-  ],
-  "server": [],
-  "injectors": {
-    "defaultRequire": 1
+	"required": true,
+	"minVersion": "0.8",
+	"package": "lgbt.greenhouse.silicate.mixin",
+	"refmap": "${mod_id}.refmap.json",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"Mixin_MinecraftServer",
+		"Mixin_Registry"
+	],
+	"client": [
+		"client.Mixin_AbstractClientPlayer"
+	],
+	"server": [],
+	"injectors": {
+		"defaultRequire": 1
 	}
 }
