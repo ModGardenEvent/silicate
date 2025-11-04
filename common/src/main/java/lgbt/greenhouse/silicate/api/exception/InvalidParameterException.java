@@ -1,18 +1,18 @@
 package lgbt.greenhouse.silicate.api.exception;
 
-import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKey;
+import lgbt.greenhouse.silicate.api.context.param.ParameterKey;
 
 /**
- * An exception that is thrown when an invalid {@link GlobalParameterKey} is provided or when a {@link GlobalParameterKey} is missing.
+ * An exception that is thrown when an invalid {@link ParameterKey} is provided or when a {@link ParameterKey} is missing.
  */
 public class InvalidParameterException extends Exception {
 	private static final String DEFAULT_MESSAGE = "Invalid context parameter: ";
 
-	public InvalidParameterException(GlobalParameterKey<?> parameterKey) {
+	public InvalidParameterException(ParameterKey<?> parameterKey) {
 		super(DEFAULT_MESSAGE + parameterKey);
 	}
 
-	public InvalidParameterException(GlobalParameterKey<?> parameterKey, Throwable cause) {
+	public InvalidParameterException(ParameterKey<?> parameterKey, Throwable cause) {
 		super(DEFAULT_MESSAGE + parameterKey, cause);
 	}
 
