@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.net.Proxy;
 
 @Mixin(MinecraftServer.class)
-public class Mixin_MinecraftServer {
+public final class Mixin_MinecraftServer {
 	@Inject(
 			method = "<init>",
 			at = @At("CTOR_HEAD")
