@@ -1,6 +1,5 @@
 package lgbt.greenhouse.silicate.api.condition.builtin;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
@@ -27,14 +26,6 @@ public record PlayerGameTypePredicate(
 	ParameterKey<Player> player,
 	List<GameType> gameTypes
 ) implements GamePredicate<PlayerGameTypePredicate> {
-	private Either<List<GameType>, GameType> eitherGameType() {
-		if (gameTypes.size() == 1) {
-			return Either.right(gameTypes.getFirst());
-		} else {
-			return Either.left(gameTypes);
-		}
-	}
-
 	@Override
 	public boolean test(GameContext context) {
 		Entity entity = context.getParam(this.player);
