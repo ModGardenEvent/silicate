@@ -1,6 +1,6 @@
 package lgbt.greenhouse.silicate.api.context.param;
 
-import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
+import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -93,9 +93,9 @@ public sealed class ParameterMap {
 		}
 
 		/**
-		 * @throws InvalidContextParameterException if a parameter is invalid or missing.
+		 * @throws InvalidParameterException if a parameter is invalid or missing.
 		 */
-		public ParameterMap build() throws InvalidContextParameterException {
+		public ParameterMap build() throws InvalidParameterException {
 			validate();
 			return new ParameterMap(params, paramSet);
 		}
@@ -103,20 +103,20 @@ public sealed class ParameterMap {
 		/**
 		 * Ensure that all parameters are valid.
 		 */
-		private void validate() throws InvalidContextParameterException {
+		private void validate() throws InvalidParameterException {
 			try {
 				params.forEach((key, param) -> {
 					if (!paramSet.hasParam((GlobalParameterKey<?>) key)) {
-						throw new RuntimeException(new InvalidContextParameterException("Context parameter " + key + " does not exist in this set"));
+						throw new RuntimeException(new InvalidParameterException("Parameter " + key + " does not exist in this set"));
 					}
 				});
 				paramSet.getRequired().forEach(key -> {
 					if (!params.containsKey(key)) {
-						throw new RuntimeException(new InvalidContextParameterException("Context parameter " + key + " is missing; required in set"));
+						throw new RuntimeException(new InvalidParameterException("Parameter " + key + " is missing; required in set"));
 					}
 				});
 			} catch (RuntimeException e) {
-				if (e.getCause() instanceof InvalidContextParameterException icpe) {
+				if (e.getCause() instanceof InvalidParameterException icpe) {
 					throw icpe;
 				}
 			}

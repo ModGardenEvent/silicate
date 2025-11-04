@@ -30,7 +30,7 @@ import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
-import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
+import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import lgbt.greenhouse.silicate.test.SilicateTestGlobalParameterKeys;
 import lgbt.greenhouse.silicate.test.util.ExpectedResultCondition;
 import org.jetbrains.annotations.NotNull;
@@ -98,7 +98,7 @@ public class ConditionsTestInstance extends GameTestInstance {
 				}
 			}
 			helper.succeed();
-		} catch (InvalidContextParameterException ex) {
+		} catch (InvalidParameterException ex) {
 			helper.fail(Component.literal(ex.getMessage()));
 		}
 	}
@@ -125,7 +125,7 @@ public class ConditionsTestInstance extends GameTestInstance {
 				.build();
 	}
 
-	private static ParameterMap createParamMap(BlockState state, BlockPos origin, Entity entity, Entity entity2, BlockState entityBlock, ServerPlayer fakePlayer, Projectile projectile, GameTestHelper helper) throws InvalidContextParameterException {
+	private static ParameterMap createParamMap(BlockState state, BlockPos origin, Entity entity, Entity entity2, BlockState entityBlock, ServerPlayer fakePlayer, Projectile projectile, GameTestHelper helper) throws InvalidParameterException {
 		ParameterSet paramSet = createParamSet();
 		helper.setBlock(origin, state);
 		BlockPos entityBlockPos = origin.east();

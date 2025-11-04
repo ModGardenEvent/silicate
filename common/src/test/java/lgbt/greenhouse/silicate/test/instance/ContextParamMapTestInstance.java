@@ -15,7 +15,7 @@ import lgbt.greenhouse.silicate.api.context.param.Parameter;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
-import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
+import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import org.jetbrains.annotations.NotNull;
 
 public class ContextParamMapTestInstance extends GameTestInstance {
@@ -76,15 +76,15 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 			try {
 				createInvalidParamMap();
 				helper.fail(Component.literal("Invalid parameter type allowed in ContextParamMap"));
-			} catch (InvalidContextParameterException ignored) {
+			} catch (InvalidParameterException ignored) {
 			}
 			try {
 				createMissingParamMap();
 				helper.fail(Component.literal("Missing parameter allowed in ContextParamMap"));
-			} catch (InvalidContextParameterException ignored) {
+			} catch (InvalidParameterException ignored) {
 			}
 			helper.succeed();
-		} catch (InvalidContextParameterException ex) {
+		} catch (InvalidParameterException ex) {
 			helper.fail(Component.literal(ex.getMessage()));
 		}
 	}
@@ -95,14 +95,14 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 				.build();
 	}
 
-	private static ParameterMap createParamMap(BlockPos origin) throws InvalidContextParameterException {
+	private static ParameterMap createParamMap(BlockPos origin) throws InvalidParameterException {
 		ParameterSet paramSet = createParamSet();
 		ParameterMap.Builder builder = ParameterMap.Builder.of(paramSet)
 				.withParameter(GlobalParameterKeys.ORIGIN, origin.getCenter());
 		return builder.build();
 	}
 
-	private static void createInvalidParamMap() throws InvalidContextParameterException {
+	private static void createInvalidParamMap() throws InvalidParameterException {
 		ParameterSet paramSet = ParameterSet.Builder.of()
 				.required(GlobalParameterKeys.BLOCK_STATE)
 				.required(GlobalParameterKeys.ORIGIN)
@@ -112,7 +112,7 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 				.build();
 	}
 
-	private static void createMissingParamMap() throws InvalidContextParameterException {
+	private static void createMissingParamMap() throws InvalidParameterException {
 		ParameterSet paramSet = ParameterSet.Builder.of()
 				.required(GlobalParameterKeys.BLOCK_STATE)
 				.required(GlobalParameterKeys.ORIGIN)

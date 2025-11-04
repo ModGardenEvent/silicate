@@ -18,7 +18,7 @@ import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.param.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.param.ParameterSet;
 import lgbt.greenhouse.silicate.api.context.param.GlobalParameterKeys;
-import lgbt.greenhouse.silicate.api.exception.InvalidContextParameterException;
+import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import org.jetbrains.annotations.NotNull;
 
 public class GameContextTestInstance extends GameTestInstance {
@@ -49,12 +49,12 @@ public class GameContextTestInstance extends GameTestInstance {
 					Component.literal("GameContext.getParams() is not equal to paramMap")
 			);
 			helper.succeed();
-		} catch (InvalidContextParameterException ex) {
+		} catch (InvalidParameterException ex) {
 			helper.fail(Component.literal(ex.getMessage()));
 		}
 	}
 
-	private static ParameterMap createParamMap(BlockState state, BlockPos origin, GameTestHelper helper) throws InvalidContextParameterException {
+	private static ParameterMap createParamMap(BlockState state, BlockPos origin, GameTestHelper helper) throws InvalidParameterException {
 		helper.setBlock(origin, state);
 		ParameterMap.Builder builder = ParameterMap.Builder.of(createParamSet())
 				.withParameter(GlobalParameterKeys.ORIGIN, origin.getCenter())
