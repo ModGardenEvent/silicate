@@ -106,7 +106,7 @@ public sealed class ParameterMap {
 		private void validate() throws InvalidParameterException {
 			try {
 				params.forEach((key, param) -> {
-					if (!paramSet.hasParam((GlobalParameterKey<?>) key)) {
+					if (key instanceof GlobalParameterKey<?> globalParameterKey && !paramSet.hasParam(globalParameterKey)) {
 						throw new RuntimeException(new InvalidParameterException("Parameter " + key + " does not exist in this set"));
 					}
 				});
