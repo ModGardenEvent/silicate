@@ -64,6 +64,7 @@ neoForge {
 }
 
 dependencies {
+	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 	jarJar("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 }
 

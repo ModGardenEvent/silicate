@@ -26,6 +26,7 @@ dependencies {
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.FABRIC_API}")
 	modLocalRuntime("com.terraformersmc:modmenu:${Versions.MOD_MENU}")
 
+	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 	include("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 }
 
