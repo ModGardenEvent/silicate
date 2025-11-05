@@ -10,16 +10,16 @@ Add this to your `build.gradle`(`.kts`)
 repositories {
 	exclusiveContent {
 		forRepositories(
-			maven("https://maven.modgarden.net/releases") {
+			maven("https://maven.greenhouse.lgbt/releases") {
 				name = "Greenhouse"
 			}
 		)
-		filter { includeGroup("net.modgarden.silicate") }
+		filter { includeGroup("lgbt.greenhouse.silicate") }
 	}
 }
 
 dependencies {
-	compileOnly("net.modgarden.silicate:silicate-common:VERSION")
+	compileOnly("lgbt.greenhouse.silicate:silicate-common:VERSION")
 }
 ```
 
