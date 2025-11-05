@@ -20,6 +20,6 @@ interface BaseCodec<T extends GamePredicate<T>> extends Function<PredicateCodecB
 	 * @return a chained {@link BaseCodec}
 	 */
 	default BaseCodec<T> andThen(BaseCodec<T> child) {
-		return (BaseCodec<T>) Function.super.andThen(child);
+		return Function.super.andThen(child)::apply;
 	}
 }
