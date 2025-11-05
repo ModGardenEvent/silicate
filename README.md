@@ -19,10 +19,7 @@ repositories {
 }
 
 dependencies {
-	// If using multiloader, use each platform as below for silicate in their respective modules
-	implementation("net.modgarden.silicate:silicate-PLATFORM:VERSION")
-	// If using multiloader, put this in your "common" module
-	// compileOnly("net.modgarden.silicate:silicate-common:VERSION")
+	compileOnly("net.modgarden.silicate:silicate-common:VERSION")
 }
 ```
 
