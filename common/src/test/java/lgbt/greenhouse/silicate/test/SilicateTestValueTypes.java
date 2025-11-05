@@ -18,12 +18,16 @@ public final class SilicateTestValueTypes {
 	public static void registerAll() {}
 
 	@SuppressWarnings("SameParameterValue") // Shush.
-	private static <T> ValueType<T> register(String name, Class<T> clazz) {
+	private static <T> ValueType<T> register(String name, ValueType<T> type) {
 		ResourceLocation id = ResourceLocation.fromNamespaceAndPath(MOD_ID + "_test", name);
 		return Registry.register(
 				SilicateBuiltInRegistries.VALUE_TYPE,
 				id,
-				new ValueType<>(clazz)
+				type
 		);
+	}
+
+	private static <T> ValueType<T> register(String name, Class<T> clazz) {
+		return register(name, new ValueType<>(clazz, null));
 	}
 }
