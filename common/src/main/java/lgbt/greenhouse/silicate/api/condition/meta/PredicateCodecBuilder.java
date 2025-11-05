@@ -23,6 +23,7 @@ import java.util.function.Function;
 public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	private final Class<T> clazz;
 	private final Map<String, FieldEntry<?, ?, ?>> fields = new HashMap<>();
+	private final List<FieldEntry<?, ?, ?>> entries = new ArrayList<>();
 
 	private PredicateCodecBuilder(Class<T> clazz) {
 		this.clazz = clazz;
@@ -114,6 +115,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	public <V> PredicateCodecBuilder<T> withParameter(String key, ValueType<V> type, Function<T, ParameterKey<V>> getter) {
 		this.fields.put(key, new FieldEntry<>(type, null, getter, false, Optional.empty(), true));
+		this.addOrderedEntry(key);
 		return this;
 	}
 
@@ -138,6 +140,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	public <V> PredicateCodecBuilder<T> withValue(String key, ValueType<V> type, Codec<V> codec,  Function<T, V> getter) {
 		this.fields.put(key, new FieldEntry<>(type, codec, getter, false, Optional.empty(), false));
+		this.addOrderedEntry(key);
 		return this;
 	}
 
@@ -174,6 +177,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	public <V> PredicateCodecBuilder<T> withOptionalValue(String key, ValueType<V> type, Codec<V> codec,  Function<T, V> getter) {
 		this.fields.put(key, new FieldEntry<>(type, codec, getter, true, Optional.empty(), false));
+		this.addOrderedEntry(key);
 		return this;
 	}
 
@@ -188,7 +192,12 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	public <V> PredicateCodecBuilder<T> withOptionalValue(String key, ValueType<V> type, Codec<V> codec, Function<T, V> getter, V defaultValue) {
 		this.fields.put(key, new FieldEntry<>(type, codec, getter, true, Optional.of(defaultValue), false));
+		this.addOrderedEntry(key);
 		return this;
+	}
+
+	private void addOrderedEntry(String key) {
+		this.entries.add(this.fields.get(key));
 	}
 
 	/**
@@ -196,7 +205,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @return a {@link MapCodec} for the {@link GamePredicate}
 	 */
 	public MapCodec<T> build() {
-		Class<?>[] parameters = this.fields.values().stream()
+		Class<?>[] parameters = this.entries.stream()
 				.map(fieldEntry -> {
 					if (fieldEntry.requiresTemplateValues) {
 						return SilicateValueTypes.PARAMETER_KEY;
