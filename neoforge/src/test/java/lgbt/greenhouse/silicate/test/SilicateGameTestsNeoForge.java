@@ -20,7 +20,7 @@ public class SilicateGameTestsNeoForge {
 		@SubscribeEvent
 		public static void registerContents(RegisterEvent event) {
 			register(event, Registries.TEST_INSTANCE_TYPE, SilicateTestInstanceTypes::registerAll);
-			register(event, SilicateRegistries.CONTEXT_PARAM_TYPE, SilicateTestGlobalParameterKeys::registerAll);
+			register(event, SilicateRegistries.GLOBAL_PARAMETER_KEY, SilicateTestGlobalParameterKeys::registerAll);
 		}
 
 		private static void register(RegisterEvent event, ResourceKey<? extends Registry<?>> requiredKey,

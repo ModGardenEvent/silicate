@@ -2,10 +2,7 @@ package lgbt.greenhouse.silicate.api.context.parameter;
 
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 public final class LocalParameterKey<T> implements ParameterKey<T> {
 	private final ResourceLocation name;

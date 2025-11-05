@@ -34,7 +34,7 @@ public class SilicateNeoForge {
 
 		@SubscribeEvent
 		public static void registerContents(RegisterEvent event) {
-			register(event, SilicateRegistries.CONTEXT_PARAM_TYPE, GlobalParameterKeys::registerAll);
+			register(event, SilicateRegistries.GLOBAL_PARAMETER_KEY, GlobalParameterKeys::registerAll);
 			register(event, SilicateRegistries.PREDICATE, SilicatePredicateTypes::registerAll);
 		}
 

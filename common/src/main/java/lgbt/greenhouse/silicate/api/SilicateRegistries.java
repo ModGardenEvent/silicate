@@ -12,7 +12,7 @@ import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKey;
  */
 public final class SilicateRegistries {
 	public static final ResourceKey<Registry<GamePredicate.Type<?>>> PREDICATE = create("predicate");
-	public static final ResourceKey<Registry<GlobalParameterKey<?>>> CONTEXT_PARAM_TYPE = create("context_param_type");
+	public static final ResourceKey<Registry<GlobalParameterKey<?>>> GLOBAL_PARAMETER_KEY = create("context_param_type");
 	public static final ResourceKey<Registry<GamePredicate<?>>> CONDITION_TEMPLATE = create("condition_template");
 	public static final ResourceKey<Registry<ValueType<?>>> VALUE_TYPE = create("type");
 

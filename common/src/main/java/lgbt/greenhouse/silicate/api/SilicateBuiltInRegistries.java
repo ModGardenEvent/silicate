@@ -27,7 +27,7 @@ import static lgbt.greenhouse.silicate.Silicate.id;
  */
 public final class SilicateBuiltInRegistries {
 	public static final Registry<GamePredicate.Type<?>> PREDICATE = create(SilicateRegistries.PREDICATE);
-	public static final Registry<GlobalParameterKey<?>> GLOBAL_PARAMETER_KEY = create(SilicateRegistries.CONTEXT_PARAM_TYPE);
+	public static final Registry<GlobalParameterKey<?>> GLOBAL_PARAMETER_KEY = create(SilicateRegistries.GLOBAL_PARAMETER_KEY);
 	public static final Registry<ValueType<?>> VALUE_TYPE = create(SilicateRegistries.VALUE_TYPE);
 
 	private SilicateBuiltInRegistries() {}
@@ -43,7 +43,7 @@ public final class SilicateBuiltInRegistries {
 	@SuppressWarnings("unchecked")
 	private static void registerRegistries() {
 		Registry<Registry<?>> registryRegistry = (Registry<Registry<?>>) BuiltInRegistries.REGISTRY;
-		Registry.register(registryRegistry, id("context_param_type"), GLOBAL_PARAMETER_KEY);
+		Registry.register(registryRegistry, id("global_parameter_key"), GLOBAL_PARAMETER_KEY);
 		Registry.register(registryRegistry, id("predicate"), PREDICATE);
 		Registry.register(registryRegistry, id("value_type"), VALUE_TYPE);
 	}
