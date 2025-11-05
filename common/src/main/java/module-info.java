@@ -1,5 +1,5 @@
-module silicate.impl {
+module silicate.api {
 	requires org.spongepowered.mixin;
 	requires org.jetbrains.annotations;
-	exports lgbt.greenhouse.silicate.impl to silicate.api;
+	exports lgbt.greenhouse.silicate.api;
 }

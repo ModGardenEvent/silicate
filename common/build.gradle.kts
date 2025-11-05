@@ -9,12 +9,6 @@ plugins {
 }
 
 sourceSets {
-	create("api")
-	getByName("api") {
-		compileClasspath += sourceSets["main"].output
-		compileClasspath += sourceSets["main"].compileClasspath
-		runtimeClasspath += sourceSets["main"].runtimeClasspath
-	}
 	create("generated") {
 		resources {
 			srcDir("src/generated/resources")
@@ -87,8 +81,6 @@ artifacts {
 	add("commonResources", sourceSets["main"].resources.sourceDirectories.singleFile)
 	add("commonTestJava", sourceSets["test"].java.sourceDirectories.singleFile)
 	add("commonTestResources", sourceSets["test"].resources.sourceDirectories.singleFile)
-	add("commonTestJava", sourceSets["api"].java.sourceDirectories.singleFile)
-	add("commonTestResources", sourceSets["api"].resources.sourceDirectories.singleFile)
 }
 
 publishMods {
