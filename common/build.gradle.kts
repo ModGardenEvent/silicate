@@ -30,13 +30,21 @@ neoForge {
 	validateAccessTransformers = true
 }
 
+repositories {
+	maven {
+		name = "Minecraft Libraries"
+		url = uri("https://libraries.minecraft.net")
+	}
+}
+
 dependencies {
 	compileOnly("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
 	annotationProcessor("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
 	compileOnly("net.fabricmc:sponge-mixin:${Versions.FABRIC_MIXIN}")
+	compileOnly("com.mojang:datafixerupper:${Versions.DFU}")
+	compileOnly("cpw.mods:modlauncher:${Versions.MODLAUNCHER}")
 
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
-	implementation("cpw.mods:modlauncher:11.0.5")
 }
 
 extraJavaModuleInfo {
