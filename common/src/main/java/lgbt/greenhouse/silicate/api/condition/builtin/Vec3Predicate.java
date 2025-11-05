@@ -39,7 +39,8 @@ public record Vec3Predicate(
 					.apply(PredicateCodecBuilder.of(Vec3Predicate.class))
 					.withParameter(
 							"left",
-							SilicateValueTypes.VEC3
+							SilicateValueTypes.VEC3,
+							Vec3Predicate::left
 					)
 					.withValue(
 							"comparison",

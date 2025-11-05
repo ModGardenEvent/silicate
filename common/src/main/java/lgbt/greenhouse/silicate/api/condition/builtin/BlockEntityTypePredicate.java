@@ -33,7 +33,8 @@ public record BlockEntityTypePredicate(
 					.apply(PredicateCodecBuilder.of(BlockEntityTypePredicate.class))
 					.withParameter(
 							"block_entity",
-							SilicateValueTypes.BLOCK_ENTITY
+							SilicateValueTypes.BLOCK_ENTITY,
+							BlockEntityTypePredicate::blockEntity
 					)
 					.withValue(
 							"block_entity_type",

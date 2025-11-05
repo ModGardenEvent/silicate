@@ -58,7 +58,8 @@ public record EntityPassengerPredicate(
 					.apply(PredicateCodecBuilder.of(EntityPassengerPredicate.class))
 					.withParameter(
 							"entity",
-							SilicateValueTypes.ENTITY
+							SilicateValueTypes.ENTITY,
+							EntityPassengerPredicate::entity
 					)
 					.withValue(
 							"condition",

@@ -55,7 +55,8 @@ public record EntityProjectileOwnerPredicate(
 					.apply(PredicateCodecBuilder.of(EntityProjectileOwnerPredicate.class))
 					.withParameter(
 							"entity",
-							SilicateValueTypes.ENTITY
+							SilicateValueTypes.ENTITY,
+							EntityProjectileOwnerPredicate::entity
 					)
 					.withValue(
 							"condition",

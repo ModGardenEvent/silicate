@@ -59,7 +59,8 @@ public record PlayerGameTypePredicate(
 					.apply(PredicateCodecBuilder.of(PlayerGameTypePredicate.class))
 					.withParameter(
 							"player",
-							SilicateValueTypes.PLAYER
+							SilicateValueTypes.PLAYER,
+							PlayerGameTypePredicate::player
 					)
 					.withValue(
 							"game_type",

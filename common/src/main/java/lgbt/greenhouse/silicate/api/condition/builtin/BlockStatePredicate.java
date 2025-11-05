@@ -32,7 +32,8 @@ public record BlockStatePredicate(
 					.apply(PredicateCodecBuilder.of(BlockStatePredicate.class))
 					.withParameter(
 							"left",
-							SilicateValueTypes.BLOCK_STATE
+							SilicateValueTypes.BLOCK_STATE,
+							BlockStatePredicate::left
 					)
 					.withValue(
 							"right",

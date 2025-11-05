@@ -4,6 +4,7 @@ import com.mojang.serialization.*;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.impl.SilicateConstants;
 import lgbt.greenhouse.silicate.impl.cursed.Clazzy;
 import net.minecraft.core.Holder;
@@ -30,6 +31,12 @@ import java.util.List;
  * Built-in types in Silicate.
  */
 public final class SilicateValueTypes {
+	@SuppressWarnings("deprecation") // it's fine to type cast since it's a wildcard
+	public static final ValueType<ParameterKey<?>> PARAMETER_KEY = register(
+			"parameter_key",
+			Clazzy.cast(ParameterKey.class),
+			ParameterKey.CODEC
+	);
 	public static final ValueType<BlockEntity> BLOCK_ENTITY = register(
 			"block_entity",
 			BlockEntity.class

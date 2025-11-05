@@ -55,7 +55,8 @@ public record EntityTameOwnerPredicate(
 					.apply(PredicateCodecBuilder.of(EntityTameOwnerPredicate.class))
 					.withParameter(
 							"entity",
-							SilicateValueTypes.ENTITY
+							SilicateValueTypes.ENTITY,
+							EntityTameOwnerPredicate::entity
 					)
 					.withValue(
 							"condition",

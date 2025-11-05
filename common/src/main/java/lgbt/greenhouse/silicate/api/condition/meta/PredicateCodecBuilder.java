@@ -4,7 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import dev.lukebemish.codecextras.record.KeyedRecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterTemplate;
+import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +22,7 @@ import java.util.function.Function;
  */
 public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	private final Class<T> clazz;
-	private final Map<String, FieldEntry<?, ?>> fields = new HashMap<>();
+	private final Map<String, FieldEntry<?, ?, ?>> fields = new HashMap<>();
 
 	private PredicateCodecBuilder(Class<T> clazz) {
 		this.clazz = clazz;
@@ -110,8 +112,8 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param <V> underlying type of field
 	 * @see ParameterTemplate
 	 */
-	public <V> PredicateCodecBuilder<T> withParameter(String key, ValueType<V> type) {
-		this.fields.put(key, new FieldEntry<>(type, null, null, false, Optional.empty(), true));
+	public <V> PredicateCodecBuilder<T> withParameter(String key, ValueType<V> type, Function<T, ParameterKey<V>> getter) {
+		this.fields.put(key, new FieldEntry<>(type, null, getter, false, Optional.empty(), true));
 		return this;
 	}
 
@@ -195,7 +197,13 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	public MapCodec<T> build() {
 		Class<?>[] parameters = this.fields.values().stream()
-				.map(FieldEntry::type)
+				.map(fieldEntry -> {
+					if (fieldEntry.requiresTemplateValues) {
+						return SilicateValueTypes.PARAMETER_KEY;
+					} else {
+						return fieldEntry.type();
+					}
+				})
 				.map(ValueType::clazz)
 				.toArray(i -> new Class<?>[i]);
 		return this.build(findConstructor(this.clazz, parameters));
@@ -216,10 +224,22 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 						String key = entry.getKey();
 						// These types need to be erased anyway. They don't matter in an array.
 						//noinspection unchecked
-						FieldEntry<T, Object> field = (FieldEntry<T, Object>) entry.getValue();
+						FieldEntry<T, Object, Object> field = (FieldEntry<T, Object, Object>) entry.getValue();
 						MapCodec<Object> fieldCodec;
 						// fixme: when these are null, add it as a codec for a ParameterTemplate, then figure out how to get the GameContext or at least the current ParameterMap
-						if (field.codec == null || field.getter == null) continue;
+						if (field.codec == null) {
+							if (field.requiresTemplateValues) {
+								// It has to be unchecked since ParameterKey<?> has a wildcard type
+								// and that is incompatible with Object
+								//noinspection unchecked
+								keys.add(builder.add(
+										(MapCodec<Object>) (Object) ParameterKey.CODEC.fieldOf(key),
+										field.getter
+								));
+							}
+
+							continue;
+						}
 						if (!field.optional) {
 							fieldCodec = field.codec.fieldOf(key);
 						} else {
@@ -261,7 +281,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 			throw new IllegalArgumentException(clazz.getTypeName() + ": Predicate constructor's return type does not extend GamePredicate. Did you pass a constructor from the wrong type?");
 		}
 
-		FieldEntry<?, ?>[] values = this.fields.values().toArray(new FieldEntry<?, ?>[0]);
+		FieldEntry<?, ?, ?>[] values = this.fields.values().toArray(new FieldEntry<?, ?, ?>[0]);
 		Class<?>[] fieldTypes = Arrays.stream(values)
 				.map(fieldEntry -> fieldEntry.type.clazz())
 				.toArray(i -> new Class<?>[i]);
@@ -280,5 +300,5 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 		}
 	}
 
-	private record FieldEntry<O, T>(ValueType<T> type, @Nullable Codec<T> codec, @Nullable Function<O, T> getter, boolean optional, Optional<T> defaultValue, boolean requiresTemplateValues) {}
+	private record FieldEntry<O, T, V>(ValueType<T> type, @Nullable Codec<T> codec, Function<O, V> getter, boolean optional, Optional<T> defaultValue, boolean requiresTemplateValues) {}
 }

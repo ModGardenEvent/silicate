@@ -53,7 +53,8 @@ public record EntityVehiclePredicate(
 					.apply(PredicateCodecBuilder.of(EntityVehiclePredicate.class))
 					.withParameter(
 							"entity",
-							SilicateValueTypes.ENTITY
+							SilicateValueTypes.ENTITY,
+							EntityVehiclePredicate::entity
 					)
 					.withValue(
 							"condition",

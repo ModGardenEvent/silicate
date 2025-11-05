@@ -62,7 +62,8 @@ public record EntityTypePredicate(
 					.apply(PredicateCodecBuilder.of(EntityTypePredicate.class))
 					.withParameter(
 							"entity",
-							SilicateValueTypes.ENTITY
+							SilicateValueTypes.ENTITY,
+							EntityTypePredicate::entity
 					)
 					.withValue(
 							"entity_types",
