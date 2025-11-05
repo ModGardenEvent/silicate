@@ -2,7 +2,7 @@ package lgbt.greenhouse.silicate.impl.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.serialization.Codec;
-import lgbt.greenhouse.silicate.impl.Silicate;
+import lgbt.greenhouse.silicate.impl.SilicateConstants;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -25,11 +25,11 @@ public interface Mixin_Registry<T> {
 			)
 	)
 	private Codec<ResourceLocation> silicate$overrideDefaultNamespace(Codec<ResourceLocation> original) {
-		if (!this.key().location().getNamespace().equals(Silicate.MOD_ID)) return original;
+		if (!this.key().location().getNamespace().equals(SilicateConstants.MOD_ID)) return original;
 
 		Function<ResourceLocation, ResourceLocation> namespaceTransformer = id -> {
 			if (id.getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
-				return Silicate.id(id.getPath());
+				return SilicateConstants.id(id.getPath());
 			} else {
 				return id;
 			}

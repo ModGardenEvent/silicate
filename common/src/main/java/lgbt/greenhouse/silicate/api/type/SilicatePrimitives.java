@@ -1,8 +1,8 @@
 package lgbt.greenhouse.silicate.api.type;
 
 import com.mojang.serialization.Codec;
-import lgbt.greenhouse.silicate.impl.Silicate;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
+import lgbt.greenhouse.silicate.impl.SilicateConstants;
 import net.minecraft.core.Registry;
 import net.minecraft.util.Unit;
 
@@ -22,6 +22,6 @@ public final class SilicatePrimitives {
 	private SilicatePrimitives() {}
 
 	private static <T> ValueType<T> register(String name, Class<T> clazz, Codec<T> codec) {
-		return Registry.register(SilicateBuiltInRegistries.VALUE_TYPE, Silicate.id(name), new ValueType<>(clazz, codec));
+		return Registry.register(SilicateBuiltInRegistries.VALUE_TYPE, SilicateConstants.id(name), new ValueType<>(clazz, codec));
 	}
 }

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Supplier;
 
-import static lgbt.greenhouse.silicate.impl.Silicate.id;
+import static lgbt.greenhouse.silicate.impl.SilicateConstants.id;
 
 /**
  * Built-in {@link GamePredicate.Type}s.

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Optional;
 
-import static lgbt.greenhouse.silicate.impl.Silicate.id;
+import static lgbt.greenhouse.silicate.impl.SilicateConstants.id;
 
 /**
  * Built-in Registries for Silicate.

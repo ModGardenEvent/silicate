@@ -19,7 +19,7 @@ import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import org.jetbrains.annotations.ApiStatus;
 
-import static lgbt.greenhouse.silicate.impl.Silicate.MOD_ID;
+import static lgbt.greenhouse.silicate.impl.SilicateConstants.MOD_ID;
 
 @ApiStatus.Internal
 @Mod(MOD_ID)

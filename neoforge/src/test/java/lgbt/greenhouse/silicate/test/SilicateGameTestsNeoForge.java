@@ -9,7 +9,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
-import static lgbt.greenhouse.silicate.impl.Silicate.MOD_ID;
+import static lgbt.greenhouse.silicate.impl.SilicateConstants.MOD_ID;
 
 @Mod(MOD_ID + "_test")
 public class SilicateGameTestsNeoForge {

@@ -1,10 +1,10 @@
 package lgbt.greenhouse.silicate.api.type;
 
 import com.mojang.serialization.*;
-import lgbt.greenhouse.silicate.impl.Silicate;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
+import lgbt.greenhouse.silicate.impl.SilicateConstants;
 import lgbt.greenhouse.silicate.impl.cursed.Clazzy;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -89,7 +89,7 @@ public final class SilicateValueTypes {
 
 	private static <T> ValueType<T> register(String name, ValueType<T> valueType) {
 
-		return Registry.register(SilicateBuiltInRegistries.VALUE_TYPE, Silicate.id(name), valueType);
+		return Registry.register(SilicateBuiltInRegistries.VALUE_TYPE, SilicateConstants.id(name), valueType);
 	}
 
 	private static <T> ValueType<T> register(String name, Class<T> clazz) {

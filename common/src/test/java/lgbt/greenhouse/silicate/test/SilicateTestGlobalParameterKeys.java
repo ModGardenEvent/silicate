@@ -8,7 +8,7 @@ import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKey;
 import org.jetbrains.annotations.ApiStatus;
 
-import static lgbt.greenhouse.silicate.impl.Silicate.MOD_ID;
+import static lgbt.greenhouse.silicate.impl.SilicateConstants.MOD_ID;
 
 public class SilicateTestGlobalParameterKeys {
 	public static final GlobalParameterKey<Projectile> PROJECTILE = register("projectile", SilicateTestValueTypes.PROJECTILE);
