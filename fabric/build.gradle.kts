@@ -13,6 +13,10 @@ repositories {
 		name = "TerraformersMC"
 		url = uri("https://maven.terraformersmc.com/")
 	}
+	maven {
+		name = "NeoForge"
+		url = uri("https://maven.neoforged.net/releases/")
+	}
 }
 
 dependencies {
@@ -28,6 +32,7 @@ dependencies {
 
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 	include("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
+	compileOnly("cpw.mods:modlauncher:11.0.5")
 }
 
 loom {

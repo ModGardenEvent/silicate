@@ -5,9 +5,16 @@ plugins {
 	id("conventions.common")
 	id("net.neoforged.moddev")
 	id("me.modmuss50.mod-publish-plugin")
+	id("org.gradlex.extra-java-module-info") version "1.13"
 }
 
 sourceSets {
+	create("api")
+	getByName("api") {
+		compileClasspath += sourceSets["main"].output
+		compileClasspath += sourceSets["main"].compileClasspath
+		runtimeClasspath += sourceSets["main"].runtimeClasspath
+	}
 	create("generated") {
 		resources {
 			srcDir("src/generated/resources")
@@ -35,6 +42,25 @@ dependencies {
 	compileOnly("net.fabricmc:sponge-mixin:${Versions.FABRIC_MIXIN}")
 
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
+	implementation("cpw.mods:modlauncher:11.0.5")
+}
+
+tasks.withType<JavaCompile> {
+	options.compilerArgs.addAll(Properties.JAVAC_ARGS)
+}
+
+extraJavaModuleInfo {
+	module("net.fabricmc:sponge-mixin", "org.spongepowered.mixin") {
+		patchRealModule()
+		requireAllDefinedDependencies()
+		exportAllPackages()
+		knownModule("com.google.guava:guava", "com.google.common")
+		knownModule("com.google.code.gson:gson", "com.google.gson")
+		knownModule("org.ow2.asm:asm-tree", "org.objectweb.asm.tree")
+		knownModule("org.ow2.asm:asm-commons", "org.objectweb.asm.commons")
+		knownModule("org.ow2.asm:asm-util", "org.objectweb.asm.util")
+	}
+	failOnMissingModuleInfo = false
 }
 
 configurations {
@@ -61,6 +87,8 @@ artifacts {
 	add("commonResources", sourceSets["main"].resources.sourceDirectories.singleFile)
 	add("commonTestJava", sourceSets["test"].java.sourceDirectories.singleFile)
 	add("commonTestResources", sourceSets["test"].resources.sourceDirectories.singleFile)
+	add("commonTestJava", sourceSets["api"].java.sourceDirectories.singleFile)
+	add("commonTestResources", sourceSets["api"].resources.sourceDirectories.singleFile)
 }
 
 publishMods {
