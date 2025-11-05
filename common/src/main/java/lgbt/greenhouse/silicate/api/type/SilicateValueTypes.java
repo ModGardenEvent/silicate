@@ -5,6 +5,7 @@ import lgbt.greenhouse.silicate.impl.Silicate;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
+import lgbt.greenhouse.silicate.impl.cursed.Clazzy;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
@@ -110,8 +111,8 @@ public final class SilicateValueTypes {
 						registry::getKey
 				);
 		// This is actually checked because we want people to be able to use generic types
-		//noinspection unchecked
-		return new ValueType<>((Class<T>) clazz, codec);
+		//noinspection deprecation
+		return new ValueType<>(Clazzy.cast(clazz), codec);
 	}
 
 	@ApiStatus.Experimental
@@ -121,15 +122,17 @@ public final class SilicateValueTypes {
 	}
 
 	@ApiStatus.Experimental
-	@SuppressWarnings({ "unchecked", "DataFlowIssue" }) // this is enforced at runtime, and the value is never used
 	public static <T> ValueType<HolderSet<T>> fromHolderSet(ResourceKey<Registry<T>> registryKey) {
 		var codec = RegistryCodecs.homogeneousList(registryKey);
-		return new ValueType<>((Class<HolderSet<T>>) ((HolderSet<T>) HolderSet.<T>direct(Holder.direct(null))).getClass(), codec);
+		// this is enforced at runtime, and the value is never used
+		//noinspection deprecation
+		return new ValueType<>(Clazzy.cast(HolderSet.class), codec);
 	}
 
 	@ApiStatus.Experimental
-	@SuppressWarnings("unchecked") // this is enforced at runtime
 	public static <T> ValueType<List<T>> fromList(Codec<T> codec) {
-		return new ValueType<>((Class<List<T>>) List.<T>of().getClass(), Codec.list(codec));
+		// this is enforced at runtime
+		//noinspection deprecation
+		return new ValueType<>(Clazzy.cast(List.class), Codec.list(codec));
 	}
 }
