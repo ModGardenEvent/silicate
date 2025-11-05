@@ -124,7 +124,7 @@ public final class SilicateValueTypes {
 	@SuppressWarnings({ "unchecked", "DataFlowIssue" }) // this is enforced at runtime, and the value is never used
 	public static <T> ValueType<HolderSet<T>> fromHolderSet(ResourceKey<Registry<T>> registryKey) {
 		var codec = RegistryCodecs.homogeneousList(registryKey);
-		return new ValueType<>((Class<HolderSet<T>>) HolderSet.<T>direct(Holder.direct(null)).getClass(), codec);
+		return new ValueType<>((Class<HolderSet<T>>) ((HolderSet<T>) HolderSet.<T>direct(Holder.direct(null))).getClass(), codec);
 	}
 
 	@ApiStatus.Experimental
