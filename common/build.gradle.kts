@@ -39,10 +39,6 @@ dependencies {
 	implementation("cpw.mods:modlauncher:11.0.5")
 }
 
-tasks.withType<JavaCompile> {
-	options.compilerArgs.addAll(Properties.JAVAC_ARGS)
-}
-
 extraJavaModuleInfo {
 	module("net.fabricmc:sponge-mixin", "org.spongepowered.mixin") {
 		patchRealModule()
@@ -54,7 +50,22 @@ extraJavaModuleInfo {
 		knownModule("org.ow2.asm:asm-commons", "org.objectweb.asm.commons")
 		knownModule("org.ow2.asm:asm-util", "org.objectweb.asm.util")
 	}
+	module("com.mojang:datafixerupper", "com.mojang.datafixerupper") {
+		patchRealModule()
+		requireAllDefinedDependencies()
+		exportAllPackages()
+		knownModule("org.slf4j:slf4j-api", "org.slf4j")
+		knownModule("it.unimi.dsi:fastutil", "it.unimi.dsi.fastutil")
+		module("com.google.code.findbugs:jsr305", "com.google.code.findbugs.jsr305")
+	}
 	failOnMissingModuleInfo = false
+}
+
+tasks.withType<JavaCompile> {
+	options.compilerArgs.addAll(listOf(
+		"--upgrade-module-path", classpath.asPath
+	))
+	options.compilerArgs.addAll(Properties.JAVAC_ARGS)
 }
 
 configurations {
