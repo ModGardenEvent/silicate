@@ -116,9 +116,10 @@ public final class SilicateValueTypes {
 	}
 
 	@ApiStatus.Experimental
-	@SuppressWarnings({ "unchecked", "DataFlowIssue" }) // this is enforced at runtime, and the value is never used
 	public static <T> ValueType<Holder<T>> fromHolder(Codec<Holder<T>> codec) {
-		return new ValueType<>((Class<Holder<T>>) Holder.<T>direct(null).getClass(), codec);
+		// this is enforced at runtime, and the value is never used
+		//noinspection deprecation
+		return new ValueType<>(Clazzy.cast(Holder.class), codec);
 	}
 
 	@ApiStatus.Experimental
