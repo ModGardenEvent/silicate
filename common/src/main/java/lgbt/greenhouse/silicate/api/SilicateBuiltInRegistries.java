@@ -12,7 +12,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import lgbt.greenhouse.silicate.Silicate;
+import lgbt.greenhouse.silicate.impl.Silicate;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKey;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Optional;
 
-import static lgbt.greenhouse.silicate.Silicate.id;
+import static lgbt.greenhouse.silicate.impl.Silicate.id;
 
 /**
  * Built-in Registries for Silicate.

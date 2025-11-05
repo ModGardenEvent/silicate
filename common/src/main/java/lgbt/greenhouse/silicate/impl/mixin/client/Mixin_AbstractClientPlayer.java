@@ -1,11 +1,11 @@
-package lgbt.greenhouse.silicate.mixin.client;
+package lgbt.greenhouse.silicate.impl.mixin.client;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import lgbt.greenhouse.silicate.duck.Duck_AbstractClientPlayer;
+import lgbt.greenhouse.silicate.impl.duck.Duck_AbstractClientPlayer;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

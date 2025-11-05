@@ -1,13 +1,11 @@
-package lgbt.greenhouse.silicate;
+package lgbt.greenhouse.silicate.impl;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import lgbt.greenhouse.silicate.platform.SilicatePlatformHelper;
+import lgbt.greenhouse.silicate.impl.platform.SilicatePlatformHelper;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.invoke.MethodHandle;
 
 @ApiStatus.Internal
 public class Silicate {

@@ -2,7 +2,7 @@ package lgbt.greenhouse.silicate.api.context.parameter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import lgbt.greenhouse.silicate.Silicate;
+import lgbt.greenhouse.silicate.impl.Silicate;
 import net.minecraft.resources.ResourceLocation;
 
 public record ParameterTemplate(ResourceLocation id) {

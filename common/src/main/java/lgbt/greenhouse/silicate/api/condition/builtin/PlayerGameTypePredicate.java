@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import lgbt.greenhouse.silicate.duck.Duck_AbstractClientPlayer;
+import lgbt.greenhouse.silicate.impl.duck.Duck_AbstractClientPlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

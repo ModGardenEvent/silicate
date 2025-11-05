@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import lgbt.greenhouse.silicate.Silicate;
+import lgbt.greenhouse.silicate.impl.Silicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterSet;

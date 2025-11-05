@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"minVersion": "0.8",
-	"package": "lgbt.greenhouse.silicate.mixin",
+	"package": "lgbt.greenhouse.silicate.impl.mixin",
 	"refmap": "${mod_id}.refmap.json",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [

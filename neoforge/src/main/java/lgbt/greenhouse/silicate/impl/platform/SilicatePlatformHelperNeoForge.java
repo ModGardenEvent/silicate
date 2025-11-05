@@ -1,8 +1,5 @@
-package lgbt.greenhouse.silicate.platform;
+package lgbt.greenhouse.silicate.impl.platform;
 
-import lgbt.greenhouse.silicate.platform.Platform;
-import lgbt.greenhouse.silicate.platform.Side;
-import lgbt.greenhouse.silicate.platform.SilicatePlatformHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.fml.ModList;

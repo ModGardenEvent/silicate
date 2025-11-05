@@ -1,8 +1,8 @@
-package lgbt.greenhouse.silicate.mixin;
+package lgbt.greenhouse.silicate.impl.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.serialization.Codec;
-import lgbt.greenhouse.silicate.Silicate;
+import lgbt.greenhouse.silicate.impl.Silicate;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

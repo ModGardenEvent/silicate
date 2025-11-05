@@ -1,6 +1,7 @@
 package lgbt.greenhouse.silicate;
 
 
+import lgbt.greenhouse.silicate.impl.Silicate;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
@@ -8,7 +9,7 @@ import lgbt.greenhouse.silicate.api.SilicateRegistries;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
-import lgbt.greenhouse.silicate.platform.SilicatePlatformHelperNeoForge;
+import lgbt.greenhouse.silicate.impl.platform.SilicatePlatformHelperNeoForge;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -18,7 +19,7 @@ import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import org.jetbrains.annotations.ApiStatus;
 
-import static lgbt.greenhouse.silicate.Silicate.MOD_ID;
+import static lgbt.greenhouse.silicate.impl.Silicate.MOD_ID;
 
 @ApiStatus.Internal
 @Mod(MOD_ID)

@@ -1,7 +1,7 @@
 package lgbt.greenhouse.silicate.api.type;
 
 import com.mojang.serialization.Codec;
-import lgbt.greenhouse.silicate.Silicate;
+import lgbt.greenhouse.silicate.impl.Silicate;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import net.minecraft.core.Registry;
 import net.minecraft.util.Unit;

@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import org.jetbrains.annotations.ApiStatus;
 
-import static lgbt.greenhouse.silicate.Silicate.id;
+import static lgbt.greenhouse.silicate.impl.Silicate.id;
 
 /**
  * Built-in parameters for data stored in {@link GameContext}.

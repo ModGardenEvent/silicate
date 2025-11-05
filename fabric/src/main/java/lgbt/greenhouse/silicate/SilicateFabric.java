@@ -1,12 +1,13 @@
 package lgbt.greenhouse.silicate;
 
+import lgbt.greenhouse.silicate.impl.Silicate;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.minecraft.SharedConstants;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.SilicateRegistries;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
-import lgbt.greenhouse.silicate.platform.SilicatePlatformHelperFabric;
+import lgbt.greenhouse.silicate.impl.platform.SilicatePlatformHelperFabric;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

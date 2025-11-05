@@ -1,4 +1,4 @@
-package lgbt.greenhouse.silicate.platform;
+package lgbt.greenhouse.silicate.impl.platform;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.server.level.ServerLevel;

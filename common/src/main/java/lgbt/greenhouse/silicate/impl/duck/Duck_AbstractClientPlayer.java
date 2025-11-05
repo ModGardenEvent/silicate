@@ -1,4 +1,4 @@
-package lgbt.greenhouse.silicate.duck;
+package lgbt.greenhouse.silicate.impl.duck;
 
 import net.minecraft.client.multiplayer.PlayerInfo;
 import org.jetbrains.annotations.Nullable;
