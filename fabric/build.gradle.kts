@@ -2,12 +2,15 @@ import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
 import org.gradle.jvm.tasks.Jar
 import org.gradlex.javamodule.moduleinfo.ModuleInfo
+import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes.*
+import org.objectweb.asm.tree.ClassNode
 import java.lang.invoke.MethodHandles
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
+import java.util.zip.ZipFile
 
 plugins {
 	id("conventions.loader")
@@ -103,6 +106,68 @@ tasks {
 	named<ProcessResources>("processResources").configure {
 		exclude("${Properties.MOD_ID}.cfg")
 	}
+
+	withType<AbstractArchiveTask> {
+		from(files(project(":common").sourceSets["main"].output)) {
+			duplicatesStrategy = DuplicatesStrategy.INCLUDE
+			rename {
+				if (it == "module-info.class") {
+					return@rename "common-module-info.class"
+				} else {
+					return@rename it
+				}
+			}
+		}
+	}
+
+	withType<Jar> {
+		doLast {
+			try {
+				val jar = this@withType.archiveFile.get().asFile
+				val zipFile = ZipFile(jar)
+				val fabricModuleInfo = zipFile.getEntry("module-info.class")
+				val commonModuleInfo = zipFile.getEntry("common-module-info.class") ?: return@doLast
+				zipFile.getInputStream(commonModuleInfo).use { common ->
+					zipFile.getInputStream(fabricModuleInfo).use { fabric ->
+						val classReader = ClassReader(common.readBytes())
+						val classNode = ClassNode(ASM9)
+						classReader.accept(classNode, 0)
+
+						val fabricClassReader = ClassReader(fabric.readBytes())
+						val fabricClassNode = ClassNode(ASM9)
+						fabricClassReader.accept(fabricClassNode, 0)
+
+						// remove exports to fabric module
+						classNode.module.exports?.removeIf { exports ->
+							exports.modules.any { it.startsWith(classNode.module.name) }
+						}
+						// only add non-duplicate or non-project requires
+						fabricClassNode.module.requires?.filter {
+							!it.module.startsWith(classNode.module.name) &&
+									!classNode.module.requires?.map { it.module }?.contains(it.module)!!
+						}?.apply { classNode.module.requires?.addAll(this@apply) }
+
+						val classWriter = ClassWriter(0)
+						classNode.accept(classWriter)
+						jar.plopInZip("module-info-meow.class", classWriter.toByteArray())
+						println(common)
+						println(fabric)
+					}
+				}
+				jar.pluckFromZip("common-module-info.class")
+				jar.pluckFromZip("module-info.class")
+				val newZipFile = ZipFile(jar)
+				newZipFile.getInputStream(newZipFile.getEntry("module-info-meow.class")).use {
+					jar.plopInZip("module-info.class", it.readAllBytes())
+				}
+				jar.pluckFromZip("module-info-meow.class")
+			} catch (_: java.nio.file.NoSuchFileException) {
+			} catch (e: Exception) {
+				logger.error("messing with jpms:")
+				throw e
+			}
+		}
+	}
 }
 
 beforeEvaluate {
@@ -158,6 +223,16 @@ fun File.plopInZip(name: String, content: ByteArray) {
 	}
 }
 
+fun File.pluckFromZip(name: String) {
+	if (!this.isFile) {
+		throw IllegalArgumentException("file is not a zip file ${this.path}")
+	}
+	FileSystems.newFileSystem(this.path.toPath()).use { fs ->
+		val pluckedFilePath = fs.getPath(name)
+		Files.delete(pluckedFilePath)
+	}
+}
+
 run {
 	val modList = rootDir.run {
 		resolve(".gradle")
@@ -199,7 +274,7 @@ run {
 		// then we make the module-info.class
 		val classWriter = ClassWriter(0)
 		classWriter.visit(
-			V9,
+			V21,
 			ACC_MODULE,
 			"module-info",
 			null,
