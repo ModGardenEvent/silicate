@@ -49,7 +49,7 @@ dependencies {
 try {
 	tasks.withType<JavaCompile> {
 		options.compilerArgs.addAll(listOf(
-			"--upgrade-module-path", classpath.asPath
+			"--module-path", classpath.asPath
 		))
 		options.compilerArgs.addAll(Properties.JAVAC_ARGS)
 	}
