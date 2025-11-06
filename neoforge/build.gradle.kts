@@ -64,6 +64,7 @@ neoForge {
 }
 
 dependencies {
+	compileOnly("net.fabricmc:sponge-mixin:${Versions.FABRIC_MIXIN}")
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 	jarJar("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 }
