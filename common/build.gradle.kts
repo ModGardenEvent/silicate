@@ -5,7 +5,6 @@ plugins {
 	id("conventions.common")
 	id("net.neoforged.moddev")
 	id("me.modmuss50.mod-publish-plugin")
-	id("org.gradlex.extra-java-module-info") version "1.13"
 }
 
 sourceSets {
@@ -45,28 +44,6 @@ dependencies {
 	compileOnly("cpw.mods:modlauncher:${Versions.MODLAUNCHER}")
 
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
-}
-
-extraJavaModuleInfo {
-	module("net.fabricmc:sponge-mixin", "org.spongepowered.mixin") {
-		patchRealModule()
-		requireAllDefinedDependencies()
-		exportAllPackages()
-		knownModule("com.google.guava:guava", "com.google.common")
-		knownModule("com.google.code.gson:gson", "com.google.gson")
-		knownModule("org.ow2.asm:asm-tree", "org.objectweb.asm.tree")
-		knownModule("org.ow2.asm:asm-commons", "org.objectweb.asm.commons")
-		knownModule("org.ow2.asm:asm-util", "org.objectweb.asm.util")
-	}
-	module("com.mojang:datafixerupper", "com.mojang.datafixerupper") {
-		patchRealModule()
-		requireAllDefinedDependencies()
-		exportAllPackages()
-		knownModule("org.slf4j:slf4j-api", "org.slf4j")
-		knownModule("it.unimi.dsi:fastutil", "it.unimi.dsi.fastutil")
-		module("com.google.code.findbugs:jsr305", "com.google.code.findbugs.jsr305")
-	}
-	failOnMissingModuleInfo = false
 }
 
 tasks.withType<JavaCompile> {

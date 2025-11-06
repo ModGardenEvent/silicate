@@ -6,6 +6,7 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
+	id("org.gradlex.extra-java-module-info")
 }
 
 base.archivesName.set("${Properties.ARCHIVES_NAME}-${project.name}")
@@ -47,6 +48,42 @@ repositories {
 
 dependencies {
 	implementation("org.jetbrains:annotations:24.1.0")
+}
+
+extraJavaModuleInfo {
+	module("net.fabricmc:sponge-mixin", "org.spongepowered.mixin") {
+		patchRealModule()
+		requireAllDefinedDependencies()
+		exportAllPackages()
+		knownModule("com.google.guava:guava", "com.google.common")
+		knownModule("com.google.code.gson:gson", "com.google.gson")
+		knownModule("org.ow2.asm:asm-tree", "org.objectweb.asm.tree")
+		knownModule("org.ow2.asm:asm-commons", "org.objectweb.asm.commons")
+		knownModule("org.ow2.asm:asm-util", "org.objectweb.asm.util")
+	}
+	module("com.mojang:datafixerupper", "com.mojang.datafixerupper") {
+		patchRealModule()
+		requireAllDefinedDependencies()
+		exportAllPackages()
+		knownModule("org.slf4j:slf4j-api", "org.slf4j")
+		knownModule("it.unimi.dsi:fastutil", "it.unimi.dsi.fastutil")
+		module("com.google.code.findbugs:jsr305", "com.google.code.findbugs.jsr305")
+	}
+	module("io.github.llamalad7:mixinextras-common", "mixinextras.common") {
+		requires("org.spongepowered.mixin")
+		exportAllPackages()
+	}
+	module("dev.lukebemish:codecextras", "dev.lukebemish.codecextras") {
+		patchRealModule()
+		requireAllDefinedDependencies()
+		exportAllPackages()
+		requires("com.mojang.datafixerupper")
+	}
+	module("com.mojang:minecraft", "vanilla") {
+		requireAllDefinedDependencies()
+		exportAllPackages()
+	}
+	failOnMissingModuleInfo = false
 }
 
 tasks {
