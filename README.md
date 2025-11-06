@@ -19,7 +19,12 @@ repositories {
 }
 
 dependencies {
-	compileOnly("lgbt.greenhouse.silicate:silicate-common:VERSION")
+	// If using multiloader, use each platform as below for silicate in their respective modules
+	// Otherwise, use the jar according to your platform and include/jarJar it
+	modImplementation("lgbt.greenhouse.silicate:silicate-PLATFORM:VERSION")
+	include("lgbt.greenhouse.silicate:silicate-PLATFORM:VERSION")
+	// If using multiloader, put this in your "common" module
+	// compileOnly("lgbt.greenhouse.silicate:silicate-common:VERSION")
 }
 ```
 
