@@ -20,23 +20,23 @@ configurations {
 gradle.projectsEvaluated {
 	sourceSets {
 		getByName("main") {
-			compileClasspath += project(":xplat").sourceSets["main"].output
-			runtimeClasspath += project(":xplat").sourceSets["main"].output
+			compileClasspath += project(":common").sourceSets["main"].output
+			runtimeClasspath += project(":common").sourceSets["main"].output
 		}
 		getByName("test") {
-			compileClasspath += project(":xplat").sourceSets["test"].output
-			runtimeClasspath += project(":xplat").sourceSets["test"].output
+			compileClasspath += project(":common").sourceSets["test"].output
+			runtimeClasspath += project(":common").sourceSets["test"].output
 		}
 	}
 }
 
 dependencies {
-	testCompileOnly(project(":xplat"))
+	testCompileOnly(project(":common"))
 
-	"commonJava"(project(":xplat", "commonJava"))
-	"commonResources"(project(":xplat", "commonResources"))
-	"commonTestJava"(project(":xplat", "commonTestJava"))
-	"commonTestResources"(project(":xplat", "commonTestResources"))
+	"commonJava"(project(":common", "commonJava"))
+	"commonResources"(project(":common", "commonResources"))
+	"commonTestJava"(project(":common", "commonTestJava"))
+	"commonTestResources"(project(":common", "commonTestResources"))
 }
 
 tasks {

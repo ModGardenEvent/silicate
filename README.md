@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-	compileOnly("lgbt.greenhouse.silicate:silicate-xplat:VERSION")
+	compileOnly("lgbt.greenhouse.silicate:silicate-common:VERSION")
 }
 ```
 

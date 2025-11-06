@@ -31,15 +31,15 @@ repositories {
 
 sourceSets {
 	getByName("main") {
-		runtimeClasspath += project(":xplat").sourceSets["test"].output
+		runtimeClasspath += project(":common").sourceSets["test"].output
 	}
 	getByName("test") {
-		runtimeClasspath += project(":xplat").sourceSets["test"].output
+		runtimeClasspath += project(":common").sourceSets["test"].output
 	}
 }
 
 dependencies {
-	runtimeOnly(project(":xplat"))
+	runtimeOnly(project(":common"))
 	minecraft("com.mojang:minecraft:${Versions.MINECRAFT}")
 	mappings(loom.layered {
 		officialMojangMappings()
@@ -97,7 +97,7 @@ loom {
 			setSource(sourceSets["test"])
 			ideConfigGenerated(true)
 			vmArg("-Dfabric-api.datagen")
-			vmArg("-Dfabric-api.datagen.output-dir=${file("../xplat/src/generated/resources")}")
+			vmArg("-Dfabric-api.datagen.output-dir=${file("../common/src/generated/resources")}")
 			vmArg("-Dfabric-api.datagen.modid=${Properties.MOD_ID}")
 			runDir("build/datagen")
 		}
@@ -117,7 +117,7 @@ tasks {
 	}
 
 	withType<AbstractArchiveTask> {
-		from(files(project(":xplat").sourceSets["main"].output)) {
+		from(files(project(":common").sourceSets["main"].output)) {
 			duplicatesStrategy = DuplicatesStrategy.INCLUDE
 			rename {
 				if (it == "module-info.class") {
@@ -212,7 +212,7 @@ extraJavaModuleInfo {
 			}
 		}
 	}
-	module("lgbt.greenhouse.silicate:xplat", "lgbt.greenhouse.silicate")
+	module("lgbt.greenhouse.silicate:common", "lgbt.greenhouse.silicate")
 	automaticModule("com.mojang:authlib", "authlib")
 }
 
@@ -328,6 +328,6 @@ publishMods {
 	forgejo {
 		type = STABLE
 		accessToken = providers.environmentVariable("FORGEJO_TOKEN")
-		parent(project(":xplat").tasks.named("publishForgejo"))
+		parent(project(":common").tasks.named("publishForgejo"))
 	}
 }
