@@ -42,11 +42,9 @@ dependencies {
 tasks {
 	named<JavaCompile>("compileJava").configure {
 		dependsOn(configurations.getByName("commonJava"))
-//		source(configurations.getByName("commonJava"))
 	}
 	named<JavaCompile>("compileTestJava").configure {
 		dependsOn(configurations.getByName("commonTestJava"))
-//		source(configurations.getByName("commonTestJava"))
 	}
 	named<ProcessResources>("processResources").configure {
 		dependsOn(configurations.getByName("commonResources"))

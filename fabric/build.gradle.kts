@@ -29,6 +29,15 @@ repositories {
 	}
 }
 
+sourceSets {
+	getByName("main") {
+		runtimeClasspath += project(":common").sourceSets["test"].output
+	}
+	getByName("test") {
+		runtimeClasspath += project(":common").sourceSets["test"].output
+	}
+}
+
 dependencies {
 	runtimeOnly(project(":common"))
 	minecraft("com.mojang:minecraft:${Versions.MINECRAFT}")
