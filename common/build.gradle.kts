@@ -46,11 +46,15 @@ dependencies {
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 }
 
-tasks.withType<JavaCompile> {
-	options.compilerArgs.addAll(listOf(
-		"--upgrade-module-path", classpath.asPath
-	))
-	options.compilerArgs.addAll(Properties.JAVAC_ARGS)
+try {
+	tasks.withType<JavaCompile> {
+		options.compilerArgs.addAll(listOf(
+			"--upgrade-module-path", classpath.asPath
+		))
+		options.compilerArgs.addAll(Properties.JAVAC_ARGS)
+	}
+} catch (e: Exception) {
+	logger.error("when configuring javac args: ", e)
 }
 
 configurations {
