@@ -158,7 +158,7 @@ fun File.plopInZip(name: String, content: ByteArray) {
 	}
 }
 
-afterEvaluate {
+run {
 	val modList = rootDir.run {
 		resolve(".gradle")
 			.resolve("loom-cache")
