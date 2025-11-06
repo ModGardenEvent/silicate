@@ -25,4 +25,3 @@ plugins {
 rootProject.name = "silicate"
 include("common")
 include("fabric")
-include("neoforge")
