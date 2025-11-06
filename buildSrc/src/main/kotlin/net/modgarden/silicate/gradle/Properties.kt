@@ -20,6 +20,5 @@ object Properties {
 	const val FORGEJO_COMITISH = Versions.MINECRAFT
 
 	val JAVAC_ARGS = listOf<String>(
-		"--add-reads", "mixinextras.common=ALL-UNNAMED"
 	)
 }
