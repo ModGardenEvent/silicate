@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-	include(project(":common"))
+	runtimeOnly(project(":common"))
 	minecraft("com.mojang:minecraft:${Versions.MINECRAFT}")
 	mappings(loom.layered {
 		officialMojangMappings()
