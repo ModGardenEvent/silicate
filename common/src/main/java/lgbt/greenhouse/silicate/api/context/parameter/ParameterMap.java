@@ -35,9 +35,14 @@ public sealed class ParameterMap {
 		return (Parameter<T>) params.get(key);
 	}
 
-	@SuppressWarnings("unchecked") // type is always correct
+	@SuppressWarnings("unchecked") // type should be correct
 	public <T> Parameter<T> get(ParameterKey.Reference<T> key) {
 		return (Parameter<T>) params.get(this.id2Keys.get(key.getId()));
+	}
+
+	@SuppressWarnings("unchecked") // type should be correct
+	public <T> ParameterKey<T> resolve(ParameterKey.Reference<T> referenceKey) {
+		return (ParameterKey<T>) this.id2Keys.get(referenceKey.getId());
 	}
 
 	public <T> boolean has(ParameterKey<T> key) {

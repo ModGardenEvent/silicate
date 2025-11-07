@@ -33,7 +33,7 @@ public final class GlobalParameterKey<T>
 	}
 
 	@Override
-	public ValueType<T> getType() {
+	public ValueType<T> getTypeStatic() {
 		return this.type;
 	}
 }

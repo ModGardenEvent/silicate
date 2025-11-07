@@ -27,7 +27,7 @@ public final class LocalParameterKey<T> implements ParameterKey<T> {
 	}
 
 	@Override
-	public ValueType<T> getType() {
+	public ValueType<T> getTypeStatic() {
 		return this.type;
 	}
 

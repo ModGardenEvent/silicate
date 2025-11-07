@@ -1,6 +1,7 @@
 package lgbt.greenhouse.silicate.api.context.parameter;
 
 import com.mojang.serialization.Codec;
+import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -22,9 +23,17 @@ public interface ParameterKey<T> {
 
 	/**
 	 * @return the {@link ValueType} for this {@link ParameterKey}
-	 * @apiNote This is {@code null} <i>only</i> if it extends {@link Reference}.
+	 * @apiNote This is {@code null} <i>only</i> if it extends {@link Reference}. This ensures that {@link Reference} can be looked up dynamically. Prefer {@link #getType(GameContext)} unless you know what you're doing.
 	 */
-	@Nullable ValueType<T> getType();
+	@Nullable ValueType<T> getTypeStatic();
+
+	/**
+	 * @param gameContext the context in which this {@link ParameterKey} exists used for resolving references
+	 * @return the {@link ValueType} for this {@link ParameterKey}
+	 */
+	default ValueType<T> getType(GameContext gameContext) {
+		return this.getTypeStatic();
+	}
 
 	/**
 	 * A deferred reference to a {@link ParameterKey}.
@@ -48,8 +57,13 @@ public interface ParameterKey<T> {
 		}
 
 		@Override
-		public @Nullable ValueType<T> getType() {
+		public @Nullable ValueType<T> getTypeStatic() {
 			return null;
+		}
+
+		@Override
+		public ValueType<T> getType(GameContext gameContext) {
+			return gameContext.getParams().resolve(this).getTypeStatic();
 		}
 	}
 }
