@@ -1,6 +1,6 @@
 @ApiStatus.Internal
-@NonnullByDefault
+@NullMarked
 package lgbt.greenhouse.silicate.test;
 
-import lgbt.greenhouse.silicate.impl.annotation.NonnullByDefault;
 import org.jetbrains.annotations.ApiStatus;
+import org.jspecify.annotations.NullMarked;

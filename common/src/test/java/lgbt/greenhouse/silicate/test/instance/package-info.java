@@ -1,4 +1,4 @@
-@NonnullByDefault
+@NullMarked
 package lgbt.greenhouse.silicate.test.instance;
 
-import lgbt.greenhouse.silicate.impl.annotation.NonnullByDefault;
+import org.jspecify.annotations.NullMarked;

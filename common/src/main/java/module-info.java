@@ -1,6 +1,6 @@
-import lgbt.greenhouse.silicate.impl.annotation.NonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
-@NonnullByDefault
+@NullMarked
 module lgbt.greenhouse.silicate {
 	requires org.spongepowered.mixin;
 	requires org.jetbrains.annotations;
@@ -9,6 +9,7 @@ module lgbt.greenhouse.silicate {
 	requires vanilla;
 	requires mixinextras.common;
 	requires authlib;
+	requires org.jspecify;
 	exports lgbt.greenhouse.silicate.api;
 	exports lgbt.greenhouse.silicate.api.condition;
 	exports lgbt.greenhouse.silicate.api.condition.meta;
@@ -21,5 +22,4 @@ module lgbt.greenhouse.silicate {
 
 	exports lgbt.greenhouse.silicate.impl to lgbt.greenhouse.silicate.fabric;
 	exports lgbt.greenhouse.silicate.impl.platform to lgbt.greenhouse.silicate.fabric;
-	exports lgbt.greenhouse.silicate.impl.annotation to lgbt.greenhouse.silicate.fabric;
 }
