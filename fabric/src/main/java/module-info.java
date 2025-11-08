@@ -1,3 +1,6 @@
+import lgbt.greenhouse.silicate.impl.annotation.NonnullByDefault;
+
+@NonnullByDefault
 module lgbt.greenhouse.silicate.fabric {
 	requires lgbt.greenhouse.silicate;
 	requires net.fabricmc.loader;

@@ -5,7 +5,6 @@ import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A predicate that inverts another condition's test.
@@ -20,7 +19,7 @@ public record NotPredicate(
 	}
 
 	@Override
-	public @NotNull GamePredicate.Type<NotPredicate> getType() {
+	public GamePredicate.Type<NotPredicate> getType() {
 		return SilicatePredicateTypes.NOT;
 	}
 

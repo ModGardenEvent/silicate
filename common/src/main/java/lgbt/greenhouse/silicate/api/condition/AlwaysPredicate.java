@@ -6,7 +6,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A predicate that always returns a specific value when tested.
@@ -25,12 +24,12 @@ public record AlwaysPredicate(boolean value) implements GamePredicate<AlwaysPred
 	}
 
 	@Override
-	public @NotNull MapCodec<AlwaysPredicate> getCodec() {
+	public MapCodec<AlwaysPredicate> getCodec() {
 		return CODEC;
 	}
 
 	@Override
-	public @NotNull GamePredicate.Type<AlwaysPredicate> getType() {
+	public GamePredicate.Type<AlwaysPredicate> getType() {
 		return SilicatePredicateTypes.ALWAYS;
 	}
 

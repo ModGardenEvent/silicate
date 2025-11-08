@@ -2,7 +2,6 @@ package lgbt.greenhouse.silicate.api.condition.builtin.math;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
 
 public enum Comparison implements StringRepresentable {
 	EQUALS("="),
@@ -32,7 +31,7 @@ public enum Comparison implements StringRepresentable {
 	}
 
 	@Override
-	public @NotNull String getSerializedName() {
+	public String getSerializedName() {
 		return name;
 	}
 }

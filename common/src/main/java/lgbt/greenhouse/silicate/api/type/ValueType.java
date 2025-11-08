@@ -1,7 +1,6 @@
 package lgbt.greenhouse.silicate.api.type;
 
 import com.mojang.serialization.*;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -65,22 +64,22 @@ public record ValueType<T>(Class<T> clazz, @Nullable Codec<T> codec) implements
 	}
 
 	@Override
-	public <U extends Annotation> U getAnnotation(@NotNull Class<U> annotationClass) {
+	public <U extends Annotation> U getAnnotation(Class<U> annotationClass) {
 		return this.clazz.getAnnotation(annotationClass);
 	}
 
 	@Override
-	public @NotNull Annotation @NotNull [] getAnnotations() {
+	public Annotation[] getAnnotations() {
 		return this.clazz.getAnnotations();
 	}
 
 	@Override
-	public @NotNull String toString() {
+	public String toString() {
 		return this.clazz.toGenericString();
 	}
 
 	@Override
-	public @NotNull Annotation @NotNull [] getDeclaredAnnotations() {
+	public Annotation[] getDeclaredAnnotations() {
 		return this.clazz.getDeclaredAnnotations();
 	}
 }

@@ -11,7 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterSet;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class ContextParamTestinstance extends GameTestInstance {
 	}
 
 	@Override
-	public void run(@NotNull GameTestHelper helper) {
+	public void run(GameTestHelper helper) {
 		ParameterSet paramSet = ParameterSet.Builder.of()
 				.required(GlobalParameterKeys.ORIGIN)
 				.required(GlobalParameterKeys.BLOCK_STATE)
@@ -78,12 +77,12 @@ public class ContextParamTestinstance extends GameTestInstance {
 	}
 
 	@Override
-	public @NotNull MapCodec<? extends GameTestInstance> codec() {
+	public MapCodec<? extends GameTestInstance> codec() {
 		return CODEC;
 	}
 
 	@Override
-	protected @NotNull MutableComponent typeDescription() {
+	protected MutableComponent typeDescription() {
 		return Component.literal("Silicate Context Param Test");
 	}
 }

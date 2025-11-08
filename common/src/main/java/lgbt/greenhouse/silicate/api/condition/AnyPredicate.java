@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import net.minecraft.core.Holder;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public final class AnyPredicate extends CompoundPredicate<AnyPredicate> {
 	}
 
 	@Override
-	public GamePredicate.@NotNull Type<AnyPredicate> getType() {
+	public GamePredicate.Type<AnyPredicate> getType() {
 		return SilicatePredicateTypes.ANY;
 	}
 

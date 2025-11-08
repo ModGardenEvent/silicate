@@ -13,7 +13,6 @@ import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A predicate that tests {@link #condition} with the owner of {@link #entity}.
@@ -44,7 +43,7 @@ public record EntityTameOwnerPredicate(
 	}
 
 	@Override
-	public @NotNull GamePredicate.Type<EntityTameOwnerPredicate> getType() {
+	public GamePredicate.Type<EntityTameOwnerPredicate> getType() {
 		return SilicatePredicateTypes.ENTITY_TAME_OWNER;
 	}
 

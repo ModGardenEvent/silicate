@@ -16,7 +16,6 @@ import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterSet;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
-import org.jetbrains.annotations.NotNull;
 
 public class ContextParamMapTestInstance extends GameTestInstance {
 	public static final MapCodec<ContextParamMapTestInstance> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
@@ -29,17 +28,13 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 	}
 
 	@Override
-	public void run(@NotNull GameTestHelper helper) {
+	public void run(GameTestHelper helper) {
 		try {
 			ParameterSet paramSet = createParamSet();
 			ParameterMap paramMap = createParamMap(createOrigin());
 			helper.assertTrue(
 					paramMap.getParamSet().equals(paramSet),
 					Component.literal("ContextParamMap.getParamSet() does not equal paramSet")
-			);
-			helper.assertTrue(
-					paramMap.get(GlobalParameterKeys.BLOCK_ENTITY) == null,
-					Component.literal("ContextParamMap.get(ContextParamTypes.BLOCK_ENTITY) != null")
 			);
 			helper.assertTrue(
 					paramMap.get(GlobalParameterKeys.ORIGIN)
@@ -89,7 +84,7 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 		}
 	}
 
-	private static @NotNull ParameterSet createParamSet() {
+	private static ParameterSet createParamSet() {
 		return ParameterSet.Builder.of()
 				.required(GlobalParameterKeys.ORIGIN)
 				.build();
@@ -107,6 +102,8 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 				.required(GlobalParameterKeys.BLOCK_STATE)
 				.required(GlobalParameterKeys.ORIGIN)
 				.build();
+		// this is invalid anyway, we don't care
+		//noinspection DataFlowIssue
 		ParameterMap.Builder.of(paramSet)
 				.withParameter(GlobalParameterKeys.THIS_ENTITY, new Parameter<>(null))
 				.build();
@@ -122,12 +119,12 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 	}
 
 	@Override
-	public @NotNull MapCodec<? extends GameTestInstance> codec() {
+	public MapCodec<? extends GameTestInstance> codec() {
 		return CODEC;
 	}
 
 	@Override
-	protected @NotNull MutableComponent typeDescription() {
+	protected MutableComponent typeDescription() {
 		return Component.literal("Silicate Context Param Map Test");
 	}
 

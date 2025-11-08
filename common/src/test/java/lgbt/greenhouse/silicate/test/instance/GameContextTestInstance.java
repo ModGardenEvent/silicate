@@ -19,7 +19,6 @@ import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterSet;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
-import org.jetbrains.annotations.NotNull;
 
 public class GameContextTestInstance extends GameTestInstance {
 	public static final MapCodec<GameContextTestInstance> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
@@ -32,14 +31,10 @@ public class GameContextTestInstance extends GameTestInstance {
 	}
 
 	@Override
-	public void run(@NotNull GameTestHelper helper) {
+	public void run(GameTestHelper helper) {
 		try {
 			ParameterMap paramMap = createParamMap(createState(), createOrigin(), helper);
 			GameContext context = GameContext.of(helper.getLevel(), paramMap);
-			helper.assertTrue(
-					context.getLevel() != null,
-					Component.literal("GameContext.getLevel() == null")
-			);
 			helper.assertTrue(
 					context.getLevel().equals(helper.getLevel()),
 					Component.literal("GameContext.getLevel() is not equal to level")
@@ -62,7 +57,7 @@ public class GameContextTestInstance extends GameTestInstance {
 		return builder.build();
 	}
 
-	private static @NotNull ParameterSet createParamSet() {
+	private static ParameterSet createParamSet() {
 		return ParameterSet.Builder.of()
 				.required(GlobalParameterKeys.ORIGIN)
 				.required(GlobalParameterKeys.BLOCK_STATE)
@@ -76,12 +71,12 @@ public class GameContextTestInstance extends GameTestInstance {
 	}
 
 	@Override
-	public @NotNull MapCodec<? extends GameTestInstance> codec() {
+	public MapCodec<? extends GameTestInstance> codec() {
 		return CODEC;
 	}
 
 	@Override
-	protected @NotNull MutableComponent typeDescription() {
+	protected MutableComponent typeDescription() {
 		return Component.literal("Silicate Context Param Map Test");
 	}
 

@@ -2,7 +2,6 @@ package lgbt.greenhouse.silicate.api.context.parameter;
 
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public final class LocalParameterKey<T> implements ParameterKey<T> {
 	private final ResourceLocation name;
@@ -32,7 +31,7 @@ public final class LocalParameterKey<T> implements ParameterKey<T> {
 	}
 
 	@Override
-	public @NotNull String toString() {
+	public String toString() {
 		return "LocalParameterKey<" + this.type + ">(" + this.name + ")";
 	}
 }

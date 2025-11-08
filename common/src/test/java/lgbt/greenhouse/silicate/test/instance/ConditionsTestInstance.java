@@ -33,7 +33,6 @@ import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import lgbt.greenhouse.silicate.test.SilicateTestGlobalParameterKeys;
 import lgbt.greenhouse.silicate.test.util.ExpectedResultCondition;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class ConditionsTestInstance extends GameTestInstance {
 	}
 
 	@Override
-	public void run(@NotNull GameTestHelper helper) {
+	public void run(GameTestHelper helper) {
 		SkeletonHorse skeletonHorse = helper.getEntities(EntityType.SKELETON_HORSE).getFirst();
 		Skeleton skeleton = helper.getEntities(EntityType.SKELETON).getFirst();
 		ServerPlayer player = createFakePlayer(helper);
@@ -104,16 +103,16 @@ public class ConditionsTestInstance extends GameTestInstance {
 	}
 
 	@Override
-	public @NotNull MapCodec<? extends GameTestInstance> codec() {
+	public MapCodec<? extends GameTestInstance> codec() {
 		return CODEC;
 	}
 
 	@Override
-	protected @NotNull MutableComponent typeDescription() {
+	protected MutableComponent typeDescription() {
 		return Component.literal("Silicate Conditions Test");
 	}
 
-	private static @NotNull ParameterSet createParamSet() {
+	private static ParameterSet createParamSet() {
 		return ParameterSet.Builder.of()
 				.required(GlobalParameterKeys.BLOCK_STATE)
 				.required(GlobalParameterKeys.ORIGIN)
@@ -155,6 +154,7 @@ public class ConditionsTestInstance extends GameTestInstance {
 	}
 
 	private static ServerPlayer createFakePlayer(GameTestHelper helper) {
+		assert Silicate.getHelper() != null;
 		ServerPlayer fakePlayer = Silicate.getHelper().createFakePlayer(helper.getLevel());
 		fakePlayer.setGameMode(GameType.ADVENTURE);
 		fakePlayer.setPos(createOrigin().getCenter());

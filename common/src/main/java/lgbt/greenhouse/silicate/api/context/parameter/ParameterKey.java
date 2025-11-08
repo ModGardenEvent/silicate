@@ -6,6 +6,8 @@ import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 /**
  * A key referring to a parameter in {@link ParameterMap}.
  * @param <T> type of {@link ValueType}
@@ -32,7 +34,7 @@ public interface ParameterKey<T> {
 	 * @return the {@link ValueType} for this {@link ParameterKey}
 	 */
 	default ValueType<T> getType(GameContext gameContext) {
-		return this.getTypeStatic();
+		return Objects.requireNonNull(this.getTypeStatic(), Reference.NULL_STATIC_PARAMETER_KEY_TYPES);
 	}
 
 	/**
@@ -40,6 +42,7 @@ public interface ParameterKey<T> {
 	 * @param <T> type of {@link ValueType}
 	 */
 	final class Reference<T> implements ParameterKey<T> {
+		private static final String NULL_STATIC_PARAMETER_KEY_TYPES = "Static types in non-reference Parameter Keys shall never be null";
 		private final ResourceLocation id;
 
 		public Reference(ResourceLocation id) {
@@ -63,7 +66,7 @@ public interface ParameterKey<T> {
 
 		@Override
 		public ValueType<T> getType(GameContext gameContext) {
-			return gameContext.getParams().resolve(this).getTypeStatic();
+			return Objects.requireNonNull(gameContext.getParams().resolve(this).getTypeStatic(), NULL_STATIC_PARAMETER_KEY_TYPES);
 		}
 	}
 }

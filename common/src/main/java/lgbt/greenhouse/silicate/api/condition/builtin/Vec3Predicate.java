@@ -9,7 +9,6 @@ import net.minecraft.world.phys.Vec3;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.builtin.math.Vec3Comparison;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Allows the caller to check if the value of a {@link Vec3} passes equality/inequality comparisons with {@link #right}.
@@ -28,7 +27,7 @@ public record Vec3Predicate(
 	}
 
 	@Override
-	public @NotNull GamePredicate.Type<Vec3Predicate> getType() {
+	public GamePredicate.Type<Vec3Predicate> getType() {
 		return SilicatePredicateTypes.VEC3;
 	}
 

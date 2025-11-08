@@ -3,10 +3,11 @@ package lgbt.greenhouse.silicate.api.context.parameter;
 import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A map of {@link ParameterKey} to {@link Parameter} values.
@@ -32,12 +33,12 @@ public sealed class ParameterMap {
 			return this.get(referenceKey);
 		}
 
-		return (Parameter<T>) params.get(key);
+		return Objects.requireNonNull((Parameter < T >) params.get(key));
 	}
 
 	@SuppressWarnings("unchecked") // type should be correct
 	public <T> Parameter<T> get(ParameterKey.Reference<T> key) {
-		return (Parameter<T>) params.get(this.id2Keys.get(key.getId()));
+		return Objects.requireNonNull((Parameter<T>) params.get(this.id2Keys.get(key.getId())));
 	}
 
 	@SuppressWarnings("unchecked") // type should be correct
@@ -54,7 +55,7 @@ public sealed class ParameterMap {
 	}
 
 	@SuppressWarnings("unchecked") // Always correct.
-	public <T> Parameter<T> set(ParameterKey<T> key, T param) {
+	public <T> @Nullable Parameter<T> set(ParameterKey<T> key, T param) {
 		this.id2Keys.put(key.getId(), key);
 		return (Parameter<T>) params.put(key, new Parameter<>(param));
 	}
@@ -88,7 +89,7 @@ public sealed class ParameterMap {
 			return new Builder(paramSet);
 		}
 
-		public <T> Builder withParameter(GlobalParameterKey<T> key, @NotNull Parameter<T> param) {
+		public <T> Builder withParameter(GlobalParameterKey<T> key, Parameter<T> param) {
 			params.put(key, param);
 			return this;
 		}

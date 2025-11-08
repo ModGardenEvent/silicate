@@ -2,7 +2,6 @@ package lgbt.greenhouse.silicate.api.context.parameter;
 
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public final class GlobalParameterKey<T>
 		implements ParameterKey<T> {
@@ -18,7 +17,7 @@ public final class GlobalParameterKey<T>
 	}
 
 	@Override
-	public @NotNull String toString() {
+	public String toString() {
 		return "GlobalParameterKey<" + this.type + ">(" + this.name + ")";
 	}
 

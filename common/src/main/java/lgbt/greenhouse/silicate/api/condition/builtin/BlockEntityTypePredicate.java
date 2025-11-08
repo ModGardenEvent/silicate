@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import org.jetbrains.annotations.NotNull;
 
 public record BlockEntityTypePredicate(
 	ParameterKey<BlockEntity> blockEntity,
@@ -22,7 +21,7 @@ public record BlockEntityTypePredicate(
 	}
 
 	@Override
-	public @NotNull GamePredicate.Type<BlockEntityTypePredicate> getType() {
+	public GamePredicate.Type<BlockEntityTypePredicate> getType() {
 		return SilicatePredicateTypes.BLOCK_ENTITY_TYPE;
 	}
 

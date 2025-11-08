@@ -11,7 +11,6 @@ import lgbt.greenhouse.silicate.api.SilicateRegistries;
 import lgbt.greenhouse.silicate.api.condition.builtin.EntityPassengerPredicate;
 import lgbt.greenhouse.silicate.api.condition.builtin.EntityVehiclePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.invoke.MethodHandle;
 import java.util.function.Predicate;
@@ -40,11 +39,11 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 	/**
 	 * @return the codec responsible for condition configuration.
 	 */
-	@NotNull default MapCodec<T> getCodec() {
+	default MapCodec<T> getCodec() {
 		return getType().getCodec();
 	}
 
-	@NotNull Type<T> getType();
+	Type<T> getType();
 
 	/**
 	 * A utility class used in codec definition for creating {@link GamePredicate}s (subclasses).

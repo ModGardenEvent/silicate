@@ -12,7 +12,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A predicate to check an entity's {@link EntityType}.
@@ -51,7 +50,7 @@ public record EntityTypePredicate(
 	}
 
 	@Override
-	public @NotNull GamePredicate.Type<EntityTypePredicate> getType() {
+	public GamePredicate.Type<EntityTypePredicate> getType() {
 		return SilicatePredicateTypes.ENTITY_TYPE;
 	}
 

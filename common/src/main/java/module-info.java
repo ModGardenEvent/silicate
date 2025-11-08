@@ -1,3 +1,6 @@
+import lgbt.greenhouse.silicate.impl.annotation.NonnullByDefault;
+
+@NonnullByDefault
 module lgbt.greenhouse.silicate {
 	requires org.spongepowered.mixin;
 	requires org.jetbrains.annotations;
@@ -18,4 +21,5 @@ module lgbt.greenhouse.silicate {
 
 	exports lgbt.greenhouse.silicate.impl to lgbt.greenhouse.silicate.fabric;
 	exports lgbt.greenhouse.silicate.impl.platform to lgbt.greenhouse.silicate.fabric;
+	exports lgbt.greenhouse.silicate.impl.annotation to lgbt.greenhouse.silicate.fabric;
 }

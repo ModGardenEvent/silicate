@@ -8,7 +8,6 @@ import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
-import org.jetbrains.annotations.NotNull;
 
 public record BlockStatePredicate(
 	ParameterKey<BlockState> left,
@@ -21,7 +20,7 @@ public record BlockStatePredicate(
 	}
 
 	@Override
-	public @NotNull GamePredicate.Type<BlockStatePredicate> getType() {
+	public GamePredicate.Type<BlockStatePredicate> getType() {
 		return SilicatePredicateTypes.BLOCK_STATE;
 	}
 

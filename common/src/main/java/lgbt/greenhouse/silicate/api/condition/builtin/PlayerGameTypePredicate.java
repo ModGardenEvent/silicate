@@ -12,7 +12,6 @@ import net.minecraft.world.level.GameType;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.impl.duck.Duck_AbstractClientPlayer;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -48,7 +47,7 @@ public record PlayerGameTypePredicate(
 	}
 
 	@Override
-	public @NotNull GamePredicate.Type<PlayerGameTypePredicate> getType() {
+	public GamePredicate.Type<PlayerGameTypePredicate> getType() {
 		return SilicatePredicateTypes.PLAYER_GAME_TYPE;
 	}
 

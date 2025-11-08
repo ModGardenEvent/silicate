@@ -12,7 +12,6 @@ import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A condition that tests {@link #condition} with the vehicle of {@link #entity}.
@@ -42,7 +41,7 @@ public record EntityVehiclePredicate(
 	}
 
 	@Override
-	public @NotNull GamePredicate.Type<EntityVehiclePredicate> getType() {
+	public GamePredicate.Type<EntityVehiclePredicate> getType() {
 		return SilicatePredicateTypes.ENTITY_VEHICLE;
 	}
 

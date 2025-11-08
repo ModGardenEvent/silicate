@@ -13,7 +13,6 @@ import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -47,7 +46,7 @@ public record EntityPassengerPredicate(
 	}
 
 	@Override
-	public @NotNull GamePredicate.Type<EntityPassengerPredicate> getType() {
+	public GamePredicate.Type<EntityPassengerPredicate> getType() {
 		return SilicatePredicateTypes.ENTITY_PASSENGER;
 	}
 
