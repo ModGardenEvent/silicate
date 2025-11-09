@@ -28,21 +28,21 @@ public sealed class ParameterMap {
 	}
 
 	@SuppressWarnings("unchecked") // type is always correct
-	public <T> Parameter<T> get(ParameterKey<T> key) {
+	public <T> Parameter<T> getOrThrow(ParameterKey<T> key) {
 		if (key instanceof ParameterKey.Reference<T> referenceKey) {
-			return this.get(referenceKey);
+			return this.getOrThrow(referenceKey);
 		}
 
-		return Objects.requireNonNull((Parameter < T >) params.get(key));
+		return Objects.requireNonNull((Parameter<T>) params.get(key));
 	}
 
 	@SuppressWarnings("unchecked") // type should be correct
-	public <T> Parameter<T> get(ParameterKey.Reference<T> key) {
+	public <T> Parameter<T> getOrThrow(ParameterKey.Reference<T> key) {
 		return Objects.requireNonNull((Parameter<T>) params.get(this.id2Keys.get(key.getId())));
 	}
 
 	@SuppressWarnings("unchecked") // type should be correct
-	public <T> ParameterKey<T> resolve(ParameterKey.Reference<T> referenceKey) {
+	public <T> @Nullable ParameterKey<T> resolve(ParameterKey.Reference<T> referenceKey) {
 		return (ParameterKey<T>) this.id2Keys.get(referenceKey.getId());
 	}
 

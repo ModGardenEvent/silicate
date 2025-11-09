@@ -51,6 +51,7 @@ dependencies {
 	modLocalRuntime("com.terraformersmc:modmenu:${Versions.MOD_MENU}")
 	compileOnly("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
 	annotationProcessor("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
+	compileOnly("com.mojang:datafixerupper:${Versions.DFU}")
 
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 	include("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")

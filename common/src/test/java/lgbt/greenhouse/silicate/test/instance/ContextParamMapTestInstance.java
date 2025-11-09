@@ -37,7 +37,7 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 					Component.literal("ContextParamMap.getParamSet() does not equal paramSet")
 			);
 			helper.assertTrue(
-					paramMap.get(GlobalParameterKeys.ORIGIN)
+					paramMap.getOrThrow(GlobalParameterKeys.ORIGIN)
 							.value()
 							.equals(createOrigin().getCenter()),
 					Component.literal("ContextParamTypes.ORIGIN is not equal to origin")
@@ -53,17 +53,17 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 			ParameterMap.Mutable mutableParamMap = ParameterMap.Mutable.of(paramMap);
 			Vec3 newOrigin = createOrigin().getBottomCenter();
 			helper.assertTrue(
-					mutableParamMap.get(GlobalParameterKeys.ORIGIN)
-							.equals(paramMap.get(GlobalParameterKeys.ORIGIN)),
+					mutableParamMap.getOrThrow(GlobalParameterKeys.ORIGIN)
+							.equals(paramMap.getOrThrow(GlobalParameterKeys.ORIGIN)),
 					Component.literal("ContextParamMap.Mutable.get(ContextParamTypes.ORIGIN) != oldOrigin")
 			);
 			Parameter<Vec3> oldOrigin = mutableParamMap.set(GlobalParameterKeys.ORIGIN, newOrigin);
 			helper.assertTrue(
-					paramMap.get(GlobalParameterKeys.ORIGIN).equals(oldOrigin),
+					paramMap.getOrThrow(GlobalParameterKeys.ORIGIN).equals(oldOrigin),
 					Component.literal("ContextParamMap.get(ContextParamTypes.ORIGIN) != oldOrigin")
 			);
 			helper.assertTrue(
-					mutableParamMap.get(GlobalParameterKeys.ORIGIN)
+					mutableParamMap.getOrThrow(GlobalParameterKeys.ORIGIN)
 							.value()
 							.equals(newOrigin),
 					Component.literal("ContextParamMap.Mutable.get(ContextParamTypes.ORIGIN) != newOrigin")

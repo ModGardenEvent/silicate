@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -36,6 +37,13 @@ public final class SilicateValueTypes {
 			"parameter_key",
 			Clazzy.cast(ParameterKey.class),
 			ParameterKey.CODEC
+	);
+	/**
+	 * A dynamically typed value. This is checked upon usage.
+	 */
+	public static final ValueType<Object> ANY = register(
+			"any",
+			Object.class
 	);
 	public static final ValueType<BlockEntity> BLOCK_ENTITY = register(
 			"block_entity",
@@ -90,7 +98,7 @@ public final class SilicateValueTypes {
 	@ApiStatus.Internal
 	public static void registerAll() {}
 
-	private static <T> ValueType<T> register(String name, Class<T> clazz, Codec<T> codec) {
+	private static <T> ValueType<T> register(String name, Class<T> clazz, @Nullable Codec<T> codec) {
 		return register(name, new ValueType<>(clazz, codec));
 	}
 

@@ -1,0 +1,18 @@
+package lgbt.greenhouse.silicate.api.condition.meta;
+
+import com.mojang.serialization.MapCodec;
+import lgbt.greenhouse.silicate.api.type.ValueTyped;
+
+public record DynamicValue(Object inner) implements ValueDispatched {
+	public static final MapCodec<DynamicValue> CODEC = ValueTyped.CODEC
+			.fieldOf("value")
+			.xmap(
+					DynamicValue::new,
+					DynamicValue::inner
+			);
+
+	@Override
+	public MapCodec<? extends ValueDispatched> codec() {
+		return CODEC;
+	}
+}

@@ -9,4 +9,5 @@ module lgbt.greenhouse.silicate.fabric {
 	requires fabric.events.interaction.v0;
 	requires fabric.registry.sync.v0;
 	requires org.jspecify;
+	requires mixinextras.fabric;
 }

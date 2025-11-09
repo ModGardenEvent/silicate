@@ -29,6 +29,10 @@ public final class SilicatePredicateTypes {
 			"always",
 			AlwaysPredicate.Type::new
 	);
+	public static final GamePredicate.Type<DefinePredicate> DEFINE = register(
+			"define",
+			DefinePredicate.Type::new
+	);
 	public static final GamePredicate.Type<EntityTypePredicate> ENTITY_TYPE = register(
 			"entity_type",
 			EntityTypePredicate.Type::new

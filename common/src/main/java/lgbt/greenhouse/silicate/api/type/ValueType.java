@@ -1,6 +1,7 @@
 package lgbt.greenhouse.silicate.api.type;
 
 import com.mojang.serialization.*;
+import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -21,6 +22,9 @@ public record ValueType<T>(Class<T> clazz, @Nullable Codec<T> codec) implements
 		Type,
 		AnnotatedElement,
 		TypeDescriptor.OfField<Class<?>> {
+	public static final Codec<ValueType<?>> CODEC = SilicateBuiltInRegistries.VALUE_TYPE
+			.byNameCodec();
+
 	/**
 	 * @see Class#isAssignableFrom(Class)
 	 */

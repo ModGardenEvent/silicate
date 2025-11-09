@@ -30,6 +30,6 @@ public class GameContext {
 	}
 
 	public <T> T getParam(ParameterKey<T> paramType) {
-		return getParams().get(paramType).value();
+		return getParams().getOrThrow(paramType).value();
 	}
 }

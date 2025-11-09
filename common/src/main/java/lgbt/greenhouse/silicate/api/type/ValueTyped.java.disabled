@@ -1,0 +1,20 @@
+package lgbt.greenhouse.silicate.api.type;
+
+import com.mojang.serialization.Codec;
+import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+
+public interface ValueTyped<T extends ValueTyped<T>> {
+	Codec<ValueTyped<?>> CODEC = SilicateBuiltInRegistries.VALUE_TYPE
+			.byNameCodec()
+			.dispatch(
+					"value_type",
+					typed -> Objects.requireNonNull(typed.getTypeStatic(), "Value-typed object must have an associated ValueType"),
+					valueType -> Objects.requireNonNull(valueType.codec())
+							.fieldOf("value")
+			);
+
+	@Nullable ValueType<T> getTypeStatic();
+}

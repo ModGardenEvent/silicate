@@ -10,6 +10,7 @@ module lgbt.greenhouse.silicate {
 	requires mixinextras.common;
 	requires authlib;
 	requires org.jspecify;
+	requires jdk.unsupported;
 	exports lgbt.greenhouse.silicate.api;
 	exports lgbt.greenhouse.silicate.api.condition;
 	exports lgbt.greenhouse.silicate.api.condition.meta;

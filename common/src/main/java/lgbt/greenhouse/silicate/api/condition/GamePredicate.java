@@ -29,7 +29,7 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 	Codec<GamePredicate<?>> DISPATCH_CODEC = SilicateBuiltInRegistries.PREDICATE.byNameCodec()
 			.dispatch("predicate", GamePredicate::getType, GamePredicate.Type::createCodec);
 	Codec<Holder<GamePredicate<?>>> CODEC = RegistryFileCodec.create(
-			SilicateRegistries.CONDITION_TEMPLATE,
+			SilicateRegistries.CONDITION,
 			DISPATCH_CODEC
 	);
 
