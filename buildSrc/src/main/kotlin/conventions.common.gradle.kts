@@ -48,6 +48,7 @@ repositories {
 
 dependencies {
 	implementation("org.jetbrains:annotations:24.1.0")
+	implementation("org.jspecify:jspecify:1.0.0")
 }
 
 extraJavaModuleInfo {
