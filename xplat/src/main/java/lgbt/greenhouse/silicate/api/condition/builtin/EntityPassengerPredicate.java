@@ -29,8 +29,8 @@ public record EntityPassengerPredicate(
 ) implements GamePredicate<EntityPassengerPredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
-		List<Entity> passengers = ctx.getParam(this.entity).getPassengers();
-		ParameterMap parameterMap = ctx.getParams();
+		List<Entity> passengers = ctx.getParameter(this.entity).getPassengers();
+		ParameterMap parameterMap = ctx.getParameterMap();
 		if (matchAll.get(ctx)) {
 			return !passengers.isEmpty() && passengers.stream()
 					.allMatch(passenger -> testPassenger(ctx, passenger, parameterMap));

@@ -23,13 +23,13 @@ public record DefinePredicate(
 		// check if parameter key already exists
 		var referenceKey = (ParameterKey.Reference<?>) this.parameterKey.get(ctx);
 		ParameterKey<?> parameterKey =
-				ctx.getParams().resolve(referenceKey);
+				ctx.getParameterMap().resolve(referenceKey);
 		if (parameterKey == null) {
 			parameterKey = new LocalParameterKey<>(referenceKey.getId(), this.dynamicValue.type());
 		}
 
 		//noinspection unchecked // it's probably fine. Object? wildcard? same thing, totally
-		ctx.getParams().set((ParameterKey<? super Object>) parameterKey, this.dynamicValue.value());
+		ctx.getParameterMap().set((ParameterKey<? super Object>) parameterKey, this.dynamicValue.value());
 		return true;
 	}
 

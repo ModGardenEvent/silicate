@@ -23,7 +23,7 @@ public record Vec3Predicate(
 ) implements GamePredicate<Vec3Predicate> {
 	@Override
 	public boolean test(GameContext ctx) {
-		Vec3 formerOperand = ctx.getParam(left);
+		Vec3 formerOperand = ctx.getParameter(left);
 		return comparison.get(ctx).compare(formerOperand, right.get(ctx));
 	}
 

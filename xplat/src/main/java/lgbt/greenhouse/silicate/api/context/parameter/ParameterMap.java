@@ -51,7 +51,7 @@ public class ParameterMap {
 		return params.containsKey(key);
 	}
 
-	public ParameterSet getParamSet() {
+	public ParameterSet getParameterSet() {
 		return paramSet;
 	}
 
@@ -101,7 +101,7 @@ public class ParameterMap {
 		private void validate() throws InvalidParameterException {
 			try {
 				params.forEach((key, param) -> {
-					if (key instanceof GlobalParameterKey<?> globalParameterKey && !paramSet.hasParam(globalParameterKey)) {
+					if (key instanceof GlobalParameterKey<?> globalParameterKey && !paramSet.has(globalParameterKey)) {
 						throw new RuntimeException(new InvalidParameterException("Parameter " + key + " does not exist in this set"));
 					}
 				});

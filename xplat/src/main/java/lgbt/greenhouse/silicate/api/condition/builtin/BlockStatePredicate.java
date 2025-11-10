@@ -16,7 +16,7 @@ public record BlockStatePredicate(
 ) implements GamePredicate<BlockStatePredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
-		BlockState state = ctx.getParam(left);
+		BlockState state = ctx.getParameter(left);
 		return state.equals(right.get(ctx));
 	}
 

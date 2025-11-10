@@ -20,7 +20,7 @@ public final class ParameterSet {
 	/**
 	 * Whether the parameter key is present in this set and may be used.
 	 */
-	public <T> boolean hasParam(GlobalParameterKey<T> key) {
+	public <T> boolean has(GlobalParameterKey<T> key) {
 		return all.contains(key);
 	}
 

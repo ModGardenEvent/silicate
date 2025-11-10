@@ -19,7 +19,7 @@ public record Deferred<T>(ParameterKey<T> parameterKey) {
 	}
 
 	public T get(GameContext context) {
-		return context.getParam(this.parameterKey);
+		return context.getParameter(this.parameterKey);
 	}
 
 	/**

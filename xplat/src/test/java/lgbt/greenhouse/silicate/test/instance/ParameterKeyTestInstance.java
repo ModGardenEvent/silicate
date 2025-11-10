@@ -54,24 +54,24 @@ public class ParameterKeyTestInstance extends GameTestInstance {
 				Component.literal("ParameterSet.getAll() does not contain all")
 		);
 		helper.assertTrue(
-				parameterSet.hasParam(GlobalParameterKeys.ORIGIN),
-				Component.literal("ParameterSet.hasParam(GlobalParameterKeys.ORIGIN) != true")
+				parameterSet.has(GlobalParameterKeys.ORIGIN),
+				Component.literal("ParameterSet.has(GlobalParameterKeys.ORIGIN) != true")
 		);
 		helper.assertTrue(
-				parameterSet.hasParam(GlobalParameterKeys.BLOCK_STATE),
-				Component.literal("ParameterSet.hasParam(GlobalParameterKeys.ORIGIN) != true")
+				parameterSet.has(GlobalParameterKeys.BLOCK_STATE),
+				Component.literal("ParameterSet.has(GlobalParameterKeys.ORIGIN) != true")
 		);
 		helper.assertTrue(
-				parameterSet.hasParam(GlobalParameterKeys.THIS_ENTITY),
-				Component.literal("ParameterSet.hasParam(GlobalParameterKeys.ORIGIN) != true")
+				parameterSet.has(GlobalParameterKeys.THIS_ENTITY),
+				Component.literal("ParameterSet.has(GlobalParameterKeys.ORIGIN) != true")
 		);
 		helper.assertTrue(
-				parameterSet.hasParam(GlobalParameterKeys.BLOCK_ENTITY),
-				Component.literal("ParameterSet.hasParam(GlobalParameterKeys.BLOCK_ENTITY) != true")
+				parameterSet.has(GlobalParameterKeys.BLOCK_ENTITY),
+				Component.literal("ParameterSet.has(GlobalParameterKeys.BLOCK_ENTITY) != true")
 		);
 		helper.assertFalse(
-				parameterSet.hasParam(GlobalParameterKeys.UNIT),
-				Component.literal("ParameterSet.hasParam(GlobalParameterKeys.UNIT) != false")
+				parameterSet.has(GlobalParameterKeys.UNIT),
+				Component.literal("ParameterSet.has(GlobalParameterKeys.UNIT) != false")
 		);
 		helper.succeed();
 	}

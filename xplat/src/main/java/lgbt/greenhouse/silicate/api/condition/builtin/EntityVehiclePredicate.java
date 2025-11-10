@@ -24,11 +24,11 @@ public record EntityVehiclePredicate(
 ) implements GamePredicate<EntityVehiclePredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
-		Entity entity = ctx.getParam(this.entity);
+		Entity entity = ctx.getParameter(this.entity);
 		if (entity.getVehicle() == null) {
 			return false;
 		} else {
-			ParameterMap parameterMap = ctx.getParams();
+			ParameterMap parameterMap = ctx.getParameterMap();
 			return testVehicle(ctx, entity.getVehicle(), parameterMap);
 		}
 	}

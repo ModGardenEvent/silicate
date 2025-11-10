@@ -40,7 +40,7 @@ public class GameContextTestInstance extends GameTestInstance {
 					Component.literal("GameContext.getLevel() is not equal to level")
 			);
 			helper.assertTrue(
-					context.getParams().equals(paramMap),
+					context.getParameterMap().equals(paramMap),
 					Component.literal("GameContext.getParams() is not equal to paramMap")
 			);
 			helper.succeed();

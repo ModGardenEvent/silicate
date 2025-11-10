@@ -26,10 +26,10 @@ public record EntityProjectileOwnerPredicate(
 ) implements GamePredicate<EntityProjectileOwnerPredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
-		Entity entity = ctx.getParam(this.entity);
+		Entity entity = ctx.getParameter(this.entity);
 
 		if (entity instanceof TraceableEntity traceable && traceable.getOwner() != null) {
-			ParameterMap parameterMap = ctx.getParams();
+			ParameterMap parameterMap = ctx.getParameterMap();
 			return testOwner(ctx, traceable.getOwner(), parameterMap);
 		}
 		return false;

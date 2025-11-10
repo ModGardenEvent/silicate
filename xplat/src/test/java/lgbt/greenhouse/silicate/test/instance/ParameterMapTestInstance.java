@@ -33,7 +33,7 @@ public class ParameterMapTestInstance extends GameTestInstance {
 			ParameterSet parameterSet = createParameterSet();
 			ParameterMap parameterMap = createParameterMap(createOrigin());
 			helper.assertTrue(
-					parameterMap.getParamSet().equals(parameterSet),
+					parameterMap.getParameterSet().equals(parameterSet),
 					Component.literal("ParameterMap.getParamSet() does not equal parameterSet")
 			);
 			helper.assertTrue(

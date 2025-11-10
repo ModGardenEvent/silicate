@@ -25,11 +25,11 @@ public class GameContext {
 		return level;
 	}
 
-	public ParameterMap getParams() {
+	public ParameterMap getParameterMap() {
 		return params;
 	}
 
-	public <T> T getParam(ParameterKey<T> paramType) {
-		return getParams().getOrThrow(paramType).value();
+	public <T> T getParameter(ParameterKey<T> paramType) {
+		return getParameterMap().getOrThrow(paramType).value();
 	}
 }

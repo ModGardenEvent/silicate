@@ -68,7 +68,7 @@ public sealed interface ParameterKey<T>
 
 		@Override
 		public ValueType<T> getType(GameContext gameContext) {
-			return Objects.requireNonNull(Objects.requireNonNull(gameContext.getParams().resolve(this)).getTypeStatic(), NULL_STATIC_PARAMETER_KEY_TYPES);
+			return Objects.requireNonNull(Objects.requireNonNull(gameContext.getParameterMap().resolve(this)).getTypeStatic(), NULL_STATIC_PARAMETER_KEY_TYPES);
 		}
 	}
 

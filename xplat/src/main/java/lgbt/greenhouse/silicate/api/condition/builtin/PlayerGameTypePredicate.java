@@ -28,7 +28,7 @@ public record PlayerGameTypePredicate(
 ) implements GamePredicate<PlayerGameTypePredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
-		Entity entity = ctx.getParam(this.player);
+		Entity entity = ctx.getParameter(this.player);
 		if (entity instanceof Duck_AbstractClientPlayer duck) {
 			return gameTypes
 					.get(ctx)

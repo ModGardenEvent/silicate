@@ -17,7 +17,7 @@ public record BlockEntityTypePredicate(
 ) implements GamePredicate<BlockEntityTypePredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
-		BlockEntity blockEntity = ctx.getParam(this.blockEntity);
+		BlockEntity blockEntity = ctx.getParameter(this.blockEntity);
 		return blockEntity.getType().equals(blockEntityType.get(ctx));
 	}
 
