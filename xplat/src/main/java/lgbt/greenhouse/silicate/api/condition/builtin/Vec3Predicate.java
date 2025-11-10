@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
@@ -16,14 +17,14 @@ import lgbt.greenhouse.silicate.api.context.GameContext;
  * @param right The {@link Vec3} to do operations on (to the right).
  */
 public record Vec3Predicate(
-	ParameterKey<Vec3> left,
-	Vec3Comparison comparison,
-	Vec3 right
+		ParameterKey<Vec3> left,
+		Deferred<Vec3Comparison> comparison,
+		Deferred<Vec3> right
 ) implements GamePredicate<Vec3Predicate> {
 	@Override
-	public boolean test(GameContext context) {
-		Vec3 formerOperand = context.getParam(left);
-		return comparison.compare(formerOperand, right);
+	public boolean test(GameContext ctx) {
+		Vec3 formerOperand = ctx.getParam(left);
+		return comparison.get(ctx).compare(formerOperand, right.get(ctx));
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
@@ -11,13 +12,13 @@ import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 
 public record BlockEntityTypePredicate(
-	ParameterKey<BlockEntity> blockEntity,
-	BlockEntityType<?> blockEntityType
+		ParameterKey<BlockEntity> blockEntity,
+		Deferred<BlockEntityType<?>> blockEntityType
 ) implements GamePredicate<BlockEntityTypePredicate> {
 	@Override
-	public boolean test(GameContext context) {
-		BlockEntity blockEntity = context.getParam(this.blockEntity);
-		return blockEntity.getType().equals(blockEntityType);
+	public boolean test(GameContext ctx) {
+		BlockEntity blockEntity = ctx.getParam(this.blockEntity);
+		return blockEntity.getType().equals(blockEntityType.get(ctx));
 	}
 
 	@Override

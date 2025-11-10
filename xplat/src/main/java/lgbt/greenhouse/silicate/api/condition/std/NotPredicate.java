@@ -3,6 +3,7 @@ package lgbt.greenhouse.silicate.api.condition.std;
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
@@ -13,11 +14,11 @@ import lgbt.greenhouse.silicate.api.context.GameContext;
  * @param condition The condition to invert.
  */
 public record NotPredicate(
-		Holder<GamePredicate<?>> condition
+		Deferred<Holder<GamePredicate<?>>> condition
 ) implements GamePredicate<NotPredicate> {
 	@Override
-	public boolean test(GameContext context) {
-		return !condition.value().test(context);
+	public boolean test(GameContext ctx) {
+		return !condition.get(ctx).value().test(ctx);
 	}
 
 	@Override

@@ -33,7 +33,6 @@ import java.util.List;
  * Built-in types in Silicate.
  */
 public final class SilicateValueTypes {
-	@SuppressWarnings("deprecation") // it's fine to type cast since it's a wildcard
 	public static final ValueType<ParameterKey<?>> PARAMETER_KEY = register(
 			"parameter_key",
 			Clazzy.cast(ParameterKey.class),
@@ -126,30 +125,22 @@ public final class SilicateValueTypes {
 						},
 						registry::getKey
 				);
-		// This is actually checked because we want people to be able to use generic types
-		//noinspection deprecation
 		return new ValueType<>(Clazzy.cast(clazz), codec);
 	}
 
 	@ApiStatus.Experimental
 	public static <T> ValueType<Holder<T>> fromHolder(Codec<Holder<T>> codec) {
-		// this is enforced at runtime, and the value is never used
-		//noinspection deprecation
 		return new ValueType<>(Clazzy.cast(Holder.class), codec);
 	}
 
 	@ApiStatus.Experimental
 	public static <T> ValueType<HolderSet<T>> fromHolderSet(ResourceKey<Registry<T>> registryKey) {
 		var codec = RegistryCodecs.homogeneousList(registryKey);
-		// this is enforced at runtime, and the value is never used
-		//noinspection deprecation
 		return new ValueType<>(Clazzy.cast(HolderSet.class), codec);
 	}
 
 	@ApiStatus.Experimental
 	public static <T> ValueType<List<T>> fromList(Codec<T> codec) {
-		// this is enforced at runtime
-		//noinspection deprecation
 		return new ValueType<>(Clazzy.cast(List.class), Codec.list(codec));
 	}
 }

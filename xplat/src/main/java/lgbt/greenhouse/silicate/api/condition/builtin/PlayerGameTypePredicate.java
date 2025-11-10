@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
@@ -22,25 +23,27 @@ import java.util.Objects;
  * @param gameTypes The {@link GameType}s to equality against. Tests true if any are equal.
  */
 public record PlayerGameTypePredicate(
-	ParameterKey<Player> player,
-	List<GameType> gameTypes
+		ParameterKey<Player> player,
+		Deferred<List<GameType>> gameTypes
 ) implements GamePredicate<PlayerGameTypePredicate> {
 	@Override
-	public boolean test(GameContext context) {
-		Entity entity = context.getParam(this.player);
+	public boolean test(GameContext ctx) {
+		Entity entity = ctx.getParam(this.player);
 		if (entity instanceof Duck_AbstractClientPlayer duck) {
 			return gameTypes
-				.stream()
-				.anyMatch(
-					Objects.requireNonNull(
-						duck.silicate$getPlayerInfo(),
-						"Player has no GameType"
-					).getGameMode()::equals
-				);
+					.get(ctx)
+					.stream()
+					.anyMatch(
+						Objects.requireNonNull(
+							duck.silicate$getPlayerInfo(),
+							"Player has no GameType"
+						).getGameMode()::equals
+					);
 		} else if (entity instanceof ServerPlayer serverPlayer) {
 			return gameTypes
-				.stream()
-				.anyMatch(serverPlayer.gameMode.getGameModeForPlayer()::equals);
+					.get(ctx)
+					.stream()
+					.anyMatch(serverPlayer.gameMode.getGameModeForPlayer()::equals);
 		} else {
 			return false;
 		}

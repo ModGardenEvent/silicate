@@ -1,5 +1,6 @@
 package lgbt.greenhouse.silicate.api.condition.meta;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.KeyDispatchCodec;
 import dev.lukebemish.codecextras.record.KeyedRecordCodecBuilder;
@@ -9,6 +10,7 @@ import lgbt.greenhouse.silicate.api.context.parameter.ParameterTemplate;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import lgbt.greenhouse.silicate.impl.SilicateConstants;
+import lgbt.greenhouse.silicate.impl.cursed.Clazzy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -25,6 +27,11 @@ import java.util.function.Function;
  */
 public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	private static final Logger LOGGER = SilicateConstants.getLogger(PredicateCodecBuilder.class);
+	private static final ValueType<Deferred<?>> DEFERRED =
+		new ValueType<>(
+				Clazzy.cast(Deferred.class),
+				Deferred.CODEC
+		);
 
 	private final Class<T> clazz;
 	private final Map<String, FieldEntry<?, ?, ?>> fields = new HashMap<>();
@@ -164,7 +171,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param getter getter in {@link GamePredicate}
 	 * @param <V> underlying type of value
 	 */
-	public <V> PredicateCodecBuilder<T> withValue(String key, ValueType<V> type, Function<T, V> getter) {
+	public <V> PredicateCodecBuilder<T> withValue(String key, ValueType<V> type, Function<T, Deferred<V>> getter) {
 		return withValue(key, type, Objects.requireNonNull(type.codec(), "ValueType must have a codec"), getter);
 	}
 
@@ -176,7 +183,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param getter getter in {@link GamePredicate}
 	 * @param <V> underlying type of value
 	 */
-	public <V> PredicateCodecBuilder<T> withValue(String key, ValueType<V> type, Codec<V> codec,  Function<T, V> getter) {
+	public <V> PredicateCodecBuilder<T> withValue(String key, ValueType<V> type, Codec<V> codec,  Function<T, Deferred<V>> getter) {
 		this.fields.put(key, new FieldEntry<>(
 				key,
 				type,
@@ -198,7 +205,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param getter getter in {@link GamePredicate}
 	 * @param <V> underlying type of value
 	 */
-	public <V> PredicateCodecBuilder<T> withOptionalValue(String key, ValueType<V> type,  Function<T, V> getter) {
+	public <V> PredicateCodecBuilder<T> withOptionalValue(String key, ValueType<V> type,  Function<T, Deferred<Optional<V>>> getter) {
 		return withOptionalValue(key, type, Objects.requireNonNull(type.codec(), "ValueType must have a codec"), getter);
 	}
 
@@ -210,7 +217,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param defaultValue default value
 	 * @param <V> underlying type of value
 	 */
-	public <V> PredicateCodecBuilder<T> withDefaultOptionalValue(String key, ValueType<V> type, Function<T, V> getter, V defaultValue) {
+	public <V> PredicateCodecBuilder<T> withDefaultOptionalValue(String key, ValueType<V> type, Function<T, Deferred<V>> getter, V defaultValue) {
 		return withDefaultOptionalValue(key, type, Objects.requireNonNull(type.codec(), "ValueType must have a codec"), getter, defaultValue);
 	}
 
@@ -222,7 +229,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param getter getter in {@link GamePredicate}
 	 * @param <V> underlying type of value
 	 */
-	public <V> PredicateCodecBuilder<T> withOptionalValue(String key, ValueType<V> type, Codec<V> codec,  Function<T, V> getter) {
+	public <V> PredicateCodecBuilder<T> withOptionalValue(String key, ValueType<V> type, Codec<V> codec,  Function<T, Deferred<Optional<V>>> getter) {
 		this.fields.put(key, new FieldEntry<>(
 				key,
 				type,
@@ -246,7 +253,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param defaultValue default value
 	 * @param <V> underlying type of value
 	 */
-	public <V> PredicateCodecBuilder<T> withDefaultOptionalValue(String key, ValueType<V> type, Codec<V> codec, Function<T, V> getter, V defaultValue) {
+	public <V> PredicateCodecBuilder<T> withDefaultOptionalValue(String key, ValueType<V> type, Codec<V> codec, Function<T, Deferred<V>> getter, V defaultValue) {
 		this.fields.put(key, new FieldEntry<>(
 				key,
 				type,
@@ -274,8 +281,10 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 				.map(fieldEntry -> {
 					if (fieldEntry.requiresTemplateValues) {
 						return SilicateValueTypes.PARAMETER_KEY;
+					} else if (fieldEntry.dynamic != null) {
+						return SilicateValueTypes.ANY;
 					} else {
-						return fieldEntry.type();
+						return DEFERRED;
 					}
 				})
 				.map(ValueType::clazz)
@@ -348,12 +357,37 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 							}
 						}
 
+						// so you can use ParameterKeys in place of values
+						//noinspection unchecked // cursed
+						fieldCodec = (MapCodec<Object>) (Object) Codec.mapEither(
+								fieldCodec,
+								Deferred.CODEC.fieldOf(field.key)
+						);
+
 						keys.add(builder.add(fieldCodec, field.getter));
 					}
 
 					return container -> {
 						Object[] fields = keys.stream()
-								.map(container::get)
+								.map(key -> {
+									// ensure we can allow ParameterKeys in place of values,
+									// then compensate for such cases
+									Object obj = container.get(key);
+									if (obj instanceof ParameterKey<?> parameterKey) {
+										return parameterKey;
+									} else if (obj instanceof DynamicValue dynamicValue) {
+										return dynamicValue;
+									}
+
+									@SuppressWarnings("unchecked") // cursed
+									var either = (Either<Object, Deferred<?>>) obj;
+
+									if (either.right().isPresent()) {
+										return either.right().get();
+									} else {
+										return new Deferred<>(either.orThrow());
+									}
+								})
 								.toArray();
 						try {
 							// This is checked at runtime

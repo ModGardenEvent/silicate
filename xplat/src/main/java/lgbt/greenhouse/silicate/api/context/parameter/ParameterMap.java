@@ -31,6 +31,8 @@ public sealed class ParameterMap {
 	public <T> Parameter<T> getOrThrow(ParameterKey<T> key) {
 		if (key instanceof ParameterKey.Reference<T> referenceKey) {
 			return this.getOrThrow(referenceKey);
+		} else if (key instanceof ParameterKey.Direct<T> direct) {
+			return new Parameter<>(direct.getValue());
 		}
 
 		return Objects.requireNonNull((Parameter<T>) params.get(key));

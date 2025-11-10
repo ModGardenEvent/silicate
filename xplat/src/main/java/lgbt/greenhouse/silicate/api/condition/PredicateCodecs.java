@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
 import lgbt.greenhouse.silicate.api.condition.std.AlwaysPredicate;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -24,8 +25,13 @@ final class PredicateCodecs {
 						}
 					},
 					predicate -> {
-						if (predicate instanceof AlwaysPredicate(boolean value)) {
-							return Either.right(value);
+						if (predicate instanceof AlwaysPredicate(Deferred<Boolean> deferred)) {
+							Boolean value = deferred.getDirect();
+							if (value != null) {
+								return Either.right(value);
+							} else {
+								return Either.left(predicate);
+							}
 						} else {
 							return Either.left(predicate);
 						}

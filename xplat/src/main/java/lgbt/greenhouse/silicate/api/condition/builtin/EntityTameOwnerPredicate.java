@@ -2,13 +2,13 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
@@ -22,24 +22,24 @@ import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
  */
 public record EntityTameOwnerPredicate(
 		ParameterKey<Entity> entity,
-		Holder<GamePredicate<?>> condition
+		Deferred<Holder<GamePredicate<?>>> condition
 ) implements GamePredicate<EntityTameOwnerPredicate> {
 	@Override
-	public boolean test(GameContext oldContext) {
-		Entity entity = oldContext.getParam(this.entity);
+	public boolean test(GameContext ctx) {
+		Entity entity = ctx.getParam(this.entity);
 
 		if (entity instanceof OwnableEntity ownable && ownable.getOwner() != null) {
-			ParameterMap oldParamMap = oldContext.getParams();
+			ParameterMap oldParamMap = ctx.getParams();
 			ParameterMap.Mutable paramMap = ParameterMap.Mutable.of(oldParamMap);
-			return testOwner(oldContext.getLevel(), ownable.getOwner(), paramMap);
+			return testOwner(ctx, ownable.getOwner(), paramMap);
 		}
 		return false;
 	}
 
-	private boolean testOwner(Level level, Entity owner, ParameterMap.Mutable paramMap) {
+	private boolean testOwner(GameContext ctx, Entity owner, ParameterMap.Mutable paramMap) {
 		paramMap.set(GlobalParameterKeys.OWNER_ENTITY, owner);
-		GameContext context = GameContext.of(level, paramMap);
-		return condition.value().test(context);
+		GameContext context = GameContext.of(ctx.getLevel(), paramMap);
+		return condition.get(ctx).value().test(context);
 	}
 
 	@Override

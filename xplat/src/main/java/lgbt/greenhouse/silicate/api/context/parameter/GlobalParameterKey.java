@@ -22,11 +22,6 @@ public final class GlobalParameterKey<T>
 	}
 
 	@Override
-	public ParameterScope getScope() {
-		return ParameterScope.GLOBAL;
-	}
-
-	@Override
 	public ResourceLocation getId() {
 		return this.name;
 	}

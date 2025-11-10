@@ -2,13 +2,13 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
@@ -24,25 +24,27 @@ import java.util.List;
  */
 public record EntityPassengerPredicate(
 		ParameterKey<Entity> entity,
-		Holder<GamePredicate<?>> condition,
-		boolean matchAll
+		Deferred<Holder<GamePredicate<?>>> condition,
+		Deferred<Boolean> matchAll
 ) implements GamePredicate<EntityPassengerPredicate> {
 	@Override
-	public boolean test(GameContext oldContext) {
-		List<Entity> passengers = oldContext.getParam(this.entity).getPassengers();
-		ParameterMap oldParamMap = oldContext.getParams();
+	public boolean test(GameContext ctx) {
+		List<Entity> passengers = ctx.getParam(this.entity).getPassengers();
+		ParameterMap oldParamMap = ctx.getParams();
 		ParameterMap.Mutable paramMap = ParameterMap.Mutable.of(oldParamMap);
-		if (matchAll) {
-			return !passengers.isEmpty() && passengers.stream().allMatch(passenger -> testPassenger(oldContext.getLevel(), passenger, paramMap));
+		if (matchAll.get(ctx)) {
+			return !passengers.isEmpty() && passengers.stream()
+					.allMatch(passenger -> testPassenger(ctx, passenger, paramMap));
 		} else {
-			return passengers.stream().anyMatch(passenger -> testPassenger(oldContext.getLevel(), passenger, paramMap));
+			return passengers.stream()
+					.anyMatch(passenger -> testPassenger(ctx, passenger, paramMap));
 		}
 	}
 
-	private boolean testPassenger(Level level, Entity passenger, ParameterMap.Mutable paramMap) {
+	private boolean testPassenger(GameContext ctx, Entity passenger, ParameterMap.Mutable paramMap) {
 		paramMap.set(GlobalParameterKeys.PASSENGER_ENTITY, passenger);
-		GameContext context = GameContext.of(level, paramMap);
-		return condition.value().test(context);
+		GameContext context = GameContext.of(ctx.getLevel(), paramMap);
+		return condition.get(ctx).value().test(context);
 	}
 
 	@Override

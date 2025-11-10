@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
@@ -10,13 +11,13 @@ import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 
 public record BlockStatePredicate(
-	ParameterKey<BlockState> left,
-	BlockState right
+		ParameterKey<BlockState> left,
+		Deferred<BlockState> right
 ) implements GamePredicate<BlockStatePredicate> {
 	@Override
-	public boolean test(GameContext context) {
-		BlockState state = context.getParam(left);
-		return state.equals(right);
+	public boolean test(GameContext ctx) {
+		BlockState state = ctx.getParam(left);
+		return state.equals(right.get(ctx));
 	}
 
 	@Override

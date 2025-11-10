@@ -3,6 +3,7 @@ package lgbt.greenhouse.silicate.api.condition.std;
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
+import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
 import lgbt.greenhouse.silicate.api.condition.meta.DynamicValue;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
@@ -14,20 +15,21 @@ import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
  * While technically not a predicate, this sets a parameter to a specific value.
  */
 public record DefinePredicate(
-		ParameterKey<?> parameterKey,
+		Deferred<ParameterKey<?>> parameterKey,
 		DynamicValue dynamicValue
 ) implements GamePredicate<DefinePredicate> {
 	@Override
-	public boolean test(GameContext context) {
+	public boolean test(GameContext ctx) {
 		// check if parameter key already exists
+		var referenceKey = (ParameterKey.Reference<?>) this.parameterKey.get(ctx);
 		ParameterKey<?> parameterKey =
-				context.getParams().resolve((ParameterKey.Reference<?>) this.parameterKey);
+				ctx.getParams().resolve(referenceKey);
 		if (parameterKey == null) {
-			parameterKey = new LocalParameterKey<>(this.parameterKey.getId(), this.dynamicValue.type());
+			parameterKey = new LocalParameterKey<>(referenceKey.getId(), this.dynamicValue.type());
 		}
 
 		//noinspection unchecked // it's probably fine. Object? wildcard? same thing, totally
-		context.getParams().set((ParameterKey<? super Object>) parameterKey, this.dynamicValue.value());
+		ctx.getParams().set((ParameterKey<? super Object>) parameterKey, this.dynamicValue.value());
 		return true;
 	}
 

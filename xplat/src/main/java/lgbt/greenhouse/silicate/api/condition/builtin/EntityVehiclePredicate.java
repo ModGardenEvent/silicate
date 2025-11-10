@@ -2,12 +2,12 @@ package lgbt.greenhouse.silicate.api.condition.builtin;
 
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
@@ -20,24 +20,24 @@ import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
  */
 public record EntityVehiclePredicate(
 		ParameterKey<Entity> entity,
-		Holder<GamePredicate<?>> condition
+		Deferred<Holder<GamePredicate<?>>> condition
 ) implements GamePredicate<EntityVehiclePredicate> {
 	@Override
-	public boolean test(GameContext oldContext) {
-		Entity entity = oldContext.getParam(this.entity);
+	public boolean test(GameContext ctx) {
+		Entity entity = ctx.getParam(this.entity);
 		if (entity.getVehicle() == null) {
 			return false;
 		} else {
-			ParameterMap oldParamMap = oldContext.getParams();
+			ParameterMap oldParamMap = ctx.getParams();
 			ParameterMap.Mutable paramMap = ParameterMap.Mutable.of(oldParamMap);
-			return testVehicle(oldContext.getLevel(), entity.getVehicle(), paramMap);
+			return testVehicle(ctx, entity.getVehicle(), paramMap);
 		}
 	}
 
-	private boolean testVehicle(Level level, Entity vehicle, ParameterMap.Mutable paramMap) {
+	private boolean testVehicle(GameContext ctx, Entity vehicle, ParameterMap.Mutable paramMap) {
 		paramMap.set(GlobalParameterKeys.VEHICLE_ENTITY, vehicle);
-		GameContext context = GameContext.of(level, paramMap);
-		return condition.value().test(context);
+		GameContext context = GameContext.of(ctx.getLevel(), paramMap);
+		return condition.get(ctx).value().test(context);
 	}
 
 	@Override

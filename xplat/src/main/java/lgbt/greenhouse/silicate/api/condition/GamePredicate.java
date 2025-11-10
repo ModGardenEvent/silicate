@@ -47,7 +47,7 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 	);
 
 	@Override
-	boolean test(GameContext context);
+	boolean test(GameContext ctx);
 
 	/**
 	 * @return the codec responsible for condition configuration.

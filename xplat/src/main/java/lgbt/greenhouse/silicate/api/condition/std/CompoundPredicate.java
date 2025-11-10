@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition.std;
 
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.meta.BaseCodec;
+import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 
@@ -13,10 +14,10 @@ import java.util.List;
 public abstract sealed class CompoundPredicate<T extends CompoundPredicate<T>>
 		implements GamePredicate<T>
 		permits AllPredicate, AnyPredicate {
-	private final List<Holder<GamePredicate<?>>> conditions;
+	private final Deferred<List<Holder<GamePredicate<?>>>> conditions;
 
-	protected CompoundPredicate(List<Holder<GamePredicate<?>>> conditions) {
-		this.conditions = List.copyOf(conditions);
+	protected CompoundPredicate(Deferred<List<Holder<GamePredicate<?>>>> conditions) {
+		this.conditions = conditions;
 	}
 
 	protected sealed abstract static class Type<T extends CompoundPredicate<T>> extends GamePredicate.Type<T>
@@ -35,7 +36,7 @@ public abstract sealed class CompoundPredicate<T extends CompoundPredicate<T>>
 	/**
 	 * @return {@link GamePredicate}s that in the compound.
 	 */
-	public List<Holder<GamePredicate<?>>> getConditions() {
-		return conditions;
+	public Deferred<List<Holder<GamePredicate<?>>>> getConditions() {
+		return this.conditions;
 	}
 }

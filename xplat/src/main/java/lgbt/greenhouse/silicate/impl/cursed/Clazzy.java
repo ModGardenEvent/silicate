@@ -16,10 +16,8 @@ public final class Clazzy {
 	 * @param clazz the clazz you want to forcefully convert
 	 * @return the force-casted clazz
 	 * @param <T> the type represented by the target-type clazz
-	 * @deprecated This isn't deprecated, but if you use this, Java will probably explode. Beware.
 	 */
-	@SuppressWarnings({"unchecked", "DeprecatedIsStillUsed"}) // the caller accepts responsibility
-	@Deprecated
+	@SuppressWarnings({"unchecked"}) // the caller accepts responsibility
 	public static <T> Class<T> cast(Class<?> clazz) {
 		return (Class<T>) clazz;
 	}

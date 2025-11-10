@@ -16,11 +16,6 @@ public final class LocalParameterKey<T> implements ParameterKey<T> {
 	}
 
 	@Override
-	public ParameterScope getScope() {
-		return ParameterScope.LOCAL;
-	}
-
-	@Override
 	public ResourceLocation getId() {
 		return this.name;
 	}

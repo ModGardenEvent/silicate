@@ -3,6 +3,7 @@ package lgbt.greenhouse.silicate.api.context.parameter;
 import com.mojang.serialization.Codec;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.type.ValueType;
+import lgbt.greenhouse.silicate.impl.SilicateConstants;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,14 +13,20 @@ import java.util.Objects;
  * A key referring to a parameter in {@link ParameterMap}.
  * @param <T> type of {@link ValueType}
  */
-public interface ParameterKey<T> {
+public sealed interface ParameterKey<T>
+		permits GlobalParameterKey,
+		LocalParameterKey,
+		ParameterKey.Direct,
+		ParameterKey.Reference {
 	Codec<ParameterKey<?>> CODEC = ParameterTemplate.CODEC
 			.xmap(
 					template -> new Reference<>(template.id()),
 					key -> new ParameterTemplate(key.getId())
 			);
 
-	ParameterScope getScope();
+	static <V> ParameterKey.Direct<V> direct(V value) {
+		return new Direct<>(value);
+	}
 
 	ResourceLocation getId();
 
@@ -50,11 +57,6 @@ public interface ParameterKey<T> {
 		}
 
 		@Override
-		public ParameterScope getScope() {
-			return ParameterScope.REFERENCE;
-		}
-
-		@Override
 		public ResourceLocation getId() {
 			return this.id;
 		}
@@ -67,6 +69,28 @@ public interface ParameterKey<T> {
 		@Override
 		public ValueType<T> getType(GameContext gameContext) {
 			return Objects.requireNonNull(Objects.requireNonNull(gameContext.getParams().resolve(this)).getTypeStatic(), NULL_STATIC_PARAMETER_KEY_TYPES);
+		}
+	}
+
+	final class Direct<T> implements ParameterKey<T> {
+		private final T value;
+
+		private Direct(T value) {
+			this.value = value;
+		}
+
+		@Override
+		public ResourceLocation getId() {
+			return SilicateConstants.id("direct");
+		}
+
+		@Override
+		public @Nullable ValueType<T> getTypeStatic() {
+			return null;
+		}
+
+		public T getValue() {
+			return value;
 		}
 	}
 }

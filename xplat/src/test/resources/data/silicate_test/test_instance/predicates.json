@@ -193,7 +193,7 @@
 				"conditions": [
 					{
 						"predicate": "define",
-						"parameter": "silicate_test:block_state",
+						"parameter": "${silicate_test:block_state}",
 						"value_type": "block_state",
 						"value": {
 							"Name": "minecraft:note_block",
