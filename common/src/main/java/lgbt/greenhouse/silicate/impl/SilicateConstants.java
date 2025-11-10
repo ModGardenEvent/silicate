@@ -2,6 +2,8 @@ package lgbt.greenhouse.silicate.impl;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ApiStatus.Internal
 public final class SilicateConstants {
@@ -21,5 +23,13 @@ public final class SilicateConstants {
 		} else {
 			return ResourceLocation.parse(value);
 		}
+	}
+
+	public static Logger getLogger(String name) {
+		return LoggerFactory.getLogger(MOD_NAME + " / " + name);
+	}
+
+	public static Logger getLogger(Class<?> clazz) {
+		return getLogger(clazz.getName());
 	}
 }

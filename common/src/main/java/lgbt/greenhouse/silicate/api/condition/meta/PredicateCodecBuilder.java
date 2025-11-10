@@ -1,15 +1,17 @@
 package lgbt.greenhouse.silicate.api.condition.meta;
 
-import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.*;
+import com.mojang.serialization.codecs.KeyDispatchCodec;
 import dev.lukebemish.codecextras.record.KeyedRecordCodecBuilder;
 import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterTemplate;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import lgbt.greenhouse.silicate.api.type.ValueType;
+import lgbt.greenhouse.silicate.impl.SilicateConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -22,6 +24,8 @@ import java.util.function.Function;
  * @param <T> the type of the predicate to build a codec for
  */
 public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
+	private static final Logger LOGGER = SilicateConstants.getLogger(PredicateCodecBuilder.class);
+
 	private final Class<T> clazz;
 	private final Map<String, FieldEntry<?, ?, ?>> fields = new HashMap<>();
 	private final List<FieldEntry<?, ?, ?>> entries = new ArrayList<>();
@@ -135,9 +139,8 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	public PredicateCodecBuilder<T> withDynamicValue(
 			String valueTypeKey,
-			Function<T, ValueType<?>> valueTypeGetter,
 			String key,
-			Function<T, Object> getter
+			Function<T, DynamicValue> getter
 	) {
 		this.fields.put(key, new FieldEntry<>(
 				SilicateValueTypes.ANY,
@@ -146,7 +149,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 				false,
 				Optional.empty(),
 				false,
-				new DynamicEntry<>(valueTypeKey, valueTypeGetter)
+				new DynamicEntry(valueTypeKey)
 		));
 		this.addOrderedEntry(key);
 		return this;
@@ -303,18 +306,32 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 								));
 							} else if (field.dynamic != null) {
 								// this is fucking cursed
+								// edit: still cursed as fuck
 								keys.add(builder.add(
-										ValueType.CODEC.fieldOf(field.dynamic.key),
-										field.dynamic.getter
+										new KeyDispatchCodec<>(
+												field.dynamic.key,
+												ValueType.CODEC,
+												value -> DataResult.success(value.type()),
+												valueType1 -> {
+													@SuppressWarnings("unchecked")
+													var valueType = (ValueType<@NotNull Object>) valueType1;
+													assert valueType.codec() != null;
+													return DataResult.success(valueType.codec().fieldOf(key)
+															.xmap(
+																	v -> new DynamicValue(valueType, v),
+																	DynamicValue::type
+															));
+												}
+										),
+										field.getter.andThen(a -> (DynamicValue) a)
 								));
-								keys.add(builder.add(
-										Codec.unit((Object) Unit.INSTANCE).fieldOf(key),
-										field.getter
-								));
+							} else {
+								LOGGER.warn("{}: Value is somehow neither dynamic nor templated and yet has no codec. What did you do?", this.clazz.getName());
 							}
 
 							continue;
 						}
+
 						if (!field.optional) {
 							fieldCodec = field.codec.fieldOf(key);
 						} else {
@@ -382,11 +399,10 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 			boolean optional,
 			Optional<T> defaultValue,
 			boolean requiresTemplateValues,
-			@Nullable DynamicEntry<O> dynamic
+			@Nullable DynamicEntry dynamic
 	) {}
 
-	private record DynamicEntry<O>(
-			String key,
-			Function<O, ValueType<?>> getter
+	private record DynamicEntry(
+			String key
 	) {}
 }
