@@ -207,8 +207,8 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param defaultValue default value
 	 * @param <V> underlying type of value
 	 */
-	public <V> PredicateCodecBuilder<T> withOptionalValue(String key, ValueType<V> type, Function<T, V> getter, V defaultValue) {
-		return withOptionalValue(key, type, Objects.requireNonNull(type.codec(), "ValueType must have a codec"), getter, defaultValue);
+	public <V> PredicateCodecBuilder<T> withDefaultOptionalValue(String key, ValueType<V> type, Function<T, V> getter, V defaultValue) {
+		return withDefaultOptionalValue(key, type, Objects.requireNonNull(type.codec(), "ValueType must have a codec"), getter, defaultValue);
 	}
 
 	/**
@@ -242,7 +242,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 * @param defaultValue default value
 	 * @param <V> underlying type of value
 	 */
-	public <V> PredicateCodecBuilder<T> withOptionalValue(String key, ValueType<V> type, Codec<V> codec, Function<T, V> getter, V defaultValue) {
+	public <V> PredicateCodecBuilder<T> withDefaultOptionalValue(String key, ValueType<V> type, Codec<V> codec, Function<T, V> getter, V defaultValue) {
 		this.fields.put(key, new FieldEntry<>(
 				type,
 				codec,
@@ -340,7 +340,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 								//noinspection unchecked
 								fieldCodec = (MapCodec<Object>) (Object) field.codec.optionalFieldOf(key);
 							} else {
-								fieldCodec = field.codec.optionalFieldOf(key, field.defaultValue);
+								fieldCodec = field.codec.orElse(field.defaultValue).fieldOf(key);
 							}
 						}
 
@@ -354,7 +354,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 						try {
 							// This is checked at runtime
 							//noinspection unchecked
-							return (T) constructor.invokeExact(fields);
+							return (T) constructor.invokeWithArguments(fields);
 						} catch (Throwable e) {
 							throw new RuntimeException(e);
 						}

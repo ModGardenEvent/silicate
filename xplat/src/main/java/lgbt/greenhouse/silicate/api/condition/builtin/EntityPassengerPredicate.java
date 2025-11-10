@@ -65,7 +65,7 @@ public record EntityPassengerPredicate(
 							SilicateValueTypes.CONDITION,
 							EntityPassengerPredicate::condition
 					)
-					.withOptionalValue(
+					.withDefaultOptionalValue(
 							"matchAll",
 							SilicatePrimitives.BOOLEAN,
 							EntityPassengerPredicate::matchAll,
