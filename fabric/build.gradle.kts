@@ -49,8 +49,8 @@ dependencies {
 	modImplementation("net.fabricmc:fabric-loader:${Versions.FABRIC_LOADER}")
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.FABRIC_API}")
 	modLocalRuntime("com.terraformersmc:modmenu:${Versions.MOD_MENU}")
-	compileOnly("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
-	annotationProcessor("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
+	compileOnly("io.github.llamalad7:mixinextras-fabric:${Versions.MIXIN_EXTRAS}")
+	annotationProcessor("io.github.llamalad7:mixinextras-fabric:${Versions.MIXIN_EXTRAS}")
 	compileOnly("com.mojang:datafixerupper:${Versions.DFU}")
 
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
@@ -212,6 +212,10 @@ extraJavaModuleInfo {
 	}
 	module("lgbt.greenhouse.silicate:common", "lgbt.greenhouse.silicate")
 	automaticModule("com.mojang:authlib", "authlib")
+	module("io.github.llamalad7:mixinextras-fabric", "mixinextras.fabric") {
+		requires("org.spongepowered.mixin")
+		exportAllPackages()
+	}
 }
 
 fun String.toPath(): java.nio.file.Path {
