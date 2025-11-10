@@ -120,6 +120,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	public <V> PredicateCodecBuilder<T> withParameter(String key, ValueType<V> type, Function<T, ParameterKey<V>> getter) {
 		this.fields.put(key, new FieldEntry<>(
+				key,
 				type,
 				null,
 				getter,
@@ -143,6 +144,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 			Function<T, DynamicValue> getter
 	) {
 		this.fields.put(key, new FieldEntry<>(
+				key,
 				SilicateValueTypes.ANY,
 				null,
 				getter,
@@ -176,6 +178,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	public <V> PredicateCodecBuilder<T> withValue(String key, ValueType<V> type, Codec<V> codec,  Function<T, V> getter) {
 		this.fields.put(key, new FieldEntry<>(
+				key,
 				type,
 				codec,
 				getter,
@@ -221,6 +224,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	public <V> PredicateCodecBuilder<T> withOptionalValue(String key, ValueType<V> type, Codec<V> codec,  Function<T, V> getter) {
 		this.fields.put(key, new FieldEntry<>(
+				key,
 				type,
 				codec,
 				getter,
@@ -244,6 +248,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	public <V> PredicateCodecBuilder<T> withDefaultOptionalValue(String key, ValueType<V> type, Codec<V> codec, Function<T, V> getter, V defaultValue) {
 		this.fields.put(key, new FieldEntry<>(
+				key,
 				type,
 				codec,
 				getter,
@@ -289,11 +294,10 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 		return KeyedRecordCodecBuilder.mapCodec(
 				builder -> {
 					List<KeyedRecordCodecBuilder.Key<?>> keys = new ArrayList<>();
-					for (var entry : this.fields.entrySet()) {
-						String key = entry.getKey();
+					for (var entry : this.entries) {
 						// These types need to be erased anyway. They don't matter in an array.
 						//noinspection unchecked
-						FieldEntry<T, Object, Object> field = (FieldEntry<T, @NotNull Object, @NotNull Object>) entry.getValue();
+						FieldEntry<T, Object, Object> field = (FieldEntry<T, @NotNull Object, @NotNull Object>) entry;
 						MapCodec<Object> fieldCodec;
 						if (field.codec == null) {
 							if (field.requiresTemplateValues) {
@@ -301,7 +305,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 								// and that is incompatible with Object
 								//noinspection unchecked
 								keys.add(builder.add(
-										(MapCodec<Object>) (Object) ParameterKey.CODEC.fieldOf(key),
+										(MapCodec<Object>) (Object) ParameterKey.CODEC.fieldOf(field.key),
 										field.getter
 								));
 							} else if (field.dynamic != null) {
@@ -316,7 +320,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 													@SuppressWarnings("unchecked")
 													var valueType = (ValueType<@NotNull Object>) valueType1;
 													assert valueType.codec() != null;
-													return DataResult.success(valueType.codec().fieldOf(key)
+													return DataResult.success(valueType.codec().fieldOf(field.key)
 															.xmap(
 																	v -> new DynamicValue(valueType, v),
 																	DynamicValue::type
@@ -333,14 +337,14 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 						}
 
 						if (!field.optional) {
-							fieldCodec = field.codec.fieldOf(key);
+							fieldCodec = field.codec.fieldOf(field.key);
 						} else {
 							if (field.defaultValue.isEmpty()) {
 								// Similarly, we do not care about Optional.
 								//noinspection unchecked
-								fieldCodec = (MapCodec<Object>) (Object) field.codec.optionalFieldOf(key);
+								fieldCodec = (MapCodec<Object>) (Object) field.codec.optionalFieldOf(field.key);
 							} else {
-								fieldCodec = field.codec.orElse(field.defaultValue).fieldOf(key);
+								fieldCodec = field.codec.orElse(field.defaultValue).fieldOf(field.key);
 							}
 						}
 
@@ -393,6 +397,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	}
 
 	private record FieldEntry<O, T, V>(
+			String key,
 			ValueType<T> type,
 			@Nullable Codec<T> codec,
 			Function<O, V> getter,
