@@ -23,8 +23,8 @@ dependencies {
 	// Otherwise, use the jar according to your platform and include/jarJar it
 	modImplementation("lgbt.greenhouse.silicate:silicate-PLATFORM:VERSION")
 	include("lgbt.greenhouse.silicate:silicate-PLATFORM:VERSION")
-	// If using multiloader, put this in your "common" module
-	// compileOnly("lgbt.greenhouse.silicate:silicate-common:VERSION")
+	// If using multiloader, put this in your "common"/"xplat" module
+	// compileOnly("lgbt.greenhouse.silicate:silicate-xplat:VERSION")
 }
 ```
 

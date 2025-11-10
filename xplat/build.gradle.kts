@@ -2,7 +2,7 @@ import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
 
 plugins {
-	id("conventions.common")
+	id("conventions.xplat")
 	id("net.neoforged.moddev")
 	id("me.modmuss50.mod-publish-plugin")
 }
@@ -58,29 +58,29 @@ try {
 }
 
 configurations {
-	register("commonJava") {
+	register("xplatJava") {
 		isCanBeResolved = false
 		isCanBeConsumed = true
 	}
-	register("commonResources") {
+	register("xplatResources") {
 		isCanBeResolved = false
 		isCanBeConsumed = true
 	}
-	register("commonTestJava") {
+	register("xplatTestJava") {
 		isCanBeResolved = false
 		isCanBeConsumed = true
 	}
-	register("commonTestResources") {
+	register("xplatTestResources") {
 		isCanBeResolved = false
 		isCanBeConsumed = true
 	}
 }
 
 artifacts {
-	add("commonJava", sourceSets["main"].java.sourceDirectories.singleFile)
-	add("commonResources", sourceSets["main"].resources.sourceDirectories.singleFile)
-	add("commonTestJava", sourceSets["test"].java.sourceDirectories.singleFile)
-	add("commonTestResources", sourceSets["test"].resources.sourceDirectories.singleFile)
+	add("xplatJava", sourceSets["main"].java.sourceDirectories.singleFile)
+	add("xplatResources", sourceSets["main"].resources.sourceDirectories.singleFile)
+	add("xplatTestJava", sourceSets["test"].java.sourceDirectories.singleFile)
+	add("xplatTestResources", sourceSets["test"].resources.sourceDirectories.singleFile)
 }
 
 publishMods {

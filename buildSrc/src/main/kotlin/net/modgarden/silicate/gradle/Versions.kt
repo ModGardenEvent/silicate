@@ -19,7 +19,7 @@ object Versions {
 	const val NEOFORGE_MINECRAFT_RANGE = "[1.21.8]"
 
 	const val FABRIC_MIXIN = "0.15.5+mixin.0.8.7"
-	const val MIXIN_EXTRAS = "0.4.1"
+	const val MIXIN_EXTRAS = "0.5.0"
 	const val DFU = "8.0.16"
 	const val MODLAUNCHER = "11.0.5"
 

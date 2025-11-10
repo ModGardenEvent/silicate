@@ -12,6 +12,8 @@ import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 import java.util.zip.ZipFile
 
+evaluationDependsOn(":xplat")
+
 plugins {
 	id("conventions.loader")
 	id("fabric-loom")
@@ -31,15 +33,15 @@ repositories {
 
 sourceSets {
 	getByName("main") {
-		runtimeClasspath += project(":common").sourceSets["test"].output
+		runtimeClasspath += project(":xplat").sourceSets["test"].output
 	}
 	getByName("test") {
-		runtimeClasspath += project(":common").sourceSets["test"].output
+		runtimeClasspath += project(":xplat").sourceSets["test"].output
 	}
 }
 
 dependencies {
-	runtimeOnly(project(":common"))
+	runtimeOnly(project(":xplat"))
 	minecraft("com.mojang:minecraft:${Versions.MINECRAFT}")
 	mappings(loom.layered {
 		officialMojangMappings()
@@ -98,7 +100,7 @@ loom {
 			setSource(sourceSets["test"])
 			ideConfigGenerated(true)
 			vmArg("-Dfabric-api.datagen")
-			vmArg("-Dfabric-api.datagen.output-dir=${file("../common/src/generated/resources")}")
+			vmArg("-Dfabric-api.datagen.output-dir=${file("../xplat/src/generated/resources")}")
 			vmArg("-Dfabric-api.datagen.modid=${Properties.MOD_ID}")
 			runDir("build/datagen")
 		}
@@ -118,11 +120,11 @@ tasks {
 	}
 
 	withType<AbstractArchiveTask> {
-		from(files(project(":common").sourceSets["main"].output)) {
+		from(files(project(":xplat").sourceSets["main"].output)) {
 			duplicatesStrategy = DuplicatesStrategy.INCLUDE
 			rename {
 				if (it == "module-info.class") {
-					return@rename "common-module-info.class"
+					return@rename "xplat-module-info.class"
 				} else {
 					return@rename it
 				}
@@ -136,10 +138,10 @@ tasks {
 				val jar = this@withType.archiveFile.get().asFile
 				val zipFile = ZipFile(jar)
 				val fabricModuleInfo = zipFile.getEntry("module-info.class")
-				val commonModuleInfo = zipFile.getEntry("common-module-info.class") ?: return@doLast
-				zipFile.getInputStream(commonModuleInfo).use { common ->
+				val xplatModuleInfo = zipFile.getEntry("xplat-module-info.class") ?: return@doLast
+				zipFile.getInputStream(xplatModuleInfo).use { xplat ->
 					zipFile.getInputStream(fabricModuleInfo).use { fabric ->
-						val classReader = ClassReader(common.readBytes())
+						val classReader = ClassReader(xplat.readBytes())
 						val classNode = ClassNode(ASM9)
 						classReader.accept(classNode, 0)
 
@@ -160,11 +162,11 @@ tasks {
 						val classWriter = ClassWriter(0)
 						classNode.accept(classWriter)
 						jar.plopInZip("module-info-meow.class", classWriter.toByteArray())
-						println(common)
+						println(xplat)
 						println(fabric)
 					}
 				}
-				jar.pluckFromZip("common-module-info.class")
+				jar.pluckFromZip("xplat-module-info.class")
 				jar.pluckFromZip("module-info.class")
 				val newZipFile = ZipFile(jar)
 				newZipFile.getInputStream(newZipFile.getEntry("module-info-meow.class")).use {
@@ -210,7 +212,7 @@ extraJavaModuleInfo {
 			}
 		}
 	}
-	module("lgbt.greenhouse.silicate:common", "lgbt.greenhouse.silicate")
+	module("lgbt.greenhouse.silicate:xplat", "lgbt.greenhouse.silicate")
 	automaticModule("com.mojang:authlib", "authlib")
 }
 
@@ -326,6 +328,6 @@ publishMods {
 	forgejo {
 		type = STABLE
 		accessToken = providers.environmentVariable("FORGEJO_TOKEN")
-		parent(project(":common").tasks.named("publishForgejo"))
+		parent(project(":xplat").tasks.named("publishForgejo"))
 	}
 }
