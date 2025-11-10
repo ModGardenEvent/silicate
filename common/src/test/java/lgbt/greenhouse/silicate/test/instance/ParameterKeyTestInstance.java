@@ -14,64 +14,64 @@ import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 
 import java.util.List;
 
-public class ContextParamTestinstance extends GameTestInstance {
-	public static final MapCodec<ContextParamTestinstance> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+public class ParameterKeyTestInstance extends GameTestInstance {
+	public static final MapCodec<ParameterKeyTestInstance> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 			TestData.CODEC
-					.forGetter(ContextParamTestinstance::info)
-	).apply(inst, ContextParamTestinstance::new));
+					.forGetter(ParameterKeyTestInstance::info)
+	).apply(inst, ParameterKeyTestInstance::new));
 
-	protected ContextParamTestinstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+	protected ParameterKeyTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
 		super(info);
 	}
 
 	@Override
 	public void run(GameTestHelper helper) {
-		ParameterSet paramSet = ParameterSet.Builder.of()
+		ParameterSet parameterSet = ParameterSet.Builder.of()
 				.required(GlobalParameterKeys.ORIGIN)
 				.required(GlobalParameterKeys.BLOCK_STATE)
 				.optional(GlobalParameterKeys.BLOCK_ENTITY)
 				.optional(GlobalParameterKeys.THIS_ENTITY)
 				.build();
 		helper.assertFalse(
-				paramSet.isRequired(GlobalParameterKeys.THIS_ENTITY),
-				Component.literal("ContextParamSet.isRequired(ContextParamTypes.THIS_ENTITY) != false")
+				parameterSet.isRequired(GlobalParameterKeys.THIS_ENTITY),
+				Component.literal("ParameterSet.isRequired(GlobalParameterKeys.THIS_ENTITY) != false")
 		);
 		helper.assertTrue(
-				paramSet.getRequired()
+				parameterSet.getRequired()
 						.containsAll(List.of(
 								GlobalParameterKeys.ORIGIN,
 								GlobalParameterKeys.BLOCK_STATE
 						)),
-				Component.literal("ContextParamSet.getRequired() does not contain required")
+				Component.literal("ParameterSet.getRequired() does not contain required")
 		);
 		helper.assertTrue(
-				paramSet.getAll()
+				parameterSet.getAll()
 						.containsAll(List.of(
 								GlobalParameterKeys.ORIGIN,
 								GlobalParameterKeys.BLOCK_STATE,
 								GlobalParameterKeys.THIS_ENTITY
 						)),
-				Component.literal("ContextParamSet.getAll() does not contain all")
+				Component.literal("ParameterSet.getAll() does not contain all")
 		);
 		helper.assertTrue(
-				paramSet.hasParam(GlobalParameterKeys.ORIGIN),
-				Component.literal("ContextParamSet.hasParam(ContextParamTypes.ORIGIN) != true")
+				parameterSet.hasParam(GlobalParameterKeys.ORIGIN),
+				Component.literal("ParameterSet.hasParam(GlobalParameterKeys.ORIGIN) != true")
 		);
 		helper.assertTrue(
-				paramSet.hasParam(GlobalParameterKeys.BLOCK_STATE),
-				Component.literal("ContextParamSet.hasParam(ContextParamTypes.ORIGIN) != true")
+				parameterSet.hasParam(GlobalParameterKeys.BLOCK_STATE),
+				Component.literal("ParameterSet.hasParam(GlobalParameterKeys.ORIGIN) != true")
 		);
 		helper.assertTrue(
-				paramSet.hasParam(GlobalParameterKeys.THIS_ENTITY),
-				Component.literal("ContextParamSet.hasParam(ContextParamTypes.ORIGIN) != true")
+				parameterSet.hasParam(GlobalParameterKeys.THIS_ENTITY),
+				Component.literal("ParameterSet.hasParam(GlobalParameterKeys.ORIGIN) != true")
 		);
 		helper.assertTrue(
-				paramSet.hasParam(GlobalParameterKeys.BLOCK_ENTITY),
-				Component.literal("ContextParamSet.hasParam(ContextParamTypes.BLOCK_ENTITY) != true")
+				parameterSet.hasParam(GlobalParameterKeys.BLOCK_ENTITY),
+				Component.literal("ParameterSet.hasParam(GlobalParameterKeys.BLOCK_ENTITY) != true")
 		);
 		helper.assertFalse(
-				paramSet.hasParam(GlobalParameterKeys.UNIT),
-				Component.literal("ContextParamSet.hasParam(ContextParamTypes.UNIT) != false")
+				parameterSet.hasParam(GlobalParameterKeys.UNIT),
+				Component.literal("ParameterSet.hasParam(GlobalParameterKeys.UNIT) != false")
 		);
 		helper.succeed();
 	}
@@ -83,6 +83,6 @@ public class ContextParamTestinstance extends GameTestInstance {
 
 	@Override
 	protected MutableComponent typeDescription() {
-		return Component.literal("Silicate Context Param Test");
+		return Component.literal("Silicate Parameter Key Test");
 	}
 }

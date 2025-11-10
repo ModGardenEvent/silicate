@@ -36,18 +36,18 @@ import lgbt.greenhouse.silicate.test.util.ExpectedResultCondition;
 
 import java.util.List;
 
-public class ConditionsTestInstance extends GameTestInstance {
-	public static final MapCodec<ConditionsTestInstance> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+public class PredicatesTestInstance extends GameTestInstance {
+	public static final MapCodec<PredicatesTestInstance> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 			ExpectedResultCondition.CODEC.listOf()
-					.fieldOf("conditions")
-					.forGetter(ConditionsTestInstance::conditions),
+					.fieldOf("predicates")
+					.forGetter(PredicatesTestInstance::conditions),
 			TestData.CODEC
-					.forGetter(ConditionsTestInstance::info)
-	).apply(inst, ConditionsTestInstance::new));
+					.forGetter(PredicatesTestInstance::info)
+	).apply(inst, PredicatesTestInstance::new));
 
 	private final List<ExpectedResultCondition> conditions;
 
-	protected ConditionsTestInstance(List<ExpectedResultCondition> conditions,
+	protected PredicatesTestInstance(List<ExpectedResultCondition> conditions,
 									 TestData<Holder<TestEnvironmentDefinition>> info) {
 		super(info);
 		this.conditions = conditions;
@@ -81,7 +81,7 @@ public class ConditionsTestInstance extends GameTestInstance {
 
 			for (ExpectedResultCondition condition : conditions) {
 				if (!condition.condition().isBound()) {
-					helper.fail(Component.literal("Condition " + condition.condition() + " within Silicate Conditions Test is invalid."));
+					helper.fail(Component.literal("Condition " + condition.condition() + " within Silicate Predicates Test is invalid."));
 					return;
 				}
 				GamePredicate<?> gamePredicate = condition.condition().value();
@@ -109,7 +109,7 @@ public class ConditionsTestInstance extends GameTestInstance {
 
 	@Override
 	protected MutableComponent typeDescription() {
-		return Component.literal("Silicate Conditions Test");
+		return Component.literal("Silicate Predicates Test");
 	}
 
 	private static ParameterSet createParamSet() {
