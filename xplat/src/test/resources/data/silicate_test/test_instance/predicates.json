@@ -55,8 +55,8 @@
 			"name": "BlockEntityTypePredicate",
 			"condition": {
 				"predicate": "block_entity_type",
-				"left": "${block_entity}",
-				"right": "minecraft:furnace"
+				"block_entity": "${block_entity}",
+				"block_entity_type": "minecraft:furnace"
 			}
 		},
 		{
