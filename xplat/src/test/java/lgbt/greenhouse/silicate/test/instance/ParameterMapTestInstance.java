@@ -58,8 +58,8 @@ public class ParameterMapTestInstance extends GameTestInstance {
 			);
 			Parameter<Vec3> oldOrigin = parameterMap.set(GlobalParameterKeys.ORIGIN, newOrigin);
 			helper.assertTrue(
-					parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN).equals(oldOrigin),
-					Component.literal("ParameterMap.get(GlobalParameterKeys.ORIGIN) != oldOrigin")
+					!parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN).equals(oldOrigin),
+					Component.literal("ParameterMap.get(GlobalParameterKeys.ORIGIN) == oldOrigin")
 			);
 			helper.assertTrue(
 					parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
