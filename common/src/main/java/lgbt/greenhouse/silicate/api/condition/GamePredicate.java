@@ -11,6 +11,7 @@ import lgbt.greenhouse.silicate.api.SilicateRegistries;
 import lgbt.greenhouse.silicate.api.condition.builtin.EntityPassengerPredicate;
 import lgbt.greenhouse.silicate.api.condition.builtin.EntityVehiclePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.invoke.MethodHandle;
 import java.util.function.Predicate;
@@ -26,11 +27,23 @@ import java.util.function.Predicate;
  * @see EntityVehiclePredicate
  */
 public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<GameContext> {
+	/**
+	 * Do <b>not</b> use this outside Silicate. Your code <b>will</b> break, and you will <b>not</b> get support, <b>at all</b>!
+	 * <br>
+	 * This is strictly an internal {@link Codec}.
+	 * @see #CODEC
+	 */
+	@ApiStatus.Internal
 	Codec<GamePredicate<?>> DISPATCH_CODEC = SilicateBuiltInRegistries.PREDICATE.byNameCodec()
-			.dispatch("predicate", GamePredicate::getType, GamePredicate.Type::createCodec);
+			.dispatch("predicate", GamePredicate::getType, Type::createCodec);
+	/**
+	 * A {@link Codec} representing conditions (a {@link Holder} to a {@link GamePredicate} or JSON-defined {@link SilicateRegistries#CONDITION}).
+	 * <br>
+	 * Conditions are usages of {@link GamePredicate}s in the form of a dispatch.
+	 */
 	Codec<Holder<GamePredicate<?>>> CODEC = RegistryFileCodec.create(
 			SilicateRegistries.CONDITION,
-			DISPATCH_CODEC
+			PredicateCodecs.OR_BOOLEAN_DISPATCH_CODEC
 	);
 
 	@Override

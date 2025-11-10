@@ -23,4 +23,5 @@ module lgbt.greenhouse.silicate {
 
 	exports lgbt.greenhouse.silicate.impl to lgbt.greenhouse.silicate.fabric;
 	exports lgbt.greenhouse.silicate.impl.platform to lgbt.greenhouse.silicate.fabric;
+	exports lgbt.greenhouse.silicate.impl.cursed to lgbt.greenhouse.silicate.fabric;
 }
