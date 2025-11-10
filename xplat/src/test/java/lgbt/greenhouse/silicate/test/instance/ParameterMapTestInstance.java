@@ -50,20 +50,19 @@ public class ParameterMapTestInstance extends GameTestInstance {
 					parameterMap.has(GlobalParameterKeys.ORIGIN),
 					Component.literal("ParameterMap.has(GlobalParameterKeys.ORIGIN) != true")
 			);
-			ParameterMap.Mutable mutableParamMap = ParameterMap.Mutable.of(parameterMap);
 			Vec3 newOrigin = createOrigin().getBottomCenter();
 			helper.assertTrue(
-					mutableParamMap.getOrThrow(GlobalParameterKeys.ORIGIN)
+					parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
 							.equals(parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)),
 					Component.literal("ParameterMap.Mutable.get(GlobalParameterKeys.ORIGIN) != oldOrigin")
 			);
-			Parameter<Vec3> oldOrigin = mutableParamMap.set(GlobalParameterKeys.ORIGIN, newOrigin);
+			Parameter<Vec3> oldOrigin = parameterMap.set(GlobalParameterKeys.ORIGIN, newOrigin);
 			helper.assertTrue(
 					parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN).equals(oldOrigin),
 					Component.literal("ParameterMap.get(GlobalParameterKeys.ORIGIN) != oldOrigin")
 			);
 			helper.assertTrue(
-					mutableParamMap.getOrThrow(GlobalParameterKeys.ORIGIN)
+					parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
 							.value()
 							.equals(newOrigin),
 					Component.literal("ParameterMap.Mutable.get(GlobalParameterKeys.ORIGIN) != newOrigin")

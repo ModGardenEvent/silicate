@@ -29,16 +29,15 @@ public record EntityProjectileOwnerPredicate(
 		Entity entity = ctx.getParam(this.entity);
 
 		if (entity instanceof TraceableEntity traceable && traceable.getOwner() != null) {
-			ParameterMap oldParamMap = ctx.getParams();
-			ParameterMap.Mutable paramMap = ParameterMap.Mutable.of(oldParamMap);
-			return testOwner(ctx, traceable.getOwner(), paramMap);
+			ParameterMap parameterMap = ctx.getParams();
+			return testOwner(ctx, traceable.getOwner(), parameterMap);
 		}
 		return false;
 	}
 
-	private boolean testOwner(GameContext ctx, Entity owner, ParameterMap.Mutable paramMap) {
-		paramMap.set(GlobalParameterKeys.OWNER_ENTITY, owner);
-		GameContext context = GameContext.of(ctx.getLevel(), paramMap);
+	private boolean testOwner(GameContext ctx, Entity owner, ParameterMap parameterMap) {
+		parameterMap.set(GlobalParameterKeys.OWNER_ENTITY, owner);
+		GameContext context = GameContext.of(ctx.getLevel(), parameterMap);
 		return condition.get(ctx).value().test(context);
 	}
 

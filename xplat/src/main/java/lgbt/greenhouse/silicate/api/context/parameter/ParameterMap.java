@@ -2,7 +2,6 @@ package lgbt.greenhouse.silicate.api.context.parameter;
 
 import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Objects;
  * A map of {@link ParameterKey} to {@link Parameter} values.
  * That is, a class representing a map of all present parameters.
  */
-public sealed class ParameterMap {
+public class ParameterMap {
 	private final Map<ResourceLocation, ParameterKey<?>> id2Keys;
 	protected final Map<ParameterKey<?>, Parameter<?>> params;
 	private final ParameterSet paramSet;
@@ -60,18 +59,6 @@ public sealed class ParameterMap {
 	public <T> @Nullable Parameter<T> set(ParameterKey<T> key, T param) {
 		this.id2Keys.put(key.getId(), key);
 		return (Parameter<T>) params.put(key, new Parameter<>(param));
-	}
-
-	// todo: nuke this class. everything is mutable now
-	@ApiStatus.Internal
-	public static final class Mutable extends ParameterMap {
-		private Mutable(Map<ParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
-			super(new HashMap<>(params), paramSet);
-		}
-
-		public static Mutable of(ParameterMap paramMap) {
-			return new Mutable(new HashMap<>(paramMap.params), paramMap.paramSet);
-		}
 	}
 
 	public static final class Builder {

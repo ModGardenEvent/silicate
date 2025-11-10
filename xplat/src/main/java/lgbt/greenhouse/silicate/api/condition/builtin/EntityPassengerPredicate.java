@@ -30,20 +30,19 @@ public record EntityPassengerPredicate(
 	@Override
 	public boolean test(GameContext ctx) {
 		List<Entity> passengers = ctx.getParam(this.entity).getPassengers();
-		ParameterMap oldParamMap = ctx.getParams();
-		ParameterMap.Mutable paramMap = ParameterMap.Mutable.of(oldParamMap);
+		ParameterMap parameterMap = ctx.getParams();
 		if (matchAll.get(ctx)) {
 			return !passengers.isEmpty() && passengers.stream()
-					.allMatch(passenger -> testPassenger(ctx, passenger, paramMap));
+					.allMatch(passenger -> testPassenger(ctx, passenger, parameterMap));
 		} else {
 			return passengers.stream()
-					.anyMatch(passenger -> testPassenger(ctx, passenger, paramMap));
+					.anyMatch(passenger -> testPassenger(ctx, passenger, parameterMap));
 		}
 	}
 
-	private boolean testPassenger(GameContext ctx, Entity passenger, ParameterMap.Mutable paramMap) {
-		paramMap.set(GlobalParameterKeys.PASSENGER_ENTITY, passenger);
-		GameContext context = GameContext.of(ctx.getLevel(), paramMap);
+	private boolean testPassenger(GameContext ctx, Entity passenger, ParameterMap parameterMap) {
+		parameterMap.set(GlobalParameterKeys.PASSENGER_ENTITY, passenger);
+		GameContext context = GameContext.of(ctx.getLevel(), parameterMap);
 		return condition.get(ctx).value().test(context);
 	}
 
