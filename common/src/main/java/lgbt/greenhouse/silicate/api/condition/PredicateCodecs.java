@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.condition;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import lgbt.greenhouse.silicate.api.condition.std.AlwaysPredicate;
 import org.jetbrains.annotations.ApiStatus;
 
 /**

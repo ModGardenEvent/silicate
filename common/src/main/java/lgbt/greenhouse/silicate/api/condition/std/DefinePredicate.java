@@ -1,6 +1,8 @@
-package lgbt.greenhouse.silicate.api.condition;
+package lgbt.greenhouse.silicate.api.condition.std;
 
 import com.mojang.serialization.MapCodec;
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.LocalParameterKey;

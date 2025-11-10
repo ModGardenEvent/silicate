@@ -1,5 +1,6 @@
-package lgbt.greenhouse.silicate.api.condition;
+package lgbt.greenhouse.silicate.api.condition.std;
 
+import lgbt.greenhouse.silicate.api.condition.GamePredicate;
 import lgbt.greenhouse.silicate.api.condition.meta.BaseCodec;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;

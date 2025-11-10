@@ -16,6 +16,7 @@ module lgbt.greenhouse.silicate {
 	exports lgbt.greenhouse.silicate.api.condition.meta;
 	exports lgbt.greenhouse.silicate.api.condition.builtin;
 	exports lgbt.greenhouse.silicate.api.condition.builtin.math;
+	exports lgbt.greenhouse.silicate.api.condition.std;
 	exports lgbt.greenhouse.silicate.api.type;
 	exports lgbt.greenhouse.silicate.api.context;
 	exports lgbt.greenhouse.silicate.api.context.parameter;

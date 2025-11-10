@@ -96,21 +96,21 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 		 * <h2>Usage</h2>
 		 * Call {@link #createBaseCodec()}, chaining calls to {@link BaseCodec#apply(PredicateCodecBuilder)} and {@link PredicateCodecBuilder#build(MethodHandle)}.
 		 * <h2>Example</h2>
-		 * {@snippet lang=java :
+		 * {@snippet lang = java:
 		 *
-import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
-@Override
-public MapCodec<AllPredicate> createCodec() {
-	return this.createBaseCodec()
-		.apply(PredicateCodecBuilder.of(AlwaysPredicate.class))
-		.withValue(
-			"value",
-			SilicatePrimitives.BOOLEAN,
-			AlwaysPredicate::value
-		)
-		.build(PredicateCodecBuilder.findConstructor(AlwaysPredicate.class, boolean.class));
-}
+		 * import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
+		 * @Override
+		 * public MapCodec<AllPredicate> createCodec() {
+		 * return this.createBaseCodec()
+		 * .apply(PredicateCodecBuilder.of(lgbt.greenhouse.silicate.api.condition.std.AlwaysPredicate.class))
+		 * .withValue(
+		 * "value",
+		 * SilicatePrimitives.BOOLEAN,
+		 * AlwaysPredicate::value
+		 * )
+		 * .build(PredicateCodecBuilder.findConstructor(AlwaysPredicate.class, boolean.class));
 		 * }
+		 *}
 		 * <br>
 		 * If you only have a public constructor, you can just use {@link PredicateCodecBuilder#build()} without any parameters.
 		 * {@snippet lang=java :
