@@ -9,10 +9,11 @@ public record ParameterTemplate(ResourceLocation id) {
 	public static final Codec<ParameterTemplate> CODEC = Codec.STRING
 			.comapFlatMap(string -> {
 				if (string.startsWith("${") && string.endsWith("}")) {
-					return DataResult.success(SilicateConstants.parseId(string.splitWithDelimiters("(\\$\\{|\\})", 2)[1]));
+					String[] split = string.splitWithDelimiters("(\\$\\{|\\})", 3);
+					return DataResult.success(SilicateConstants.parseId(split[2]));
 				} else {
 					return DataResult.error(() -> "no template");
 				}
-			}, template -> "${" + template.toString() + "}")
+			}, template -> "${" + template + "}")
 			.xmap(ParameterTemplate::new, ParameterTemplate::id);
 }
