@@ -39,7 +39,7 @@ import java.util.List;
 public class PredicatesTestInstance extends GameTestInstance {
 	public static final MapCodec<PredicatesTestInstance> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 			ExpectedResultCondition.CODEC.listOf()
-					.fieldOf("predicates")
+					.fieldOf("conditions")
 					.forGetter(PredicatesTestInstance::conditions),
 			TestData.CODEC
 					.forGetter(PredicatesTestInstance::info)
