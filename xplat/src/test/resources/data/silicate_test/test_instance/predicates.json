@@ -185,6 +185,31 @@
 					}
 				]
 			}
+		},
+		{
+			"name": "DefinePredicate",
+			"condition": {
+				"predicate": "all",
+				"conditions": [
+					{
+						"predicate": "define",
+						"parameter": "silicate_test:block_state",
+						"value_type": "block_state",
+						"value": {
+							"Name": "minecraft:note_block",
+							"Properties": {
+								"note": "2",
+								"instrument": "banjo"
+							}
+						}
+					},
+					{
+						"predicate": "block_state",
+						"left": "${block_state}",
+						"right": "${silicate_test:block_state}"
+					}
+				]
+			}
 		}
 	]
 }
