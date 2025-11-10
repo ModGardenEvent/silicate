@@ -65,7 +65,7 @@ public record EntityTypePredicate(
 							EntityTypePredicate::entity
 					)
 					.withValue(
-							"entity_types",
+							"entity_type",
 							SilicateValueTypes.HOLDER_SET_ENTITY_TYPE,
 							EntityTypePredicate::entityTypes
 					)

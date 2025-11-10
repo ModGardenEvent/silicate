@@ -17,65 +17,65 @@ import lgbt.greenhouse.silicate.api.context.parameter.ParameterSet;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 
-public class ContextParamMapTestInstance extends GameTestInstance {
-	public static final MapCodec<ContextParamMapTestInstance> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+public class ParameterMapTestInstance extends GameTestInstance {
+	public static final MapCodec<ParameterMapTestInstance> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 			TestData.CODEC
-					.forGetter(ContextParamMapTestInstance::info)
-	).apply(inst, ContextParamMapTestInstance::new));
+					.forGetter(ParameterMapTestInstance::info)
+	).apply(inst, ParameterMapTestInstance::new));
 
-	protected ContextParamMapTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+	protected ParameterMapTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
 		super(info);
 	}
 
 	@Override
 	public void run(GameTestHelper helper) {
 		try {
-			ParameterSet paramSet = createParamSet();
-			ParameterMap paramMap = createParamMap(createOrigin());
+			ParameterSet parameterSet = createParameterSet();
+			ParameterMap parameterMap = createParameterMap(createOrigin());
 			helper.assertTrue(
-					paramMap.getParamSet().equals(paramSet),
-					Component.literal("ContextParamMap.getParamSet() does not equal paramSet")
+					parameterMap.getParamSet().equals(parameterSet),
+					Component.literal("ParameterMap.getParamSet() does not equal parameterSet")
 			);
 			helper.assertTrue(
-					paramMap.getOrThrow(GlobalParameterKeys.ORIGIN)
+					parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
 							.value()
 							.equals(createOrigin().getCenter()),
-					Component.literal("ContextParamTypes.ORIGIN is not equal to origin")
+					Component.literal("ParameterMap.ORIGIN is not equal to origin")
 			);
 			helper.assertFalse(
-					paramMap.has(GlobalParameterKeys.BLOCK_ENTITY),
-					Component.literal("ContextParamMap.has(ContextParamTypes.BLOCK_ENTITY) != false")
+					parameterMap.has(GlobalParameterKeys.BLOCK_ENTITY),
+					Component.literal("ParameterMap.has(GlobalParameterKeys.BLOCK_ENTITY) != false")
 			);
 			helper.assertTrue(
-					paramMap.has(GlobalParameterKeys.ORIGIN),
-					Component.literal("ContextParamMap.has(ContextParamTypes.ORIGIN) != true")
+					parameterMap.has(GlobalParameterKeys.ORIGIN),
+					Component.literal("ParameterMap.has(GlobalParameterKeys.ORIGIN) != true")
 			);
-			ParameterMap.Mutable mutableParamMap = ParameterMap.Mutable.of(paramMap);
+			ParameterMap.Mutable mutableParamMap = ParameterMap.Mutable.of(parameterMap);
 			Vec3 newOrigin = createOrigin().getBottomCenter();
 			helper.assertTrue(
 					mutableParamMap.getOrThrow(GlobalParameterKeys.ORIGIN)
-							.equals(paramMap.getOrThrow(GlobalParameterKeys.ORIGIN)),
-					Component.literal("ContextParamMap.Mutable.get(ContextParamTypes.ORIGIN) != oldOrigin")
+							.equals(parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)),
+					Component.literal("ParameterMap.Mutable.get(GlobalParameterKeys.ORIGIN) != oldOrigin")
 			);
 			Parameter<Vec3> oldOrigin = mutableParamMap.set(GlobalParameterKeys.ORIGIN, newOrigin);
 			helper.assertTrue(
-					paramMap.getOrThrow(GlobalParameterKeys.ORIGIN).equals(oldOrigin),
-					Component.literal("ContextParamMap.get(ContextParamTypes.ORIGIN) != oldOrigin")
+					parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN).equals(oldOrigin),
+					Component.literal("ParameterMap.get(GlobalParameterKeys.ORIGIN) != oldOrigin")
 			);
 			helper.assertTrue(
 					mutableParamMap.getOrThrow(GlobalParameterKeys.ORIGIN)
 							.value()
 							.equals(newOrigin),
-					Component.literal("ContextParamMap.Mutable.get(ContextParamTypes.ORIGIN) != newOrigin")
+					Component.literal("ParameterMap.Mutable.get(GlobalParameterKeys.ORIGIN) != newOrigin")
 			);
 			try {
-				createInvalidParamMap();
-				helper.fail(Component.literal("Invalid parameter type allowed in ContextParamMap"));
+				createInvalidParameterMap();
+				helper.fail(Component.literal("Invalid parameter key allowed in ParameterMap"));
 			} catch (InvalidParameterException ignored) {
 			}
 			try {
-				createMissingParamMap();
-				helper.fail(Component.literal("Missing parameter allowed in ContextParamMap"));
+				createMissingParameterMap();
+				helper.fail(Component.literal("Missing parameter required in ParameterMap"));
 			} catch (InvalidParameterException ignored) {
 			}
 			helper.succeed();
@@ -84,20 +84,20 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 		}
 	}
 
-	private static ParameterSet createParamSet() {
+	private static ParameterSet createParameterSet() {
 		return ParameterSet.Builder.of()
 				.required(GlobalParameterKeys.ORIGIN)
 				.build();
 	}
 
-	private static ParameterMap createParamMap(BlockPos origin) throws InvalidParameterException {
-		ParameterSet paramSet = createParamSet();
+	private static ParameterMap createParameterMap(BlockPos origin) throws InvalidParameterException {
+		ParameterSet paramSet = createParameterSet();
 		ParameterMap.Builder builder = ParameterMap.Builder.of(paramSet)
 				.withParameter(GlobalParameterKeys.ORIGIN, origin.getCenter());
 		return builder.build();
 	}
 
-	private static void createInvalidParamMap() throws InvalidParameterException {
+	private static void createInvalidParameterMap() throws InvalidParameterException {
 		ParameterSet paramSet = ParameterSet.Builder.of()
 				.required(GlobalParameterKeys.BLOCK_STATE)
 				.required(GlobalParameterKeys.ORIGIN)
@@ -109,7 +109,7 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 				.build();
 	}
 
-	private static void createMissingParamMap() throws InvalidParameterException {
+	private static void createMissingParameterMap() throws InvalidParameterException {
 		ParameterSet paramSet = ParameterSet.Builder.of()
 				.required(GlobalParameterKeys.BLOCK_STATE)
 				.required(GlobalParameterKeys.ORIGIN)
@@ -125,7 +125,7 @@ public class ContextParamMapTestInstance extends GameTestInstance {
 
 	@Override
 	protected MutableComponent typeDescription() {
-		return Component.literal("Silicate Context Param Map Test");
+		return Component.literal("Silicate Parameter Map Test");
 	}
 
 	private static BlockPos createOrigin() {

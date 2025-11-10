@@ -1,0 +1,190 @@
+{
+	"type": "silicate_test:predicates",
+	"environment": "silicate_test:default",
+	"structure": "silicate_test:test_template",
+	"max_ticks": 400,
+	"conditions": [
+		{
+			"name": "BlockStatePredicate",
+			"condition": {
+				"predicate": "block_state",
+				"left": "${block_state}",
+				"right": {
+					"Name": "minecraft:note_block",
+					"Properties": {
+						"note": "2",
+						"instrument": "banjo"
+					}
+				}
+			}
+		},
+		{
+			"name": "EntityTypePredicates EntityType",
+			"condition": {
+				"predicate": "entity_type",
+				"entity": "${this_entity}",
+				"entity_type": "minecraft:skeleton_horse"
+			}
+		},
+		{
+			"name": "EntityTypePredicate TagKey",
+			"condition": {
+				"predicate": "entity_type",
+				"entity": "${this_entity}",
+				"entity_type": "#minecraft:skeletons"
+			}
+		},
+		{
+			"name": "Vec3Condition",
+			"condition": {
+				"predicate": "vec3",
+				"left": "${origin}",
+				"comparison": [
+					"=",
+					">",
+					"<="
+				],
+				"right": [
+					1.5,
+					1.0,
+					1.5
+				]
+			}
+		},
+		{
+			"name": "BlockEntityTypePredicate",
+			"condition": {
+				"predicate": "block_entity_type",
+				"left": "${block_entity}",
+				"right": "minecraft:furnace"
+			}
+		},
+		{
+			"name": "PlayerGameTypePredicate",
+			"condition": {
+				"predicate": "player_game_type",
+				"player": "${attacking_entity}",
+				"game_type": [
+					"survival",
+					"adventure"
+				]
+			}
+		},
+		{
+			"name": "EntityTameOwnerPredicate",
+			"condition": {
+				"predicate": "entity_tame_owner",
+				"entity": "${this_entity}",
+				"condition": {
+					"predicate": "silicate:entity_type",
+					"entity": "${owner_entity}",
+					"entity_type": "minecraft:player"
+				}
+			}
+		},
+		{
+			"name": "EntityProjectileOwnerPredicate",
+			"condition": {
+				"predicate": "entity_projectile_owner",
+				"entity": "${silicate_test:projectile}",
+				"condition": {
+					"predicate": "entity_type",
+					"entity": "${owner_entity}",
+					"entity_type": "minecraft:skeleton"
+				}
+			}
+		},
+		{
+			"name": "EntityPassengerPredicate",
+			"condition": {
+				"predicate": "entity_passenger",
+				"entity": "${this_entity}",
+				"condition": {
+					"predicate": "entity_type",
+					"entity": "${passenger_entity}",
+					"entity_type": "minecraft:skeleton"
+				}
+			}
+		},
+		{
+			"name": "EntityVehiclePredicate",
+			"condition": {
+				"predicate": "entity_vehicle",
+				"entity": "${victim_entity}",
+				"condition": {
+					"predicate": "entity_type",
+					"entity": "${vehicle_entity}",
+					"entity_type": "minecraft:skeleton_horse"
+				}
+			}
+		},
+		{
+			"name": "NotPredicate",
+			"condition": {
+				"predicate": "not",
+				"condition": {
+					"predicate": "entity_type",
+					"entity": "${victim_entity}",
+					"entity_type": "minecraft:skeleton_horse"
+				}
+			}
+		},
+		{
+			"name": "AlwaysCondition(true)",
+			"condition": {
+				"predicate": "always",
+				"value": true
+			}
+		},
+		{
+			"name": "AlwaysCondition(false)",
+			"condition": {
+				"predicate": "always",
+				"value": false
+			},
+			"should_succeed": false
+		},
+		{
+			"name": "true",
+			"condition": true
+		},
+		{
+			"name": "false",
+			"condition": false,
+			"should_succeed": false
+		},
+		{
+			"name": "AllPredicate",
+			"condition": {
+				"predicate": "all",
+				"conditions": [
+					true,
+					{
+						"predicate": "entity_type",
+						"entity": "${this_entity}",
+						"entity_type": "minecraft:skeleton_horse"
+					},
+					{
+						"predicate": "entity_type",
+						"entity": "${this_entity}",
+						"entity_type": "#minecraft:skeletons"
+					}
+				]
+			}
+		},
+		{
+			"name": "AnyPredicate",
+			"condition": {
+				"predicate": "any",
+				"conditions": [
+					false,
+					{
+						"predicate": "entity_type",
+						"entity": "${this_entity}",
+						"entity_type": "minecraft:skeleton_horse"
+					}
+				]
+			}
+		}
+	]
+}

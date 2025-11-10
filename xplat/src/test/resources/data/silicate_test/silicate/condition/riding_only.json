@@ -1,0 +1,15 @@
+{
+	"predicate": "any",
+	"conditions": [
+		{
+			"predicate": "entity_passenger",
+			"entity": "${this_entity}",
+			"condition": true
+		},
+		{
+			"predicate": "entity_vehicle",
+			"entity": "${this_entity}",
+			"condition": true
+		}
+	]
+}
