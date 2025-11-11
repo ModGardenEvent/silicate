@@ -28,8 +28,15 @@ public record ValueType<T>(Class<T> clazz, @Nullable Codec<T> codec) implements
 	/**
 	 * @see Class#isAssignableFrom(Class)
 	 */
+	public boolean isAssignableFrom(Class<?> clazz) {
+		return this.clazz.isAssignableFrom(clazz);
+	}
+
+	/**
+	 * @see Class#isAssignableFrom(Class)
+	 */
 	public boolean isAssignableFrom(ValueType<?> type) {
-		return this.clazz.isAssignableFrom(type.clazz);
+		return this.isAssignableFrom(type.clazz);
 	}
 
 	@Override

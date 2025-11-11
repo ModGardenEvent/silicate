@@ -45,6 +45,11 @@ public final class SilicateValueTypes {
 			"any",
 			DynamicValue.class
 	);
+	public static final ValueType<ValueType<?>> VALUE_TYPE = register(
+			"value_type",
+			Clazzy.cast(ValueType.class),
+			ValueType.CODEC
+	);
 	public static final ValueType<BlockEntity> BLOCK_ENTITY = register(
 			"block_entity",
 			BlockEntity.class

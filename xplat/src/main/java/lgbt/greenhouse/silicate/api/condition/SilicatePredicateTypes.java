@@ -70,6 +70,10 @@ public final class SilicatePredicateTypes {
 			"player_game_type",
 			PlayerGameTypePredicate.Type::new
 	);
+	public static final GamePredicate.Type<IsTypePredicate> IS_TYPE = register(
+			"is_type",
+			IsTypePredicate.Type::new
+	);
 
 	private SilicatePredicateTypes() {}
 
