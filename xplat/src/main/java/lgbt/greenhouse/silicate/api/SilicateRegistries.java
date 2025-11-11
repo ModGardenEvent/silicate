@@ -4,7 +4,7 @@ import lgbt.greenhouse.silicate.api.type.ValueType;
 import lgbt.greenhouse.silicate.impl.SilicateConstants;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKey;
 
 /**

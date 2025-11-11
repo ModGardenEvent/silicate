@@ -1,10 +1,10 @@
-package lgbt.greenhouse.silicate.api.condition.std;
+package lgbt.greenhouse.silicate.api.predicate.std;
 
 import com.mojang.serialization.MapCodec;
-import lgbt.greenhouse.silicate.api.condition.GamePredicate;
-import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
-import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
+import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
+import lgbt.greenhouse.silicate.api.predicate.SilicatePredicateTypes;
+import lgbt.greenhouse.silicate.api.predicate.meta.Deferred;
+import lgbt.greenhouse.silicate.api.predicate.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import net.minecraft.core.Holder;
 

@@ -1,9 +1,9 @@
-package lgbt.greenhouse.silicate.api.condition;
+package lgbt.greenhouse.silicate.api.predicate;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
-import lgbt.greenhouse.silicate.api.condition.std.AlwaysPredicate;
+import lgbt.greenhouse.silicate.api.predicate.meta.Deferred;
+import lgbt.greenhouse.silicate.api.predicate.std.AlwaysPredicate;
 import org.jetbrains.annotations.ApiStatus;
 
 /**

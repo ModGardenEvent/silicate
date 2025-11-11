@@ -1,7 +1,7 @@
 package lgbt.greenhouse.silicate.api;
 
 import com.mojang.serialization.Lifecycle;
-import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.client.Minecraft;
@@ -13,7 +13,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import lgbt.greenhouse.silicate.impl.Silicate;
-import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
+import lgbt.greenhouse.silicate.api.predicate.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKey;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import org.jetbrains.annotations.ApiStatus;

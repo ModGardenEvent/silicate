@@ -1,16 +1,16 @@
-package lgbt.greenhouse.silicate.api.condition.builtin;
+package lgbt.greenhouse.silicate.api.predicate.builtin;
 
 import com.mojang.serialization.MapCodec;
-import lgbt.greenhouse.silicate.api.condition.GamePredicate;
-import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
-import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
+import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
+import lgbt.greenhouse.silicate.api.predicate.meta.Deferred;
+import lgbt.greenhouse.silicate.api.predicate.meta.PredicateCodecBuilder;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
-import lgbt.greenhouse.silicate.api.condition.SilicatePredicateTypes;
+import lgbt.greenhouse.silicate.api.predicate.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.impl.duck.Duck_AbstractClientPlayer;
 

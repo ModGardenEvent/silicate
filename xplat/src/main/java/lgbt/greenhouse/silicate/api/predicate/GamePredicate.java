@@ -1,15 +1,15 @@
-package lgbt.greenhouse.silicate.api.condition;
+package lgbt.greenhouse.silicate.api.predicate;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import lgbt.greenhouse.silicate.api.condition.meta.BaseCodec;
-import lgbt.greenhouse.silicate.api.condition.meta.PredicateCodecBuilder;
+import lgbt.greenhouse.silicate.api.predicate.meta.BaseCodec;
+import lgbt.greenhouse.silicate.api.predicate.meta.PredicateCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.RegistryFileCodec;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.SilicateRegistries;
-import lgbt.greenhouse.silicate.api.condition.builtin.EntityPassengerPredicate;
-import lgbt.greenhouse.silicate.api.condition.builtin.EntityVehiclePredicate;
+import lgbt.greenhouse.silicate.api.predicate.builtin.EntityPassengerPredicate;
+import lgbt.greenhouse.silicate.api.predicate.builtin.EntityVehiclePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -98,11 +98,11 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 		 * <h2>Example</h2>
 		 * {@snippet lang = java:
 		 *
-		 * import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
+		 * import lgbt.greenhouse.silicate.api.predicate.meta.PredicateCodecBuilder;import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
 		 * @Override
 		 * public MapCodec<AllPredicate> createCodec() {
 		 * return this.createBaseCodec()
-		 * .apply(PredicateCodecBuilder.of(lgbt.greenhouse.silicate.api.condition.std.AlwaysPredicate.class))
+		 * .apply(PredicateCodecBuilder.of(lgbt.greenhouse.silicate.api.predicate.std.AlwaysPredicate.class))
 		 * .withValue(
 		 * "value",
 		 * SilicatePrimitives.BOOLEAN,
@@ -113,21 +113,21 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 		 *}
 		 * <br>
 		 * If you only have a public constructor, you can just use {@link PredicateCodecBuilder#build()} without any parameters.
-		 * {@snippet lang=java :
-import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
-@Override
-public MapCodec<NotPredicate> createCodec() {
-	return createBaseCodec()
-		.apply(PredicateCodecBuilder.of(NotPredicate.class))
-		.withValue(
-			"condition",
-			SilicateValueTypes.CONDITION,
-			GamePredicate.CODEC,
-			NotPredicate::condition
-		)
-		.build();
-}
+		 * {@snippet lang = java:
+		 * import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
+		 * @Override
+		 * public MapCodec<NotPredicate> createCodec() {
+		 * return createBaseCodec()
+		 * .apply(lgbt.greenhouse.silicate.api.predicate.meta.PredicateCodecBuilder.of(NotPredicate.class))
+		 * .withValue(
+		 * "condition",
+		 * SilicateValueTypes.CONDITION,
+		 * GamePredicate.CODEC,
+		 * NotPredicate::condition
+		 * )
+		 * .build();
 		 * }
+		 *}
 		 */
 		protected abstract MapCodec<T> createCodec();
 

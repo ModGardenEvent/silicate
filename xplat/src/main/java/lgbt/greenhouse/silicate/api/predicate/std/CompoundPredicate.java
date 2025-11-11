@@ -1,8 +1,8 @@
-package lgbt.greenhouse.silicate.api.condition.std;
+package lgbt.greenhouse.silicate.api.predicate.std;
 
-import lgbt.greenhouse.silicate.api.condition.GamePredicate;
-import lgbt.greenhouse.silicate.api.condition.meta.BaseCodec;
-import lgbt.greenhouse.silicate.api.condition.meta.Deferred;
+import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
+import lgbt.greenhouse.silicate.api.predicate.meta.BaseCodec;
+import lgbt.greenhouse.silicate.api.predicate.meta.Deferred;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 

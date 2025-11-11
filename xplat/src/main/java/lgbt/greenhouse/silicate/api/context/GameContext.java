@@ -2,7 +2,7 @@ package lgbt.greenhouse.silicate.api.context;
 
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import net.minecraft.world.level.Level;
-import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 
 /**

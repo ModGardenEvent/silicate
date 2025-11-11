@@ -1,10 +1,10 @@
-package lgbt.greenhouse.silicate.api.condition.meta;
+package lgbt.greenhouse.silicate.api.predicate.meta;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.KeyDispatchCodec;
 import dev.lukebemish.codecextras.record.KeyedRecordCodecBuilder;
-import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterTemplate;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;

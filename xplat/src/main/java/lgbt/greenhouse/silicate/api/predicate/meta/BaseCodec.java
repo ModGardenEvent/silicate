@@ -1,6 +1,6 @@
-package lgbt.greenhouse.silicate.api.condition.meta;
+package lgbt.greenhouse.silicate.api.predicate.meta;
 
-import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
 
 import java.util.function.Function;
 

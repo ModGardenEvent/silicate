@@ -1,4 +1,4 @@
-package lgbt.greenhouse.silicate.api.condition.meta;
+package lgbt.greenhouse.silicate.api.predicate.meta;
 
 import com.mojang.serialization.Codec;
 import lgbt.greenhouse.silicate.api.context.GameContext;

@@ -1,4 +1,4 @@
-package lgbt.greenhouse.silicate.api.condition.meta;
+package lgbt.greenhouse.silicate.api.predicate.meta;
 
 import lgbt.greenhouse.silicate.api.type.ValueType;
 

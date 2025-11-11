@@ -3,7 +3,7 @@ package lgbt.greenhouse.silicate.test.util;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
 
 public record ExpectedResultCondition(Holder<GamePredicate<?>> condition, String name, boolean shouldSucceed) {
 	public static final Codec<ExpectedResultCondition> CODEC = RecordCodecBuilder.create(inst -> inst.group(

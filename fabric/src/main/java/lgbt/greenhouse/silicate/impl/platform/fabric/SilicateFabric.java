@@ -1,6 +1,6 @@
 package lgbt.greenhouse.silicate.impl.platform.fabric;
 
-import lgbt.greenhouse.silicate.api.condition.GamePredicate;
+import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
 import lgbt.greenhouse.silicate.impl.Silicate;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
