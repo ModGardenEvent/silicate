@@ -1,3 +1,4 @@
+import me.modmuss50.mpp.ReleaseType
 import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
 
@@ -87,7 +88,7 @@ publishMods {
 	changelog = rootProject.file("CHANGELOG.md").readText()
 	displayName = "v${Versions.MOD} (Minecraft ${Versions.MINECRAFT})"
 	version = "${Versions.MOD}+${Versions.MINECRAFT}"
-	type = STABLE
+	type = ReleaseType.of(Versions.MOD_CHANNEL)
 
 	forgejo {
 		accessToken = providers.environmentVariable("FORGEJO_TOKEN")
@@ -95,6 +96,7 @@ publishMods {
 		repository = Properties.FORGEJO_REPO
 		tagName = "v${Versions.MOD}+${Versions.MINECRAFT}"
 		commitish = Properties.FORGEJO_COMITISH
+		type = ReleaseType.of(Versions.MOD_CHANNEL)
 
 		allowEmptyFiles = true
 	}

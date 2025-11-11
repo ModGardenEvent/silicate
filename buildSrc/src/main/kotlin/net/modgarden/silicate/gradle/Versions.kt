@@ -2,6 +2,7 @@ package net.modgarden.silicate.gradle
 
 object Versions {
 	const val MOD = "1.0.0-beta.1"
+	const val MOD_CHANNEL = "BETA"
 
 	const val MINECRAFT = "1.21.8"
 	const val PARCHMENT_MINECRAFT = "1.21.8"

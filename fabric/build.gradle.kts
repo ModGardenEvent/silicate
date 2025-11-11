@@ -1,3 +1,4 @@
+import me.modmuss50.mpp.ReleaseType
 import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
 import org.gradle.jvm.tasks.Jar
@@ -314,11 +315,12 @@ publishMods {
 	changelog = rootProject.file("CHANGELOG.md").readText()
 	displayName = "v${Versions.MOD} (Fabric ${Versions.MINECRAFT})"
 	version = "${Versions.MOD}+${Versions.MINECRAFT}-fabric"
-	type = BETA
+	type = ReleaseType.of(Versions.MOD_CHANNEL)
 
 	modrinth {
 		projectId = Properties.MODRINTH_PROJECT_ID
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+		type = ReleaseType.of(Versions.MOD_CHANNEL)
 
 		requires {
 			slug = "fabric-api"
@@ -330,7 +332,7 @@ publishMods {
 	}
 
 	forgejo {
-		type = STABLE
+		type = ReleaseType.of(Versions.MOD_CHANNEL)
 		accessToken = providers.environmentVariable("FORGEJO_TOKEN")
 		parent(project(":xplat").tasks.named("publishForgejo"))
 	}
