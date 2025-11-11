@@ -299,7 +299,6 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	@SuppressWarnings("UnstableApiUsage") // it's okay
 	public MapCodec<T> build(MethodHandle constructor) {
-		//this.validateSignature(constructor); // fixme: broken, see method
 		return KeyedRecordCodecBuilder.mapCodec(
 				builder -> {
 					List<KeyedRecordCodecBuilder.Key<?>> keys = new ArrayList<>();
@@ -399,35 +398,6 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 					};
 				}
 		);
-	}
-
-	// fixme: this is broken because of parameters that don't have ValueTypes
-	private void validateSignature(MethodHandle constructor) {
-		if (constructor.type().parameterCount() != this.fields.size()) {
-			throw new IllegalArgumentException(clazz.getTypeName() + ": Predicate constructor's parameter count does not match its field count");
-		}
-
-		if (!constructor.type().returnType().isAssignableFrom(GamePredicate.class)) {
-			throw new IllegalArgumentException(clazz.getTypeName() + ": Predicate constructor's return type does not extend GamePredicate. Did you pass a constructor from the wrong type?");
-		}
-
-		FieldEntry<?, ?, ?>[] values = this.fields.values().toArray(new FieldEntry<?, ?, ?>[0]);
-		Class<?>[] fieldTypes = Arrays.stream(values)
-				.map(fieldEntry -> fieldEntry.type.clazz())
-				.toArray(i -> new Class<?>[i]);
-		Class<?>[] parameterTypes = constructor.type().parameterArray();
-		for (int i = 0; i < fieldTypes.length; i++) {
-			if (values[i].optional) {
-				if (!parameterTypes[i].equals(fieldTypes[i])) {
-					throw new IllegalArgumentException(clazz.getTypeName() + ": Constructor's types do not match the fields' types. Did you define them in the correct order? Target type is optional (" + parameterTypes[i].getTypeName() + ")");
-				}
-
-				continue;
-			}
-			if (!fieldTypes[i].equals(parameterTypes[i])) {
-				throw new IllegalArgumentException(clazz.getTypeName() + ": Constructor's types do not match the fields' types. Did you define them in the correct order? (" + fieldTypes[i].getTypeName() + " vs " + parameterTypes[i].getTypeName() + ")");
-			}
-		}
 	}
 
 	private record FieldEntry<O, T, V>(
