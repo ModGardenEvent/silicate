@@ -1,4 +1,4 @@
-package lgbt.greenhouse.silicate.api.predicate.builtin;
+package lgbt.greenhouse.silicate.api.predicate.std;
 
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
