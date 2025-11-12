@@ -76,7 +76,7 @@
 				"predicate": "entity_tame_owner",
 				"entity": "${this_entity}",
 				"condition": {
-					"predicate": "silicate:entity_type",
+					"predicate": "entity_type",
 					"entity": "${owner_entity}",
 					"entity_type": "minecraft:player"
 				}
@@ -187,14 +187,11 @@
 			}
 		},
 		{
-			"name": "DefinePredicate",
+			"name": "Definitions",
 			"condition": {
-				"predicate": "all",
-				"conditions": [
-					{
-						"predicate": "define",
-						"parameter": "silicate_test:block_state",
-						"value_type": "block_state",
+				"definitions": {
+					"silicate_test:block_state": {
+						"type": "block_state",
 						"value": {
 							"Name": "minecraft:note_block",
 							"Properties": {
@@ -202,20 +199,72 @@
 								"instrument": "banjo"
 							}
 						}
+					}
+				},
+				"predicate": "block_state",
+				"left": "${block_state}",
+				"right": "${silicate_test:block_state}"
+			}
+		},
+		{
+			"name": "EqualsPredicate",
+			"condition": {
+				"definitions": {
+					"silicate_test:stack_size": {
+						"type": "integer",
+						"value": 64
+					}
+				},
+				"predicate": "equals",
+				"value_type": "integer",
+				"left": "${silicate_test:stack_size}",
+				"right": 64
+			}
+		},
+		{
+			"name": "Definition Scopes",
+			"condition": {
+				"predicate": "all",
+				"conditions": [
+					{
+						"definitions": {
+							"silicate_test:life": {
+								"type": "integer",
+								"value": 42
+							}
+						},
+						"predicate": "always",
+						"value": true
 					},
 					{
-						"predicate": "block_state",
-						"left": "${block_state}",
-						"right": "${silicate_test:block_state}"
+						"predicate": "equals",
+						"value_type": "integer",
+						"left": "${silicate_test:life}",
+						"right": 42
 					}
 				]
-			}
+			},
+			"should_throw": true
 		},
 		{
 			"name": "IsTypePredicate",
 			"condition": {
 				"predicate": "is_type",
-				"parameter": "passenger_entity",
+				"parameter": "victim_entity",
+				"value_type": "hostile_mob"
+			}
+		},
+		{
+			"name": "Templating DynamicValue in Definitions",
+			"condition": {
+				"definitions": {
+					"silicate_test:skelly": {
+						"type": "entity",
+						"value": "${victim_entity}"
+					}
+				},
+				"predicate": "is_type",
+				"parameter": "silicate_test:skelly",
 				"value_type": "hostile_mob"
 			}
 		}

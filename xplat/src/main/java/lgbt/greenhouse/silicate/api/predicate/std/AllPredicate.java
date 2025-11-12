@@ -21,7 +21,7 @@ public final class AllPredicate extends CompoundPredicate<AllPredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
 		return this.getConditions().get(ctx).stream()
-				.allMatch(condition -> condition.value().test(ctx));
+				.allMatch(condition -> condition.value().pushTestPop(ctx));
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package lgbt.greenhouse.silicate.api.predicate;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 import lgbt.greenhouse.silicate.api.predicate.meta.BaseCodec;
 import lgbt.greenhouse.silicate.api.predicate.meta.PredicateCodecBuilder;
 import net.minecraft.core.Holder;
@@ -48,6 +49,22 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 
 	@Override
 	boolean test(GameContext ctx);
+
+	/**
+	 * Pushes to the {@link GameContext}, tests this {@link GamePredicate}, then pops.
+	 * <h1 style="color:red;">⚠️ Warning ⚠️</h1>
+	 * <b>Do not use this</b> unless you are iterating! Using this outside iteration
+	 * can cause scope leak. As always, ensure any modification to {@link ParameterMap}
+	 * is inside push-pop calls.
+	 * @param ctx the current {@link GameContext}
+	 * @return the result of the {@link #test(GameContext)}
+	 */
+	default boolean pushTestPop(GameContext ctx) {
+		ctx.pushParameterMap();
+		boolean result = this.test(ctx);
+		ctx.popParameterMap();
+		return result;
+	}
 
 	/**
 	 * @return the codec responsible for condition configuration.

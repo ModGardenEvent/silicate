@@ -2,11 +2,9 @@ package lgbt.greenhouse.silicate.api.predicate.meta;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.*;
-import com.mojang.serialization.codecs.KeyDispatchCodec;
 import dev.lukebemish.codecextras.record.KeyedRecordCodecBuilder;
+import lgbt.greenhouse.silicate.api.context.parameter.*;
 import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
-import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
-import lgbt.greenhouse.silicate.api.context.parameter.ParameterTemplate;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import lgbt.greenhouse.silicate.impl.SilicateConstants;
@@ -20,6 +18,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * A builder for {@link MapCodec} for {@link GamePredicate} inheritors.
@@ -330,6 +329,8 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 	 */
 	@SuppressWarnings("UnstableApiUsage") // it's okay
 	public MapCodec<T> build(MethodHandle constructor) {
+		// if you're trying to read this code, god help you
+		// let the cursed begin
 		return KeyedRecordCodecBuilder.mapCodec(
 				builder -> {
 					List<KeyedRecordCodecBuilder.Key<?>> keys = new ArrayList<>();
@@ -350,26 +351,16 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 							} else if (field.dynamic != null) {
 								// this is fucking cursed
 								// edit: still cursed as fuck
+								// edit 2: check the createCodec source code for a surprise :)
 								keys.add(builder.add(
-										new KeyDispatchCodec<>(
-												field.dynamic.key,
-												ValueType.CODEC,
-												value -> DataResult.success(value.type()),
-												valueType1 -> {
-													@SuppressWarnings("unchecked")
-													var valueType = (ValueType<@NotNull Object>) valueType1;
-													assert valueType.codec() != null;
-													return DataResult.success(valueType.codec().fieldOf(field.key)
-															.xmap(
-																	v -> new DynamicValue(valueType, v),
-																	DynamicValue::type
-															));
-												}
-										),
+										DynamicValue.createCodec(field.dynamic.key, field.key),
 										field.getter.andThen(a -> (DynamicValue) a)
 								));
 							} else {
-								LOGGER.warn("{}: Value is somehow neither dynamic nor templated and yet has no codec. What did you do?", this.clazz.getName());
+								LOGGER.warn(
+										"{}: Value is somehow neither dynamic nor templated and yet has no codec. What did you do?",
+										this.clazz.getName()
+								);
 							}
 
 							continue;
@@ -399,8 +390,19 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 						keys.add(builder.add(fieldCodec, field.getter));
 					}
 
+					// add definitions field
+					keys.add(builder.add(
+							Definitions.CODEC,
+							t -> null // we don't need a getter for this
+					));
+
 					return container -> {
-						Object[] fields = keys.stream()
+						Object[] fields1 = keys.stream()
+								.filter(key -> {
+									// remove `definitions` thing from predicate constructor call
+									Object object = container.get(key);
+									return !(object instanceof Definitions);
+								})
 								.map(key -> {
 									// ensure we can allow ParameterKeys in place of values,
 									// then compensate for such cases
@@ -421,10 +423,37 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 									}
 								})
 								.toArray();
+						Optional<Definitions> definitions = keys.stream()
+								.filter(key -> {
+									Object object = container.get(key);
+									return object instanceof Definitions;
+								})
+								.map(key -> (Definitions) container.get(key))
+								.findAny();
 						try {
-							// This is checked at runtime
+							// T's type is checked at runtime
 							//noinspection unchecked
-							return (T) constructor.invokeWithArguments(fields);
+							return (T) new DynamicMetaPredicate<>(
+									(T) constructor.invokeWithArguments(fields1),
+									ctx -> {
+										if (definitions.isEmpty()) return;
+
+										ctx.getParameterMap().addAll(ParameterMap.of(
+												definitions.get().map().entrySet().stream().map(entry ->
+																new AbstractMap.SimpleEntry<>(
+																		new LocalParameterKey<>(
+																				entry.getKey(),
+																				entry.getValue().type()
+																		),
+																		new Parameter<>(entry.getValue().value().get(ctx))
+																))
+														.collect(Collectors.toMap(
+																Map.Entry::getKey,
+																Map.Entry::getValue
+														))
+										));
+									}
+							);
 						} catch (Throwable e) {
 							throw new RuntimeException(e);
 						}

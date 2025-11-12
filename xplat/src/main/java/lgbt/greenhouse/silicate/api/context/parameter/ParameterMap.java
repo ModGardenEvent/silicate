@@ -13,14 +13,18 @@ import java.util.Objects;
  */
 public final class ParameterMap {
 	private final Map<ResourceLocation, ParameterKey<?>> id2Keys;
-	private final Map<ParameterKey<?>, Parameter<?>> params;
+	private final Map<ParameterKey<?>, Parameter<?>> parameters;
 
-	private ParameterMap(Map<ParameterKey<?>, Parameter<?>> params) {
+	private ParameterMap(Map<ParameterKey<?>, Parameter<?>> parameters) {
 		this.id2Keys = new HashMap<>();
-		this.params = params;
-		for (ParameterKey<?> key : this.params.keySet()) {
+		this.parameters = parameters;
+		for (ParameterKey<?> key : this.parameters.keySet()) {
 			this.id2Keys.put(key.getId(), key);
 		}
+	}
+
+	public static ParameterMap of(Map<ParameterKey<?>, Parameter<?>> parameters) {
+		return new ParameterMap(parameters);
 	}
 
 	@SuppressWarnings("unchecked") // type is always correct
@@ -31,12 +35,12 @@ public final class ParameterMap {
 			return new Parameter<>(direct.getValue());
 		}
 
-		return Objects.requireNonNull((Parameter<T>) params.get(key));
+		return Objects.requireNonNull((Parameter<T>) parameters.get(key), "Parameter " + key.getId() + " does not exist");
 	}
 
 	@SuppressWarnings("unchecked") // type should be correct
 	public <T> Parameter<T> getOrThrow(ParameterKey.Reference<T> key) {
-		return Objects.requireNonNull((Parameter<T>) params.get(this.id2Keys.get(key.getId())), "Parameter " + key.getId() + " does not exist");
+		return Objects.requireNonNull((Parameter<T>) parameters.get(this.id2Keys.get(key.getId())), "Parameter " + key.getId() + " does not exist");
 	}
 
 	@SuppressWarnings("unchecked") // type should be correct
@@ -45,13 +49,34 @@ public final class ParameterMap {
 	}
 
 	public <T> boolean has(ParameterKey<T> key) {
-		return params.containsKey(key);
+		return this.id2Keys.containsKey(key.getId());
 	}
 
 	@SuppressWarnings("unchecked") // Always correct.
 	public <T> @Nullable Parameter<T> set(ParameterKey<T> key, T param) {
+		// remove duplicates
+		this.parameters.keySet()
+				.removeIf(key1 -> key.getId().equals(key1.getId()));
+
 		this.id2Keys.put(key.getId(), key);
-		return (Parameter<T>) params.put(key, new Parameter<>(param));
+		return (Parameter<T>) parameters.put(key, new Parameter<>(param));
+	}
+
+	public void addAll(ParameterMap parameterMap) {
+		this.id2Keys.putAll(parameterMap.id2Keys);
+
+		// remove duplicates
+		this.parameters.keySet()
+				.removeIf(key -> parameterMap.id2Keys.containsKey(key.getId()));
+
+		this.parameters.putAll(parameterMap.parameters);
+	}
+
+	/**
+	 * @return an entirely new copy (clone in Rust terms) of this {@link ParameterMap}
+	 */
+	public ParameterMap copy() {
+		return new ParameterMap(new HashMap<>(this.parameters));
 	}
 
 	public static final class Builder {

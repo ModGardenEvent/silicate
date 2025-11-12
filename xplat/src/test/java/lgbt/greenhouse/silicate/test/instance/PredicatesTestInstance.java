@@ -77,20 +77,28 @@ public class PredicatesTestInstance extends GameTestInstance {
 		GameContext context = GameContext.of(helper.getLevel(), parameterMap);
 
 		for (ExpectedResultCondition condition : conditions) {
-			if (!condition.condition().isBound()) {
-				helper.fail(Component.literal("Condition " + condition.condition() + " within Silicate Predicates Test is invalid."));
-				return;
-			}
-			GamePredicate<?> gamePredicate = condition.condition().value();
-			boolean conditionTest = gamePredicate.test(context);
-			String conditionName = condition.name();
+			try {
+				if (!condition.condition().isBound()) {
+					helper.fail(Component.literal("Condition " + condition.condition() + " within Silicate Predicates Test is invalid."));
+					return;
+				}
+				GamePredicate<?> gamePredicate = condition.condition().value();
+				boolean conditionTest = gamePredicate.test(context);
+				String conditionName = condition.name();
 
-			if (condition.shouldSucceed()) {
-				helper.assertTrue(conditionTest,
-						Component.literal(conditionName + " test failed"));
-			} else {
-				helper.assertFalse(conditionTest,
-						Component.literal(conditionName + " test succeeded unexpectedly"));
+				if (condition.shouldSucceed()) {
+					helper.assertTrue(conditionTest,
+							Component.literal(conditionName + " test failed"));
+				} else {
+					helper.assertFalse(conditionTest,
+							Component.literal(conditionName + " test succeeded unexpectedly"));
+				}
+			} catch (NullPointerException e) {
+				if (condition.shouldThrow()) {
+					helper.succeed();
+				} else {
+					throw e;
+				}
 			}
 		}
 		helper.succeed();
@@ -106,15 +114,15 @@ public class PredicatesTestInstance extends GameTestInstance {
 		return Component.literal("Silicate Predicates Test");
 	}
 
-	private static ParameterMap createParamMap(BlockState state, BlockPos origin, Entity entity, Entity entity2, BlockState entityBlock, ServerPlayer fakePlayer, Projectile projectile, GameTestHelper helper) {
+	private static ParameterMap createParamMap(BlockState state, BlockPos origin, Entity skeletonHorse, Entity skeleton, BlockState entityBlock, ServerPlayer fakePlayer, Projectile projectile, GameTestHelper helper) {
 		helper.setBlock(origin, state);
 		BlockPos entityBlockPos = origin.east();
 		helper.setBlock(entityBlockPos, entityBlock);
 		ParameterMap.Builder builder = ParameterMap.Builder.of()
 				.withParameter(GlobalParameterKeys.BLOCK_STATE, state)
 				.withParameter(GlobalParameterKeys.ORIGIN, origin.getCenter())
-				.withParameter(GlobalParameterKeys.THIS_ENTITY, entity)
-				.withParameter(GlobalParameterKeys.VICTIM_ENTITY, entity2)
+				.withParameter(GlobalParameterKeys.THIS_ENTITY, skeletonHorse)
+				.withParameter(GlobalParameterKeys.VICTIM_ENTITY, skeleton)
 				.withParameter(
 						GlobalParameterKeys.BLOCK_ENTITY, helper.getBlockEntity(entityBlockPos, FurnaceBlockEntity.class))
 				.withParameter(GlobalParameterKeys.ATTACKING_ENTITY, fakePlayer)

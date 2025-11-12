@@ -29,16 +29,18 @@ public record EntityTameOwnerPredicate(
 		Entity entity = ctx.getParameter(this.entity);
 
 		if (entity instanceof OwnableEntity ownable && ownable.getOwner() != null) {
+			ctx.pushParameterMap();
 			ParameterMap parameterMap = ctx.getParameterMap();
-			return testOwner(ctx, ownable.getOwner(), parameterMap);
+			boolean result = testOwner(ctx, ownable.getOwner(), parameterMap);
+			ctx.popParameterMap();
+			return result;
 		}
 		return false;
 	}
 
 	private boolean testOwner(GameContext ctx, Entity owner, ParameterMap parameterMap) {
 		parameterMap.set(GlobalParameterKeys.OWNER_ENTITY, owner);
-		GameContext context = GameContext.of(ctx.getLevel(), parameterMap);
-		return condition.get(ctx).value().test(context);
+		return condition.get(ctx).value().test(ctx);
 	}
 
 	@Override

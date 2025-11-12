@@ -27,7 +27,7 @@ public class ParameterMapTestInstance extends GameTestInstance {
 
 	@Override
 	public void run(GameTestHelper helper) {
-		ParameterMap parameterMap = createParameterMap(createOrigin());
+	ParameterMap parameterMap = createParameterMap(createOrigin());
 		helper.assertTrue(
 				parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
 						.value()
@@ -43,11 +43,6 @@ public class ParameterMapTestInstance extends GameTestInstance {
 				Component.literal("ParameterMap.has(GlobalParameterKeys.ORIGIN) != true")
 		);
 		Vec3 newOrigin = createOrigin().getBottomCenter();
-		helper.assertTrue(
-				parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
-						.equals(parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)),
-				Component.literal("ParameterMap.Mutable.get(GlobalParameterKeys.ORIGIN) != oldOrigin")
-		);
 		Parameter<Vec3> oldOrigin = parameterMap.set(GlobalParameterKeys.ORIGIN, newOrigin);
 		helper.assertTrue(
 				!parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN).equals(oldOrigin),

@@ -18,7 +18,7 @@ public record NotPredicate(
 ) implements GamePredicate<NotPredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
-		return !condition.get(ctx).value().test(ctx);
+		return !condition.get(ctx).value().pushTestPop(ctx);
 	}
 
 	@Override

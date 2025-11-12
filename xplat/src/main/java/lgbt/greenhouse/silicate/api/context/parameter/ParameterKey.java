@@ -100,6 +100,12 @@ public sealed interface ParameterKey<T>
 			return null;
 		}
 
+		@Override
+		public ValueType<T> getType(GameContext gameContext) {
+			//noinspection unchecked // why the hell is this not already Class<T>
+			return new ValueType<>((Class<T>) this.getValue().getClass(), null);
+		}
+
 		public T getValue() {
 			return value;
 		}

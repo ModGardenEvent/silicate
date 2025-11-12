@@ -28,15 +28,17 @@ public record EntityVehiclePredicate(
 		if (entity.getVehicle() == null) {
 			return false;
 		} else {
+			ctx.pushParameterMap();
 			ParameterMap parameterMap = ctx.getParameterMap();
-			return testVehicle(ctx, entity.getVehicle(), parameterMap);
+			boolean result = testVehicle(ctx, entity.getVehicle(), parameterMap);
+			ctx.popParameterMap();
+			return result;
 		}
 	}
 
 	private boolean testVehicle(GameContext ctx, Entity vehicle, ParameterMap parameterMap) {
 		parameterMap.set(GlobalParameterKeys.VEHICLE_ENTITY, vehicle);
-		GameContext context = GameContext.of(ctx.getLevel(), parameterMap);
-		return condition.get(ctx).value().test(context);
+		return condition.get(ctx).value().test(ctx);
 	}
 
 	@Override
