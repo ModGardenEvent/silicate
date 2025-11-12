@@ -11,7 +11,6 @@ module lgbt.greenhouse.silicate {
 	requires authlib;
 	requires org.jspecify;
 	requires jdk.unsupported;
-	requires com.ibm.icu;
 	exports lgbt.greenhouse.silicate.api;
 	exports lgbt.greenhouse.silicate.api.predicate;
 	exports lgbt.greenhouse.silicate.api.predicate.meta;
