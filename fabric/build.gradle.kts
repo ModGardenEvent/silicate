@@ -24,7 +24,7 @@ plugins {
 repositories {
 	maven {
 		name = "TerraformersMC"
-		url = uri("https://maven.terraformersmc.com/")
+		url = uri("https://maven.terraformersmc.com/releases/")
 	}
 	maven {
 		name = "NeoForge"
