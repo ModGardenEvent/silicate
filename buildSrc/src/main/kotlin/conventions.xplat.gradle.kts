@@ -85,6 +85,7 @@ extraJavaModuleInfo {
 		exportAllPackages()
 	}
 	failOnMissingModuleInfo = false
+	skipLocalJars = true
 }
 
 tasks {
