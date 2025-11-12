@@ -29,7 +29,6 @@ import lgbt.greenhouse.silicate.impl.Silicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
-import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import lgbt.greenhouse.silicate.test.SilicateTestGlobalParameterKeys;
 import lgbt.greenhouse.silicate.test.util.ExpectedResultCondition;
 
@@ -65,40 +64,36 @@ public class PredicatesTestInstance extends GameTestInstance {
 		skeletonHorse.setOwner(player);
 		skeleton.startRiding(skeletonHorse);
 		arrow.setOwner(skeleton);
-		try {
-			ParameterMap parameterMap = createParamMap(
-					createState(),
-					createOrigin(),
-					skeletonHorse,
-					skeleton,
-					createEntityBlock(),
-					player,
-					arrow,
-					helper
-			);
-			GameContext context = GameContext.of(helper.getLevel(), parameterMap);
+		ParameterMap parameterMap = createParamMap(
+				createState(),
+				createOrigin(),
+				skeletonHorse,
+				skeleton,
+				createEntityBlock(),
+				player,
+				arrow,
+				helper
+		);
+		GameContext context = GameContext.of(helper.getLevel(), parameterMap);
 
-			for (ExpectedResultCondition condition : conditions) {
-				if (!condition.condition().isBound()) {
-					helper.fail(Component.literal("Condition " + condition.condition() + " within Silicate Predicates Test is invalid."));
-					return;
-				}
-				GamePredicate<?> gamePredicate = condition.condition().value();
-				boolean conditionTest = gamePredicate.test(context);
-				String conditionName = condition.name();
-
-				if (condition.shouldSucceed()) {
-					helper.assertTrue(conditionTest,
-							Component.literal(conditionName + " test failed"));
-				} else {
-					helper.assertFalse(conditionTest,
-							Component.literal(conditionName + " test succeeded unexpectedly"));
-				}
+		for (ExpectedResultCondition condition : conditions) {
+			if (!condition.condition().isBound()) {
+				helper.fail(Component.literal("Condition " + condition.condition() + " within Silicate Predicates Test is invalid."));
+				return;
 			}
-			helper.succeed();
-		} catch (InvalidParameterException ex) {
-			helper.fail(Component.literal(ex.getMessage()));
+			GamePredicate<?> gamePredicate = condition.condition().value();
+			boolean conditionTest = gamePredicate.test(context);
+			String conditionName = condition.name();
+
+			if (condition.shouldSucceed()) {
+				helper.assertTrue(conditionTest,
+						Component.literal(conditionName + " test failed"));
+			} else {
+				helper.assertFalse(conditionTest,
+						Component.literal(conditionName + " test succeeded unexpectedly"));
+			}
 		}
+		helper.succeed();
 	}
 
 	@Override
@@ -111,7 +106,7 @@ public class PredicatesTestInstance extends GameTestInstance {
 		return Component.literal("Silicate Predicates Test");
 	}
 
-	private static ParameterMap createParamMap(BlockState state, BlockPos origin, Entity entity, Entity entity2, BlockState entityBlock, ServerPlayer fakePlayer, Projectile projectile, GameTestHelper helper) throws InvalidParameterException {
+	private static ParameterMap createParamMap(BlockState state, BlockPos origin, Entity entity, Entity entity2, BlockState entityBlock, ServerPlayer fakePlayer, Projectile projectile, GameTestHelper helper) {
 		helper.setBlock(origin, state);
 		BlockPos entityBlockPos = origin.east();
 		helper.setBlock(entityBlockPos, entityBlock);

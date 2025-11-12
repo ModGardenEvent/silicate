@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
-import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 
 public class GameContextTestInstance extends GameTestInstance {
 	public static final MapCodec<GameContextTestInstance> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
@@ -31,24 +30,20 @@ public class GameContextTestInstance extends GameTestInstance {
 
 	@Override
 	public void run(GameTestHelper helper) {
-		try {
-			ParameterMap parameterMap = createParamMap(createState(), createOrigin(), helper);
-			GameContext context = GameContext.of(helper.getLevel(), parameterMap);
-			helper.assertTrue(
-					context.getLevel().equals(helper.getLevel()),
-					Component.literal("GameContext.getLevel() is not equal to level")
-			);
-			helper.assertTrue(
-					context.getParameterMap().equals(parameterMap),
-					Component.literal("GameContext.getParameterMap() is not equal to parameterMap")
-			);
-			helper.succeed();
-		} catch (InvalidParameterException ex) {
-			helper.fail(Component.literal(ex.getMessage()));
-		}
+		ParameterMap parameterMap = createParamMap(createState(), createOrigin(), helper);
+		GameContext context = GameContext.of(helper.getLevel(), parameterMap);
+		helper.assertTrue(
+				context.getLevel().equals(helper.getLevel()),
+				Component.literal("GameContext.getLevel() is not equal to level")
+		);
+		helper.assertTrue(
+				context.getParameterMap().equals(parameterMap),
+				Component.literal("GameContext.getParameterMap() is not equal to parameterMap")
+		);
+		helper.succeed();
 	}
 
-	private static ParameterMap createParamMap(BlockState state, BlockPos origin, GameTestHelper helper) throws InvalidParameterException {
+	private static ParameterMap createParamMap(BlockState state, BlockPos origin, GameTestHelper helper) {
 		helper.setBlock(origin, state);
 		ParameterMap.Builder builder = ParameterMap.Builder.of()
 				.withParameter(GlobalParameterKeys.ORIGIN, origin.getCenter())

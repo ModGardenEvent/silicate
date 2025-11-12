@@ -14,7 +14,6 @@ import net.minecraft.world.phys.Vec3;
 import lgbt.greenhouse.silicate.api.context.parameter.Parameter;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
-import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 
 public class ParameterMapTestInstance extends GameTestInstance {
 	public static final MapCodec<ParameterMapTestInstance> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
@@ -28,46 +27,42 @@ public class ParameterMapTestInstance extends GameTestInstance {
 
 	@Override
 	public void run(GameTestHelper helper) {
-		try {
-			ParameterMap parameterMap = createParameterMap(createOrigin());
-			helper.assertTrue(
-					parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
-							.value()
-							.equals(createOrigin().getCenter()),
-					Component.literal("ParameterMap.ORIGIN is not equal to origin")
-			);
-			helper.assertFalse(
-					parameterMap.has(GlobalParameterKeys.BLOCK_ENTITY),
-					Component.literal("ParameterMap.has(GlobalParameterKeys.BLOCK_ENTITY) != false")
-			);
-			helper.assertTrue(
-					parameterMap.has(GlobalParameterKeys.ORIGIN),
-					Component.literal("ParameterMap.has(GlobalParameterKeys.ORIGIN) != true")
-			);
-			Vec3 newOrigin = createOrigin().getBottomCenter();
-			helper.assertTrue(
-					parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
-							.equals(parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)),
-					Component.literal("ParameterMap.Mutable.get(GlobalParameterKeys.ORIGIN) != oldOrigin")
-			);
-			Parameter<Vec3> oldOrigin = parameterMap.set(GlobalParameterKeys.ORIGIN, newOrigin);
-			helper.assertTrue(
-					!parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN).equals(oldOrigin),
-					Component.literal("ParameterMap.get(GlobalParameterKeys.ORIGIN) == oldOrigin")
-			);
-			helper.assertTrue(
-					parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
-							.value()
-							.equals(newOrigin),
-					Component.literal("ParameterMap.Mutable.get(GlobalParameterKeys.ORIGIN) != newOrigin")
-			);
-			helper.succeed();
-		} catch (InvalidParameterException ex) {
-			helper.fail(Component.literal(ex.getMessage()));
-		}
+		ParameterMap parameterMap = createParameterMap(createOrigin());
+		helper.assertTrue(
+				parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
+						.value()
+						.equals(createOrigin().getCenter()),
+				Component.literal("ParameterMap.ORIGIN is not equal to origin")
+		);
+		helper.assertFalse(
+				parameterMap.has(GlobalParameterKeys.BLOCK_ENTITY),
+				Component.literal("ParameterMap.has(GlobalParameterKeys.BLOCK_ENTITY) != false")
+		);
+		helper.assertTrue(
+				parameterMap.has(GlobalParameterKeys.ORIGIN),
+				Component.literal("ParameterMap.has(GlobalParameterKeys.ORIGIN) != true")
+		);
+		Vec3 newOrigin = createOrigin().getBottomCenter();
+		helper.assertTrue(
+				parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
+						.equals(parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)),
+				Component.literal("ParameterMap.Mutable.get(GlobalParameterKeys.ORIGIN) != oldOrigin")
+		);
+		Parameter<Vec3> oldOrigin = parameterMap.set(GlobalParameterKeys.ORIGIN, newOrigin);
+		helper.assertTrue(
+				!parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN).equals(oldOrigin),
+				Component.literal("ParameterMap.get(GlobalParameterKeys.ORIGIN) == oldOrigin")
+		);
+		helper.assertTrue(
+				parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
+						.value()
+						.equals(newOrigin),
+				Component.literal("ParameterMap.Mutable.get(GlobalParameterKeys.ORIGIN) != newOrigin")
+		);
+		helper.succeed();
 	}
 
-	private static ParameterMap createParameterMap(BlockPos origin) throws InvalidParameterException {
+	private static ParameterMap createParameterMap(BlockPos origin) {
 		ParameterMap.Builder builder = ParameterMap.Builder.of()
 				.withParameter(GlobalParameterKeys.ORIGIN, origin.getCenter());
 		return builder.build();

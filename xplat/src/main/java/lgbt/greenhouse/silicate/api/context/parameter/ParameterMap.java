@@ -1,6 +1,5 @@
 package lgbt.greenhouse.silicate.api.context.parameter;
 
-import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,10 +78,7 @@ public final class ParameterMap {
 			return withParameter(key, new Parameter<>(param));
 		}
 
-		/**
-		 * @throws InvalidParameterException if a parameter is invalid or missing.
-		 */
-		public ParameterMap build() throws InvalidParameterException {
+		public ParameterMap build() {
 			return new ParameterMap(params);
 		}
 	}
