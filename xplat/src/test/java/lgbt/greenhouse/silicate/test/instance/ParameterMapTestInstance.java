@@ -13,7 +13,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.phys.Vec3;
 import lgbt.greenhouse.silicate.api.context.parameter.Parameter;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
-import lgbt.greenhouse.silicate.api.context.parameter.ParameterSet;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 
@@ -30,12 +29,7 @@ public class ParameterMapTestInstance extends GameTestInstance {
 	@Override
 	public void run(GameTestHelper helper) {
 		try {
-			ParameterSet parameterSet = createParameterSet();
 			ParameterMap parameterMap = createParameterMap(createOrigin());
-			helper.assertTrue(
-					parameterMap.getParameterSet().equals(parameterSet),
-					Component.literal("ParameterMap.getParamSet() does not equal parameterSet")
-			);
 			helper.assertTrue(
 					parameterMap.getOrThrow(GlobalParameterKeys.ORIGIN)
 							.value()
@@ -67,54 +61,16 @@ public class ParameterMapTestInstance extends GameTestInstance {
 							.equals(newOrigin),
 					Component.literal("ParameterMap.Mutable.get(GlobalParameterKeys.ORIGIN) != newOrigin")
 			);
-			try {
-				createInvalidParameterMap();
-				helper.fail(Component.literal("Invalid parameter key allowed in ParameterMap"));
-			} catch (InvalidParameterException ignored) {
-			}
-			try {
-				createMissingParameterMap();
-				helper.fail(Component.literal("Missing parameter required in ParameterMap"));
-			} catch (InvalidParameterException ignored) {
-			}
 			helper.succeed();
 		} catch (InvalidParameterException ex) {
 			helper.fail(Component.literal(ex.getMessage()));
 		}
 	}
 
-	private static ParameterSet createParameterSet() {
-		return ParameterSet.Builder.of()
-				.required(GlobalParameterKeys.ORIGIN)
-				.build();
-	}
-
 	private static ParameterMap createParameterMap(BlockPos origin) throws InvalidParameterException {
-		ParameterSet paramSet = createParameterSet();
-		ParameterMap.Builder builder = ParameterMap.Builder.of(paramSet)
+		ParameterMap.Builder builder = ParameterMap.Builder.of()
 				.withParameter(GlobalParameterKeys.ORIGIN, origin.getCenter());
 		return builder.build();
-	}
-
-	private static void createInvalidParameterMap() throws InvalidParameterException {
-		ParameterSet paramSet = ParameterSet.Builder.of()
-				.required(GlobalParameterKeys.BLOCK_STATE)
-				.required(GlobalParameterKeys.ORIGIN)
-				.build();
-		// this is invalid anyway, we don't care
-		//noinspection DataFlowIssue
-		ParameterMap.Builder.of(paramSet)
-				.withParameter(GlobalParameterKeys.THIS_ENTITY, new Parameter<>(null))
-				.build();
-	}
-
-	private static void createMissingParameterMap() throws InvalidParameterException {
-		ParameterSet paramSet = ParameterSet.Builder.of()
-				.required(GlobalParameterKeys.BLOCK_STATE)
-				.required(GlobalParameterKeys.ORIGIN)
-				.build();
-		ParameterMap.Builder.of(paramSet)
-				.build();
 	}
 
 	@Override

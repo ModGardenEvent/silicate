@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
-import lgbt.greenhouse.silicate.api.context.parameter.ParameterSet;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 
@@ -33,15 +32,15 @@ public class GameContextTestInstance extends GameTestInstance {
 	@Override
 	public void run(GameTestHelper helper) {
 		try {
-			ParameterMap paramMap = createParamMap(createState(), createOrigin(), helper);
-			GameContext context = GameContext.of(helper.getLevel(), paramMap);
+			ParameterMap parameterMap = createParamMap(createState(), createOrigin(), helper);
+			GameContext context = GameContext.of(helper.getLevel(), parameterMap);
 			helper.assertTrue(
 					context.getLevel().equals(helper.getLevel()),
 					Component.literal("GameContext.getLevel() is not equal to level")
 			);
 			helper.assertTrue(
-					context.getParameterMap().equals(paramMap),
-					Component.literal("GameContext.getParams() is not equal to paramMap")
+					context.getParameterMap().equals(parameterMap),
+					Component.literal("GameContext.getParameterMap() is not equal to parameterMap")
 			);
 			helper.succeed();
 		} catch (InvalidParameterException ex) {
@@ -51,17 +50,10 @@ public class GameContextTestInstance extends GameTestInstance {
 
 	private static ParameterMap createParamMap(BlockState state, BlockPos origin, GameTestHelper helper) throws InvalidParameterException {
 		helper.setBlock(origin, state);
-		ParameterMap.Builder builder = ParameterMap.Builder.of(createParamSet())
+		ParameterMap.Builder builder = ParameterMap.Builder.of()
 				.withParameter(GlobalParameterKeys.ORIGIN, origin.getCenter())
 				.withParameter(GlobalParameterKeys.BLOCK_STATE, state);
 		return builder.build();
-	}
-
-	private static ParameterSet createParamSet() {
-		return ParameterSet.Builder.of()
-				.required(GlobalParameterKeys.ORIGIN)
-				.required(GlobalParameterKeys.BLOCK_STATE)
-				.build();
 	}
 
 	private static BlockState createState() {

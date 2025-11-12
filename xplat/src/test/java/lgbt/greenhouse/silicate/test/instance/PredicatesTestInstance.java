@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import lgbt.greenhouse.silicate.impl.Silicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
-import lgbt.greenhouse.silicate.api.context.parameter.ParameterSet;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 import lgbt.greenhouse.silicate.api.exception.InvalidParameterException;
 import lgbt.greenhouse.silicate.test.SilicateTestGlobalParameterKeys;
@@ -67,7 +66,7 @@ public class PredicatesTestInstance extends GameTestInstance {
 		skeleton.startRiding(skeletonHorse);
 		arrow.setOwner(skeleton);
 		try {
-			ParameterMap paramMap = createParamMap(
+			ParameterMap parameterMap = createParamMap(
 					createState(),
 					createOrigin(),
 					skeletonHorse,
@@ -77,7 +76,7 @@ public class PredicatesTestInstance extends GameTestInstance {
 					arrow,
 					helper
 			);
-			GameContext context = GameContext.of(helper.getLevel(), paramMap);
+			GameContext context = GameContext.of(helper.getLevel(), parameterMap);
 
 			for (ExpectedResultCondition condition : conditions) {
 				if (!condition.condition().isBound()) {
@@ -112,24 +111,11 @@ public class PredicatesTestInstance extends GameTestInstance {
 		return Component.literal("Silicate Predicates Test");
 	}
 
-	private static ParameterSet createParamSet() {
-		return ParameterSet.Builder.of()
-				.required(GlobalParameterKeys.BLOCK_STATE)
-				.required(GlobalParameterKeys.ORIGIN)
-				.required(GlobalParameterKeys.THIS_ENTITY)
-				.optional(GlobalParameterKeys.BLOCK_ENTITY)
-				.optional(GlobalParameterKeys.ATTACKING_ENTITY)
-				.optional(GlobalParameterKeys.VICTIM_ENTITY)
-				.optional(SilicateTestGlobalParameterKeys.PROJECTILE)
-				.build();
-	}
-
 	private static ParameterMap createParamMap(BlockState state, BlockPos origin, Entity entity, Entity entity2, BlockState entityBlock, ServerPlayer fakePlayer, Projectile projectile, GameTestHelper helper) throws InvalidParameterException {
-		ParameterSet paramSet = createParamSet();
 		helper.setBlock(origin, state);
 		BlockPos entityBlockPos = origin.east();
 		helper.setBlock(entityBlockPos, entityBlock);
-		ParameterMap.Builder builder = ParameterMap.Builder.of(paramSet)
+		ParameterMap.Builder builder = ParameterMap.Builder.of()
 				.withParameter(GlobalParameterKeys.BLOCK_STATE, state)
 				.withParameter(GlobalParameterKeys.ORIGIN, origin.getCenter())
 				.withParameter(GlobalParameterKeys.THIS_ENTITY, entity)

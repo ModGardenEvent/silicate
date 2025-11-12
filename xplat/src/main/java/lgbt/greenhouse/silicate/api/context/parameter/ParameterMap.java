@@ -15,12 +15,10 @@ import java.util.Objects;
 public final class ParameterMap {
 	private final Map<ResourceLocation, ParameterKey<?>> id2Keys;
 	private final Map<ParameterKey<?>, Parameter<?>> params;
-	private final ParameterSet paramSet;
 
-	private ParameterMap(Map<ParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
+	private ParameterMap(Map<ParameterKey<?>, Parameter<?>> params) {
 		this.id2Keys = new HashMap<>();
 		this.params = params;
-		this.paramSet = paramSet;
 		for (ParameterKey<?> key : this.params.keySet()) {
 			this.id2Keys.put(key.getId(), key);
 		}
@@ -51,10 +49,6 @@ public final class ParameterMap {
 		return params.containsKey(key);
 	}
 
-	public ParameterSet getParameterSet() {
-		return paramSet;
-	}
-
 	@SuppressWarnings("unchecked") // Always correct.
 	public <T> @Nullable Parameter<T> set(ParameterKey<T> key, T param) {
 		this.id2Keys.put(key.getId(), key);
@@ -63,19 +57,17 @@ public final class ParameterMap {
 
 	public static final class Builder {
 		private final Map<ParameterKey<?>, Parameter<?>> params;
-		private final ParameterSet paramSet;
 
-		private Builder(ParameterSet paramSet, Map<ParameterKey<?>, Parameter<?>> params) {
-			this.paramSet = paramSet;
+		private Builder(Map<ParameterKey<?>, Parameter<?>> params) {
 			this.params = params;
 		}
 
-		private Builder(ParameterSet paramSet) {
-			this(paramSet, new HashMap<>());
+		private Builder() {
+			this(new HashMap<>());
 		}
 
-		public static Builder of(ParameterSet paramSet) {
-			return new Builder(paramSet);
+		public static Builder of() {
+			return new Builder();
 		}
 
 		public <T> Builder withParameter(GlobalParameterKey<T> key, Parameter<T> param) {
@@ -91,30 +83,7 @@ public final class ParameterMap {
 		 * @throws InvalidParameterException if a parameter is invalid or missing.
 		 */
 		public ParameterMap build() throws InvalidParameterException {
-			validate();
-			return new ParameterMap(params, paramSet);
-		}
-
-		/**
-		 * Ensure that all parameters are valid.
-		 */
-		private void validate() throws InvalidParameterException {
-			try {
-				params.forEach((key, param) -> {
-					if (key instanceof GlobalParameterKey<?> globalParameterKey && !paramSet.has(globalParameterKey)) {
-						throw new RuntimeException(new InvalidParameterException("Parameter " + key + " does not exist in this set"));
-					}
-				});
-				paramSet.getRequired().forEach(key -> {
-					if (!params.containsKey(key)) {
-						throw new RuntimeException(new InvalidParameterException("Parameter " + key + " is missing; required in set"));
-					}
-				});
-			} catch (RuntimeException e) {
-				if (e.getCause() instanceof InvalidParameterException icpe) {
-					throw icpe;
-				}
-			}
+			return new ParameterMap(params);
 		}
 	}
 }
