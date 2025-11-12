@@ -1,11 +1,13 @@
 name: Build
 
-on: push
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   build:
 
-    runs-on: saltylicorice
+    runs-on: docker
     permissions:
       contents: read
       packages: write
