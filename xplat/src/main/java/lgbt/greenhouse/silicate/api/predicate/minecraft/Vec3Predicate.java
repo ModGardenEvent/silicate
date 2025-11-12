@@ -1,4 +1,4 @@
-package lgbt.greenhouse.silicate.api.predicate.builtin;
+package lgbt.greenhouse.silicate.api.predicate.minecraft;
 
 import com.mojang.serialization.MapCodec;
 import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
@@ -8,7 +8,7 @@ import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.world.phys.Vec3;
 import lgbt.greenhouse.silicate.api.predicate.SilicatePredicateTypes;
-import lgbt.greenhouse.silicate.api.predicate.builtin.math.Vec3Comparison;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.math.Vec3Comparison;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 
 /**

@@ -1,4 +1,4 @@
-package lgbt.greenhouse.silicate.api.predicate.builtin.math;
+package lgbt.greenhouse.silicate.api.predicate.minecraft.math;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.Util;

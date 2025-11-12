@@ -1,9 +1,9 @@
 package lgbt.greenhouse.silicate.api.context.parameter;
 
-import lgbt.greenhouse.silicate.api.predicate.builtin.EntityPassengerPredicate;
-import lgbt.greenhouse.silicate.api.predicate.builtin.EntityProjectileOwnerPredicate;
-import lgbt.greenhouse.silicate.api.predicate.builtin.EntityTameOwnerPredicate;
-import lgbt.greenhouse.silicate.api.predicate.builtin.EntityVehiclePredicate;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityPassengerPredicate;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityProjectileOwnerPredicate;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityTameOwnerPredicate;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityVehiclePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;

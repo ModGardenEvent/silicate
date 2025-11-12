@@ -3,7 +3,7 @@ package lgbt.greenhouse.silicate.api.type;
 import com.mojang.serialization.*;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.predicate.GamePredicate;
-import lgbt.greenhouse.silicate.api.predicate.builtin.math.Vec3Comparison;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.math.Vec3Comparison;
 import lgbt.greenhouse.silicate.api.predicate.meta.DynamicValue;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.impl.SilicateConstants;

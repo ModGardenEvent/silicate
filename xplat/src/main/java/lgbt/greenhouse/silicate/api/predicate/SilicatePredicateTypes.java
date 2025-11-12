@@ -1,6 +1,7 @@
 package lgbt.greenhouse.silicate.api.predicate;
 
 import lgbt.greenhouse.silicate.api.predicate.builtin.*;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.*;
 import lgbt.greenhouse.silicate.api.predicate.std.*;
 import net.minecraft.core.Registry;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;

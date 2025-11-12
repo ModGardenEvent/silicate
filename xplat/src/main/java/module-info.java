@@ -15,8 +15,8 @@ module lgbt.greenhouse.silicate {
 	exports lgbt.greenhouse.silicate.api;
 	exports lgbt.greenhouse.silicate.api.predicate;
 	exports lgbt.greenhouse.silicate.api.predicate.meta;
-	exports lgbt.greenhouse.silicate.api.predicate.builtin;
-	exports lgbt.greenhouse.silicate.api.predicate.builtin.math;
+	exports lgbt.greenhouse.silicate.api.predicate.minecraft;
+	exports lgbt.greenhouse.silicate.api.predicate.minecraft.math;
 	exports lgbt.greenhouse.silicate.api.predicate.std;
 	exports lgbt.greenhouse.silicate.api.type;
 	exports lgbt.greenhouse.silicate.api.context;
