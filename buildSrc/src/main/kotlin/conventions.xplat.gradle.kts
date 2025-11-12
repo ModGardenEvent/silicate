@@ -81,6 +81,7 @@ extraJavaModuleInfo {
 		requires("com.mojang.datafixerupper")
 	}
 	failOnMissingModuleInfo = false
+	skipLocalJars = true
 }
 
 tasks {
