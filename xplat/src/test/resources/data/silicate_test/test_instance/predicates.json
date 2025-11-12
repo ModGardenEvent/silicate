@@ -35,7 +35,7 @@
 			}
 		},
 		{
-			"name": "Vec3Condition",
+			"name": "Vec3Predicate",
 			"condition": {
 				"predicate": "vec3",
 				"left": "${origin}",
