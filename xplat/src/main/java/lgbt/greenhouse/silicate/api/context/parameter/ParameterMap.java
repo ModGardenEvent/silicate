@@ -39,7 +39,7 @@ public class ParameterMap {
 
 	@SuppressWarnings("unchecked") // type should be correct
 	public <T> Parameter<T> getOrThrow(ParameterKey.Reference<T> key) {
-		return Objects.requireNonNull((Parameter<T>) params.get(this.id2Keys.get(key.getId())));
+		return Objects.requireNonNull((Parameter<T>) params.get(this.id2Keys.get(key.getId())), "Parameter " + key.getId() + " does not exist");
 	}
 
 	@SuppressWarnings("unchecked") // type should be correct

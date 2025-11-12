@@ -134,7 +134,34 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 				false,
 				Optional.empty(),
 				true,
-				null
+				null,
+				false
+		));
+		this.addOrderedEntry(key);
+		return this;
+	}
+
+	/**
+	 * Add a reference to this predicate.
+	 * <br>
+	 * A reference is a type of value in a predicate that represents a
+	 * {@link ParameterKey.Reference} constantly.
+	 * @param key field key
+	 * @see ParameterTemplate
+	 * @see #withParameter(String, ValueType, Function)
+	 * @see #withDynamicValue(String, String, Function)
+	 */
+	public PredicateCodecBuilder<T> withReference(String key, Function<T, ParameterKey.Reference<?>> getter) {
+		this.fields.put(key, new FieldEntry<>(
+				key,
+				SilicateValueTypes.REFERENCE_KEY,
+				SilicateValueTypes.REFERENCE_KEY.codec(),
+				getter,
+				false,
+				Optional.empty(),
+				false,
+				null,
+				true
 		));
 		this.addOrderedEntry(key);
 		return this;
@@ -158,7 +185,8 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 				false,
 				Optional.empty(),
 				false,
-				new DynamicEntry(valueTypeKey)
+				new DynamicEntry(valueTypeKey),
+				true
 		));
 		this.addOrderedEntry(key);
 		return this;
@@ -192,7 +220,8 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 				false,
 				Optional.empty(),
 				false,
-				null
+				null,
+				false
 		));
 		this.addOrderedEntry(key);
 		return this;
@@ -238,7 +267,8 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 				true,
 				Optional.empty(),
 				false,
-				null
+				null,
+				false
 		));
 		this.addOrderedEntry(key);
 		return this;
@@ -262,7 +292,8 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 				true,
 				Optional.of(defaultValue),
 				false,
-				null
+				null,
+				false
 		));
 		this.addOrderedEntry(key);
 		return this;
@@ -280,9 +311,9 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 		Class<?>[] parameters = this.entries.stream()
 				.map(fieldEntry -> {
 					if (fieldEntry.requiresTemplateValues) {
-						return SilicateValueTypes.PARAMETER_KEY;
-					} else if (fieldEntry.dynamic != null) {
-						return SilicateValueTypes.ANY;
+						return new ValueType<>(ParameterKey.class, null);
+					} else if (fieldEntry.passThroughType) {
+						return fieldEntry.type;
 					} else {
 						return DEFERRED;
 					}
@@ -313,7 +344,7 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 								// and that is incompatible with Object
 								//noinspection unchecked
 								keys.add(builder.add(
-										(MapCodec<Object>) (Object) ParameterKey.CODEC.fieldOf(field.key),
+										(MapCodec<Object>) (Object) ParameterKey.TEMPLATE_CODEC.fieldOf(field.key),
 										field.getter
 								));
 							} else if (field.dynamic != null) {
@@ -356,12 +387,14 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 							}
 						}
 
-						// so you can use ParameterKeys in place of values
-						//noinspection unchecked // cursed
-						fieldCodec = (MapCodec<Object>) (Object) Codec.mapEither(
-								fieldCodec,
-								Deferred.CODEC.fieldOf(field.key)
-						);
+						if (!field.type.equals(SilicateValueTypes.REFERENCE_KEY)) {
+							// so you can use ParameterKeys in place of values
+							//noinspection unchecked // cursed
+							fieldCodec = (MapCodec<Object>) (Object) Codec.mapEither(
+									fieldCodec,
+									Deferred.CODEC.fieldOf(field.key)
+							);
+						}
 
 						keys.add(builder.add(fieldCodec, field.getter));
 					}
@@ -408,7 +441,8 @@ public final class PredicateCodecBuilder<T extends GamePredicate<T>> {
 			boolean optional,
 			Optional<T> defaultValue,
 			boolean requiresTemplateValues,
-			@Nullable DynamicEntry dynamic
+			@Nullable DynamicEntry dynamic,
+			boolean passThroughType
 	) {}
 
 	private record DynamicEntry(

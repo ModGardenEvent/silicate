@@ -33,9 +33,9 @@ import java.util.List;
  * Built-in types in Silicate.
  */
 public final class SilicateValueTypes {
-	public static final ValueType<ParameterKey<?>> PARAMETER_KEY = register(
+	public static final ValueType<ParameterKey.Reference<?>> REFERENCE_KEY = register(
 			"parameter_key",
-			Clazzy.cast(ParameterKey.class),
+			Clazzy.cast(ParameterKey.Reference.class),
 			ParameterKey.CODEC
 	);
 	/**

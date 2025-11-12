@@ -11,14 +11,14 @@ import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 
 public record IsTypePredicate(
-		Deferred<ParameterKey<?>> parameter,
+		ParameterKey.Reference<?> parameter,
 		Deferred<ValueType<?>> valueType
 ) implements GamePredicate<IsTypePredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
 		return valueType.get(ctx)
 				.isAssignableFrom(ctx
-						.getParameter(parameter.get(ctx))
+						.getParameter(this.parameter)
 						.getClass());
 	}
 
@@ -32,9 +32,8 @@ public record IsTypePredicate(
 		protected MapCodec<IsTypePredicate> createCodec() {
 			return this.createBaseCodec()
 					.apply(PredicateCodecBuilder.of(IsTypePredicate.class))
-					.withValue(
+					.withReference(
 							"parameter",
-							SilicateValueTypes.PARAMETER_KEY,
 							IsTypePredicate::parameter
 					)
 					.withValue(

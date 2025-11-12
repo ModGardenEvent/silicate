@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <T> the underlying type of the value
  */
 public record Deferred<T>(ParameterKey<T> parameterKey) {
-	public static final Codec<Deferred<?>> CODEC = ParameterKey.CODEC
+	public static final Codec<Deferred<?>> CODEC = ParameterKey.TEMPLATE_CODEC
 			.xmap(Deferred::new, Deferred::parameterKey);
 
 	public Deferred(T value) {

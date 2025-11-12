@@ -3,6 +3,7 @@ package lgbt.greenhouse.silicate.api.context.parameter;
 import com.mojang.serialization.Codec;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.type.ValueType;
+import lgbt.greenhouse.silicate.impl.Silicate;
 import lgbt.greenhouse.silicate.impl.SilicateConstants;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -18,10 +19,21 @@ public sealed interface ParameterKey<T>
 		LocalParameterKey,
 		ParameterKey.Direct,
 		ParameterKey.Reference {
-	Codec<ParameterKey<?>> CODEC = ParameterTemplate.CODEC
+	Codec<ParameterKey<?>> TEMPLATE_CODEC = ParameterTemplate.CODEC
 			.xmap(
 					template -> new Reference<>(template.id()),
 					key -> new ParameterTemplate(key.getId())
+			);
+	Codec<ParameterKey.Reference<?>> CODEC = ResourceLocation.CODEC
+			.xmap(
+					id -> {
+						if (id.getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
+							return new Reference<>(SilicateConstants.id(id.getPath()));
+						} else {
+							return new Reference<>(id);
+						}
+					},
+					Reference::getId
 			);
 
 	static <V> ParameterKey.Direct<V> direct(V value) {
