@@ -80,12 +80,7 @@ extraJavaModuleInfo {
 		exportAllPackages()
 		requires("com.mojang.datafixerupper")
 	}
-	module("com.mojang:minecraft", "vanilla") {
-		requireAllDefinedDependencies()
-		exportAllPackages()
-	}
 	failOnMissingModuleInfo = false
-	skipLocalJars = true
 }
 
 tasks {
