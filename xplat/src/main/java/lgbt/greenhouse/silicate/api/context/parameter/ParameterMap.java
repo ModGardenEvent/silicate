@@ -12,9 +12,9 @@ import java.util.Objects;
  * A map of {@link ParameterKey} to {@link Parameter} values.
  * That is, a class representing a map of all present parameters.
  */
-public class ParameterMap {
+public final class ParameterMap {
 	private final Map<ResourceLocation, ParameterKey<?>> id2Keys;
-	protected final Map<ParameterKey<?>, Parameter<?>> params;
+	private final Map<ParameterKey<?>, Parameter<?>> params;
 	private final ParameterSet paramSet;
 
 	private ParameterMap(Map<ParameterKey<?>, Parameter<?>> params, ParameterSet paramSet) {
