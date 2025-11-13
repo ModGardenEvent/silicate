@@ -8,16 +8,17 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 @ApiStatus.Internal
 public class SilicatePlatformHelperFabric implements SilicatePlatformHelper {
 	@Override
-	public Platform getPlatform() {
+	public @NotNull Platform getPlatform() {
 		return Platform.FABRIC;
 	}
 
 	@Override
-	public boolean isModLoaded(String modId) {
+	public boolean isModLoaded(@NotNull String modId) {
 		return FabricLoader.getInstance().isModLoaded(modId);
 	}
 
@@ -27,12 +28,12 @@ public class SilicatePlatformHelperFabric implements SilicatePlatformHelper {
 	}
 
 	@Override
-	public ServerPlayer createFakePlayer(ServerLevel level) {
+	public @NotNull ServerPlayer createFakePlayer(@NotNull ServerLevel level) {
 		return FakePlayer.get(level, DEFAULT_PROFILE);
 	}
 
 	@Override
-	public Side getSide() {
+	public @NotNull Side getSide() {
 		return switch (FabricLoader.getInstance().getEnvironmentType()) {
 			case CLIENT -> Side.CLIENT;
 			case SERVER -> Side.DEDICATED_SERVER;

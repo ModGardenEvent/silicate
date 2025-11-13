@@ -1,5 +1,7 @@
 import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
+import java.io.ByteArrayOutputStream
+import javax.tools.ToolProvider
 
 plugins {
 	base
@@ -154,6 +156,10 @@ tasks {
 				"implSpec:a:Implementation Requirements:",
 				"implNote:a:Implementation Note:"
 			)
+	}
+
+	withType<JavaCompile> {
+		exclude("module-info.java")
 	}
 }
 

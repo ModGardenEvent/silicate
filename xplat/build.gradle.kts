@@ -2,6 +2,7 @@ import me.modmuss50.mpp.ReleaseType
 import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
 import org.gradle.kotlin.dsl.support.zipTo
+import javax.tools.ToolProvider
 
 plugins {
 	id("conventions.xplat")
@@ -75,6 +76,31 @@ try {
 			"--module-path", classpath.asPath
 		))
 		options.compilerArgs.addAll(Properties.JAVAC_ARGS)
+
+		val compiler = ToolProvider.getSystemJavaCompiler()
+		val task = compiler.getTask(null, null, null, null, null, null)
+		task.addModules(listOf(
+			"vanilla",
+			"authlib",
+			"com.mojang.datafixerupper",
+			"mixinextras.common",
+			"org.jspecify",
+			"jdk.unsupported",
+			"org.jetbrains.annotations",
+			"org.spongepowered.mixin",
+			"dev.lukebemish.codecextras"
+		))
+		val success = compiler.run(
+			null,
+			null,
+			null,
+			"--module-path",
+			classpath.asPath,
+			"-d",
+			project(":xplat").file("build/classes/java/main").path,
+			project(":xplat").file("src/main/java/module-info.java").path
+		)
+		if (success != 0) return@withType
 	}
 } catch (e: Exception) {
 	logger.error("when configuring javac args: ", e)
@@ -84,6 +110,9 @@ tasks {
 	withType<Javadoc> {
 		this@withType.options.modulePath.addAll(classpath)
 		this@withType.isFailOnError = false
+	}
+
+	withType<AbstractArchiveTask> {
 	}
 }
 
