@@ -11,12 +11,12 @@ plugins {
 }
 
 // ugly fucking hack
-//if (file("/workspace/Modding/silicate/xplat/").exists()) {
-//	mkdir("/workspace/Modding/silicate/xplat/build/moddev/artifacts/")
-//	mkdir("/workspace/Modding/silicate/xplat/build/generated/")
-//	zipTo(file("/workspace/Modding/silicate/xplat/build/moddev/artifacts/vanilla-1.21.10-20251010.172816.jar"),
-//		file("/workspace/Modding/silicate/xplat/build/generated/"))
-//}
+if (file("/workspace/Modding/silicate/xplat/").exists()) {
+	mkdir("/workspace/Modding/silicate/xplat/build/moddev/artifacts/")
+	mkdir("/workspace/Modding/silicate/xplat/build/generated/")
+	zipTo(file("/workspace/Modding/silicate/xplat/build/moddev/artifacts/vanilla-1.21.10-20251010.172816.jar"),
+		file("/workspace/Modding/silicate/xplat/build/generated/"))
+}
 
 sourceSets {
 	create("generated") {
