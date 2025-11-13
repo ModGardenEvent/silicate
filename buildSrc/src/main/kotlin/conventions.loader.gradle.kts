@@ -58,7 +58,6 @@ tasks {
 	}
 	named<Javadoc>("javadoc").configure {
 		dependsOn(configurations.getByName("xplatJava"))
-		source(configurations.getByName("xplatJava"))
 	}
 	named<Jar>("sourcesJar").configure {
 		dependsOn(configurations.getByName("xplatJava"))

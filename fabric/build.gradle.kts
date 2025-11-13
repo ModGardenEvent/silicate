@@ -7,6 +7,7 @@ import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes.*
 import org.objectweb.asm.tree.ClassNode
+import java.lang.NullPointerException
 import java.lang.invoke.MethodHandles
 import java.nio.file.FileSystems
 import java.nio.file.Files
@@ -133,14 +134,42 @@ tasks {
 				}
 			}
 		}
+		if (this@withType.archiveFile.get().asFile.name.contains("fabric")) {
+			from(files(project(":xplat").sourceSets["main"].output))
+		}
+	}
+
+	withType<Javadoc> {
+		// no javadoc for fabric jar
+		if (this@withType.title?.contains("fabric") == true) {
+			exclude("*")
+		}
 	}
 
 	withType<Jar> {
+		duplicatesStrategy = DuplicatesStrategy.INCLUDE
+		rename {
+			if (it == "module-info.java") {
+				return@rename "xplat-module-info.java"
+			} else {
+				return@rename it
+			}
+		}
+
 		doLast {
 			try {
 				val jar = this@withType.archiveFile.get().asFile
 				val zipFile = ZipFile(jar)
-				val fabricModuleInfo = zipFile.getEntry("module-info.class")
+				if (jar.name.endsWith("-sources.jar")) {
+					val xplatModuleInfo = zipFile.getEntry("xplat-module-info.java")
+					jar.pluckFromZip("module-info.java")
+					zipFile.getInputStream(xplatModuleInfo).use { xplat ->
+						jar.plopInZip("module-info.java", xplat.readAllBytes())
+					}
+					jar.pluckFromZip("xplat-module-info.java")
+				}
+
+				val fabricModuleInfo = zipFile.getEntry("module-info.class") ?: return@doLast
 				val xplatModuleInfo = zipFile.getEntry("xplat-module-info.class") ?: return@doLast
 				zipFile.getInputStream(xplatModuleInfo).use { xplat ->
 					zipFile.getInputStream(fabricModuleInfo).use { fabric ->

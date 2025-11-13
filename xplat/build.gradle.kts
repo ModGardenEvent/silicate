@@ -69,6 +69,13 @@ try {
 	logger.error("when configuring javac args: ", e)
 }
 
+tasks {
+	withType<Javadoc> {
+		this@withType.options.modulePath.addAll(classpath)
+		this@withType.isFailOnError = false
+	}
+}
+
 configurations {
 	register("xplatJava") {
 		isCanBeResolved = false
