@@ -40,9 +40,9 @@ public final class SilicatePredicateTypes {
 			IsTypePredicate.Type::new
 	);
 	// Minecraft
-	public static final GamePredicate.Type<EntityTypePredicate> ENTITY_IS_TYPE = register(
+	public static final GamePredicate.Type<EntityIsTypePredicate> ENTITY_IS_TYPE = register(
 			"entity_is_type",
-			EntityTypePredicate.Type::new
+			EntityIsTypePredicate.Type::new
 	);
 	public static final GamePredicate.Type<EntityHasPassengerPredicate> ENTITY_HAS_PASSENGER = register(
 			"entity_has_passenger",

@@ -15,10 +15,10 @@ import lgbt.greenhouse.silicate.api.context.GameContext;
 /**
  * A predicate to check an entity's {@link EntityType}.
  */
-public record EntityTypePredicate(
+public record EntityIsTypePredicate(
 		ParameterKey<Entity> entity,
 		Deferred<HolderSet<EntityType<?>>> entityTypes
-) implements GamePredicate<EntityTypePredicate> {
+) implements GamePredicate<EntityIsTypePredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
 		return ctx
@@ -28,24 +28,24 @@ public record EntityTypePredicate(
 	}
 
 	@Override
-	public GamePredicate.Type<EntityTypePredicate> getType() {
+	public GamePredicate.Type<EntityIsTypePredicate> getType() {
 		return SilicatePredicateTypes.ENTITY_IS_TYPE;
 	}
 
-	public static class Type extends GamePredicate.Type<EntityTypePredicate> {
+	public static class Type extends GamePredicate.Type<EntityIsTypePredicate> {
 		@Override
-		protected MapCodec<EntityTypePredicate> createCodec() {
+		protected MapCodec<EntityIsTypePredicate> createCodec() {
 			return this.createBaseCodec()
-					.apply(PredicateCodecBuilder.of(EntityTypePredicate.class))
+					.apply(PredicateCodecBuilder.of(EntityIsTypePredicate.class))
 					.withParameter(
 							"entity",
 							SilicateValueTypes.ENTITY,
-							EntityTypePredicate::entity
+							EntityIsTypePredicate::entity
 					)
 					.withValue(
 							"entity_type",
 							SilicateValueTypes.HOLDER_SET_ENTITY_TYPE,
-							EntityTypePredicate::entityTypes
+							EntityIsTypePredicate::entityTypes
 					)
 					.build();
 		}
