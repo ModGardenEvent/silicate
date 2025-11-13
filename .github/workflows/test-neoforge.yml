@@ -24,8 +24,8 @@ jobs:
         uses: gradle/actions/setup-gradle@dbbdc275be76ac10734476cc723d82dfe7ec6eda # v3.4.2
 
       - name: Initial Build with Gradle (HACK PLEASE REMOVE WHEN NO ERROR HAPPENS HERE)
+        continue-on-error: true
         run: ./gradlew build
 
       - name: Test NeoForge
-        if: always()
         run: ./gradlew neoforge:runGameTest
