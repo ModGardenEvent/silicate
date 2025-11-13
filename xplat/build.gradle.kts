@@ -16,6 +16,12 @@ sourceSets {
 	}
 }
 
+extraJavaModuleInfo {
+	automaticModule("vanilla-${Versions.NEOFORM}-merged.jar", "vanilla")
+	automaticModule("vanilla-${Versions.NEOFORM}.jar", "vanilla")
+	skipLocalJars = true
+}
+
 neoForge {
 	neoFormVersion = Versions.NEOFORM
 	parchment {
@@ -52,12 +58,6 @@ dependencies {
 	}
 
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
-}
-
-extraJavaModuleInfo {
-	module("vanilla-${Versions.NEOFORM}-merged.jar", "vanilla")
-	module("vanilla-${Versions.NEOFORM}.jar", "vanilla")
-	skipLocalJars = true
 }
 
 try {
