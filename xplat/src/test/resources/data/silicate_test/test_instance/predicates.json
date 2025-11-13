@@ -5,20 +5,6 @@
 	"max_ticks": 400,
 	"conditions": [
 		{
-			"name": "BlockStatePredicate",
-			"condition": {
-				"predicate": "block_state",
-				"left": "${block_state}",
-				"right": {
-					"Name": "minecraft:note_block",
-					"Properties": {
-						"note": "2",
-						"instrument": "banjo"
-					}
-				}
-			}
-		},
-		{
 			"name": "EntityIsTypePredicates EntityType",
 			"condition": {
 				"predicate": "entity_is_type",
@@ -201,7 +187,8 @@
 						}
 					}
 				},
-				"predicate": "block_state",
+				"predicate": "equals",
+				"value_type": "block_state",
 				"left": "${block_state}",
 				"right": "${silicate_test:block_state}"
 			}

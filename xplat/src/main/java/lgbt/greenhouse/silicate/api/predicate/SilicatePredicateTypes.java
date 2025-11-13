@@ -60,10 +60,6 @@ public final class SilicatePredicateTypes {
 			"entity_has_vehicle",
 			EntityHasVehiclePredicate.Type::new
 	);
-	public static final GamePredicate.Type<BlockStatePredicate> BLOCK_STATE = register(
-			"block_state",
-			BlockStatePredicate.Type::new
-	);
 	public static final GamePredicate.Type<Vec3Predicate> VEC3 = register(
 			"vec3",
 			Vec3Predicate.Type::new
