@@ -72,9 +72,9 @@ dependencies {
 
 try {
 	tasks.withType<JavaCompile> {
-		options.compilerArgs.addAll(listOf(
-			"--module-path", classpath.asPath
-		))
+//		options.compilerArgs.addAll(listOf(
+//			"--module-path", classpath.asPath
+//		))
 		options.compilerArgs.addAll(Properties.JAVAC_ARGS)
 
 		val compiler = ToolProvider.getSystemJavaCompiler()
