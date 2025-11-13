@@ -2,12 +2,12 @@
 	"predicate": "any",
 	"conditions": [
 		{
-			"predicate": "entity_passenger",
+			"predicate": "entity_has_passenger",
 			"entity": "${this_entity}",
 			"condition": true
 		},
 		{
-			"predicate": "entity_vehicle",
+			"predicate": "entity_has_vehicle",
 			"entity": "${this_entity}",
 			"condition": true
 		}

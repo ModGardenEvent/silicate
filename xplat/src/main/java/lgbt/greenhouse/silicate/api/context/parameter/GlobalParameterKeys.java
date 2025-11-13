@@ -1,9 +1,9 @@
 package lgbt.greenhouse.silicate.api.context.parameter;
 
-import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityPassengerPredicate;
-import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityProjectileOwnerPredicate;
-import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityTameOwnerPredicate;
-import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityVehiclePredicate;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityHasPassengerPredicate;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityProjectileHasOwnerPredicate;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityHasTameOwnerPredicate;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityHasVehiclePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
@@ -25,15 +25,15 @@ import static lgbt.greenhouse.silicate.impl.SilicateConstants.id;
 public final class GlobalParameterKeys {
 	public static final GlobalParameterKey<Entity> THIS_ENTITY = register("this_entity", SilicateValueTypes.ENTITY);
 	/**
-	 * A temporary parameter type typically used in {@link EntityPassengerPredicate}.
+	 * A temporary parameter type typically used in {@link EntityHasPassengerPredicate}.
 	 */
 	public static final GlobalParameterKey<Entity> PASSENGER_ENTITY = register("passenger_entity", SilicateValueTypes.ENTITY);
 	/**
-	 * A temporary parameter type typically used in {@link EntityVehiclePredicate}.
+	 * A temporary parameter type typically used in {@link EntityHasVehiclePredicate}.
 	 */
 	public static final GlobalParameterKey<Entity> VEHICLE_ENTITY = register("vehicle_entity", SilicateValueTypes.ENTITY);
 	/**
-	 * A temporary parameter type typically used in {@link EntityProjectileOwnerPredicate} and {@link EntityTameOwnerPredicate}.
+	 * A temporary parameter type typically used in {@link EntityProjectileHasOwnerPredicate} and {@link EntityHasTameOwnerPredicate}.
 	 */
 	public static final GlobalParameterKey<Entity> OWNER_ENTITY = register("owner_entity", SilicateValueTypes.ENTITY);
 	/**

@@ -9,8 +9,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.RegistryFileCodec;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.SilicateRegistries;
-import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityPassengerPredicate;
-import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityVehiclePredicate;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityHasPassengerPredicate;
+import lgbt.greenhouse.silicate.api.predicate.minecraft.EntityHasVehiclePredicate;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -24,8 +24,8 @@ import java.util.function.Predicate;
  * <h2>{@link Type}</h2>
  * This is a class required for registering a {@link GamePredicate} as it holds
  * important information such as codecs.
- * @see EntityPassengerPredicate
- * @see EntityVehiclePredicate
+ * @see EntityHasPassengerPredicate
+ * @see EntityHasVehiclePredicate
  */
 public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<GameContext> {
 	/**

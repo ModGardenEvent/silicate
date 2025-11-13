@@ -29,7 +29,7 @@ public record EntityTypePredicate(
 
 	@Override
 	public GamePredicate.Type<EntityTypePredicate> getType() {
-		return SilicatePredicateTypes.ENTITY_TYPE;
+		return SilicatePredicateTypes.ENTITY_IS_TYPE;
 	}
 
 	public static class Type extends GamePredicate.Type<EntityTypePredicate> {

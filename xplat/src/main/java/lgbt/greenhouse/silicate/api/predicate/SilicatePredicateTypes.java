@@ -14,6 +14,7 @@ import static lgbt.greenhouse.silicate.impl.SilicateConstants.id;
  * Built-in {@link GamePredicate.Type}s.
  */
 public final class SilicatePredicateTypes {
+	// Standard
 	public static final GamePredicate.Type<AllPredicate> ALL = register(
 			"all",
 			AllPredicate.Type::new
@@ -34,25 +35,30 @@ public final class SilicatePredicateTypes {
 			"equals",
 			EqualsPredicate.Type::new
 	);
-	public static final GamePredicate.Type<EntityTypePredicate> ENTITY_TYPE = register(
-			"entity_type",
+	public static final GamePredicate.Type<IsTypePredicate> IS_TYPE = register(
+			"is_type",
+			IsTypePredicate.Type::new
+	);
+	// Minecraft
+	public static final GamePredicate.Type<EntityTypePredicate> ENTITY_IS_TYPE = register(
+			"entity_is_type",
 			EntityTypePredicate.Type::new
 	);
-	public static final GamePredicate.Type<EntityPassengerPredicate> ENTITY_PASSENGER = register(
-			"entity_passenger",
-			EntityPassengerPredicate.Type::new
+	public static final GamePredicate.Type<EntityHasPassengerPredicate> ENTITY_HAS_PASSENGER = register(
+			"entity_has_passenger",
+			EntityHasPassengerPredicate.Type::new
 	);
-	public static final GamePredicate.Type<EntityProjectileOwnerPredicate> ENTITY_PROJECTILE_OWNER = register(
-			"entity_projectile_owner",
-			EntityProjectileOwnerPredicate.Type::new
+	public static final GamePredicate.Type<EntityProjectileHasOwnerPredicate> ENTITY_PROJECTILE_HAS_OWNER = register(
+			"entity_projectile_has_owner",
+			EntityProjectileHasOwnerPredicate.Type::new
 	);
-	public static final GamePredicate.Type<EntityTameOwnerPredicate> ENTITY_TAME_OWNER = register(
-			"entity_tame_owner",
-			EntityTameOwnerPredicate.Type::new
+	public static final GamePredicate.Type<EntityHasTameOwnerPredicate> ENTITY_HAS_TAME_OWNER = register(
+			"entity_has_tame_owner",
+			EntityHasTameOwnerPredicate.Type::new
 	);
-	public static final GamePredicate.Type<EntityVehiclePredicate> ENTITY_VEHICLE = register(
-			"entity_vehicle",
-			EntityVehiclePredicate.Type::new
+	public static final GamePredicate.Type<EntityHasVehiclePredicate> ENTITY_HAS_VEHICLE = register(
+			"entity_has_vehicle",
+			EntityHasVehiclePredicate.Type::new
 	);
 	public static final GamePredicate.Type<BlockStatePredicate> BLOCK_STATE = register(
 			"block_state",
@@ -62,17 +68,13 @@ public final class SilicatePredicateTypes {
 			"vec3",
 			Vec3Predicate.Type::new
 	);
-	public static final GamePredicate.Type<BlockEntityTypePredicate> BLOCK_ENTITY_TYPE = register(
-			"block_entity_type",
-			BlockEntityTypePredicate.Type::new
+	public static final GamePredicate.Type<BlockEntityIsTypePredicate> BLOCK_ENTITY_IS_TYPE = register(
+			"block_entity_is_type",
+			BlockEntityIsTypePredicate.Type::new
 	);
-	public static final GamePredicate.Type<PlayerGameTypePredicate> PLAYER_GAME_TYPE = register(
-			"player_game_type",
-			PlayerGameTypePredicate.Type::new
-	);
-	public static final GamePredicate.Type<IsTypePredicate> IS_TYPE = register(
-			"is_type",
-			IsTypePredicate.Type::new
+	public static final GamePredicate.Type<PlayerIsGameTypePredicate> PLAYER_IS_GAME_TYPE = register(
+			"player_is_game_type",
+			PlayerIsGameTypePredicate.Type::new
 	);
 
 	private SilicatePredicateTypes() {}

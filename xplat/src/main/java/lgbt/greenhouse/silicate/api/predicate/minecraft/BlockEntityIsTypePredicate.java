@@ -11,10 +11,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import lgbt.greenhouse.silicate.api.predicate.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 
-public record BlockEntityTypePredicate(
+public record BlockEntityIsTypePredicate(
 		ParameterKey<BlockEntity> blockEntity,
 		Deferred<BlockEntityType<?>> blockEntityType
-) implements GamePredicate<BlockEntityTypePredicate> {
+) implements GamePredicate<BlockEntityIsTypePredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
 		BlockEntity blockEntity = ctx.getParameter(this.blockEntity);
@@ -22,24 +22,24 @@ public record BlockEntityTypePredicate(
 	}
 
 	@Override
-	public GamePredicate.Type<BlockEntityTypePredicate> getType() {
-		return SilicatePredicateTypes.BLOCK_ENTITY_TYPE;
+	public GamePredicate.Type<BlockEntityIsTypePredicate> getType() {
+		return SilicatePredicateTypes.BLOCK_ENTITY_IS_TYPE;
 	}
 
-	public static final class Type extends GamePredicate.Type<BlockEntityTypePredicate> {
+	public static final class Type extends GamePredicate.Type<BlockEntityIsTypePredicate> {
 		@Override
-		protected MapCodec<BlockEntityTypePredicate> createCodec() {
+		protected MapCodec<BlockEntityIsTypePredicate> createCodec() {
 			return this.createBaseCodec()
-					.apply(PredicateCodecBuilder.of(BlockEntityTypePredicate.class))
+					.apply(PredicateCodecBuilder.of(BlockEntityIsTypePredicate.class))
 					.withParameter(
 							"block_entity",
 							SilicateValueTypes.BLOCK_ENTITY,
-							BlockEntityTypePredicate::blockEntity
+							BlockEntityIsTypePredicate::blockEntity
 					)
 					.withValue(
 							"block_entity_type",
 							SilicateValueTypes.BLOCK_ENTITY_TYPE,
-							BlockEntityTypePredicate::blockEntityType
+							BlockEntityIsTypePredicate::blockEntityType
 					)
 					.build();
 		}

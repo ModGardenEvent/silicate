@@ -22,11 +22,11 @@ import java.util.List;
  * @param condition The game condition to check against.
  * @param matchAll Whether to check if all passengers match or if any match.
  */
-public record EntityPassengerPredicate(
+public record EntityHasPassengerPredicate(
 		ParameterKey<Entity> entity,
 		Deferred<Holder<GamePredicate<?>>> condition,
 		Deferred<Boolean> matchAll
-) implements GamePredicate<EntityPassengerPredicate> {
+) implements GamePredicate<EntityHasPassengerPredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
 		ctx.pushParameterMap();
@@ -50,29 +50,29 @@ public record EntityPassengerPredicate(
 	}
 
 	@Override
-	public GamePredicate.Type<EntityPassengerPredicate> getType() {
-		return SilicatePredicateTypes.ENTITY_PASSENGER;
+	public GamePredicate.Type<EntityHasPassengerPredicate> getType() {
+		return SilicatePredicateTypes.ENTITY_HAS_PASSENGER;
 	}
 
-	public static final class Type extends GamePredicate.Type<EntityPassengerPredicate> {
+	public static final class Type extends GamePredicate.Type<EntityHasPassengerPredicate> {
 		@Override
-		protected MapCodec<EntityPassengerPredicate> createCodec() {
+		protected MapCodec<EntityHasPassengerPredicate> createCodec() {
 			return this.createBaseCodec()
-					.apply(PredicateCodecBuilder.of(EntityPassengerPredicate.class))
+					.apply(PredicateCodecBuilder.of(EntityHasPassengerPredicate.class))
 					.withParameter(
 							"entity",
 							SilicateValueTypes.ENTITY,
-							EntityPassengerPredicate::entity
+							EntityHasPassengerPredicate::entity
 					)
 					.withValue(
 							"condition",
 							SilicateValueTypes.CONDITION,
-							EntityPassengerPredicate::condition
+							EntityHasPassengerPredicate::condition
 					)
 					.withDefaultOptionalValue(
 							"matchAll",
 							SilicatePrimitives.BOOLEAN,
-							EntityPassengerPredicate::matchAll,
+							EntityHasPassengerPredicate::matchAll,
 							false
 					)
 					.build();

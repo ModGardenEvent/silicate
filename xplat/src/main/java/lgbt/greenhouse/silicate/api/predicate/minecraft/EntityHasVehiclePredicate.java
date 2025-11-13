@@ -18,10 +18,10 @@ import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
  * @param entity The vehicle.
  * @param condition The game condition to check against.
  */
-public record EntityVehiclePredicate(
+public record EntityHasVehiclePredicate(
 		ParameterKey<Entity> entity,
 		Deferred<Holder<GamePredicate<?>>> condition
-) implements GamePredicate<EntityVehiclePredicate> {
+) implements GamePredicate<EntityHasVehiclePredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
 		Entity entity = ctx.getParameter(this.entity);
@@ -42,24 +42,24 @@ public record EntityVehiclePredicate(
 	}
 
 	@Override
-	public GamePredicate.Type<EntityVehiclePredicate> getType() {
-		return SilicatePredicateTypes.ENTITY_VEHICLE;
+	public GamePredicate.Type<EntityHasVehiclePredicate> getType() {
+		return SilicatePredicateTypes.ENTITY_HAS_VEHICLE;
 	}
 
-	public static final class Type extends GamePredicate.Type<EntityVehiclePredicate> {
+	public static final class Type extends GamePredicate.Type<EntityHasVehiclePredicate> {
 		@Override
-		protected MapCodec<EntityVehiclePredicate> createCodec() {
+		protected MapCodec<EntityHasVehiclePredicate> createCodec() {
 			return this.createBaseCodec()
-					.apply(PredicateCodecBuilder.of(EntityVehiclePredicate.class))
+					.apply(PredicateCodecBuilder.of(EntityHasVehiclePredicate.class))
 					.withParameter(
 							"entity",
 							SilicateValueTypes.ENTITY,
-							EntityVehiclePredicate::entity
+							EntityHasVehiclePredicate::entity
 					)
 					.withValue(
 							"condition",
 							SilicateValueTypes.CONDITION,
-							EntityVehiclePredicate::condition
+							EntityHasVehiclePredicate::condition
 					)
 					.build();
 		}

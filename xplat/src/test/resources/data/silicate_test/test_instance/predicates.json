@@ -19,17 +19,17 @@
 			}
 		},
 		{
-			"name": "EntityTypePredicates EntityType",
+			"name": "EntityIsTypePredicates EntityType",
 			"condition": {
-				"predicate": "entity_type",
+				"predicate": "entity_is_type",
 				"entity": "${this_entity}",
 				"entity_type": "minecraft:skeleton_horse"
 			}
 		},
 		{
-			"name": "EntityTypePredicate TagKey",
+			"name": "EntityIsTypePredicate TagKey",
 			"condition": {
-				"predicate": "entity_type",
+				"predicate": "entity_is_type",
 				"entity": "${this_entity}",
 				"entity_type": "#minecraft:skeletons"
 			}
@@ -52,17 +52,17 @@
 			}
 		},
 		{
-			"name": "BlockEntityTypePredicate",
+			"name": "BlockEntityIsTypePredicate",
 			"condition": {
-				"predicate": "block_entity_type",
+				"predicate": "block_entity_is_type",
 				"block_entity": "${block_entity}",
 				"block_entity_type": "minecraft:furnace"
 			}
 		},
 		{
-			"name": "PlayerGameTypePredicate",
+			"name": "PlayerIsGameTypePredicate",
 			"condition": {
-				"predicate": "player_game_type",
+				"predicate": "player_is_game_type",
 				"player": "${attacking_entity}",
 				"game_type": [
 					"survival",
@@ -71,48 +71,48 @@
 			}
 		},
 		{
-			"name": "EntityTameOwnerPredicate",
+			"name": "EntityHasTameOwnerPredicate",
 			"condition": {
-				"predicate": "entity_tame_owner",
+				"predicate": "entity_has_tame_owner",
 				"entity": "${this_entity}",
 				"condition": {
-					"predicate": "entity_type",
+					"predicate": "entity_is_type",
 					"entity": "${owner_entity}",
 					"entity_type": "minecraft:player"
 				}
 			}
 		},
 		{
-			"name": "EntityProjectileOwnerPredicate",
+			"name": "EntityProjectileHasOwnerPredicate",
 			"condition": {
-				"predicate": "entity_projectile_owner",
+				"predicate": "entity_projectile_has_owner",
 				"entity": "${silicate_test:projectile}",
 				"condition": {
-					"predicate": "entity_type",
+					"predicate": "entity_is_type",
 					"entity": "${owner_entity}",
 					"entity_type": "minecraft:skeleton"
 				}
 			}
 		},
 		{
-			"name": "EntityPassengerPredicate",
+			"name": "EntityHasPassengerPredicate",
 			"condition": {
-				"predicate": "entity_passenger",
+				"predicate": "entity_has_passenger",
 				"entity": "${this_entity}",
 				"condition": {
-					"predicate": "entity_type",
+					"predicate": "entity_is_type",
 					"entity": "${passenger_entity}",
 					"entity_type": "minecraft:skeleton"
 				}
 			}
 		},
 		{
-			"name": "EntityVehiclePredicate",
+			"name": "EntityHasVehiclePredicate",
 			"condition": {
-				"predicate": "entity_vehicle",
+				"predicate": "entity_has_vehicle",
 				"entity": "${victim_entity}",
 				"condition": {
-					"predicate": "entity_type",
+					"predicate": "entity_is_type",
 					"entity": "${vehicle_entity}",
 					"entity_type": "minecraft:skeleton_horse"
 				}
@@ -123,21 +123,21 @@
 			"condition": {
 				"predicate": "not",
 				"condition": {
-					"predicate": "entity_type",
+					"predicate": "entity_is_type",
 					"entity": "${victim_entity}",
 					"entity_type": "minecraft:skeleton_horse"
 				}
 			}
 		},
 		{
-			"name": "AlwaysCondition(true)",
+			"name": "AlwaysPredicate(true)",
 			"condition": {
 				"predicate": "always",
 				"value": true
 			}
 		},
 		{
-			"name": "AlwaysCondition(false)",
+			"name": "AlwaysPredicate(false)",
 			"condition": {
 				"predicate": "always",
 				"value": false
@@ -160,12 +160,12 @@
 				"conditions": [
 					true,
 					{
-						"predicate": "entity_type",
+						"predicate": "entity_is_type",
 						"entity": "${this_entity}",
 						"entity_type": "minecraft:skeleton_horse"
 					},
 					{
-						"predicate": "entity_type",
+						"predicate": "entity_is_type",
 						"entity": "${this_entity}",
 						"entity_type": "#minecraft:skeletons"
 					}
@@ -179,7 +179,7 @@
 				"conditions": [
 					false,
 					{
-						"predicate": "entity_type",
+						"predicate": "entity_is_type",
 						"entity": "${this_entity}",
 						"entity_type": "minecraft:skeleton_horse"
 					}

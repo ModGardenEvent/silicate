@@ -8,7 +8,7 @@ import lgbt.greenhouse.silicate.api.context.parameter.ParameterKey;
 import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.TraceableEntity;
 import lgbt.greenhouse.silicate.api.predicate.SilicatePredicateTypes;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.context.parameter.ParameterMap;
@@ -17,21 +17,21 @@ import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKeys;
 /**
  * A predicate that tests {@link #condition} with the owner of {@link #entity}.
  * Always returns false if the {@link #entity} has no owner.
- * @param entity The passenger.
+ * @param entity The projectile.
  * @param condition The game condition to check against.
  */
-public record EntityTameOwnerPredicate(
+public record EntityProjectileHasOwnerPredicate(
 		ParameterKey<Entity> entity,
 		Deferred<Holder<GamePredicate<?>>> condition
-) implements GamePredicate<EntityTameOwnerPredicate> {
+) implements GamePredicate<EntityProjectileHasOwnerPredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
 		Entity entity = ctx.getParameter(this.entity);
 
-		if (entity instanceof OwnableEntity ownable && ownable.getOwner() != null) {
+		if (entity instanceof TraceableEntity traceable && traceable.getOwner() != null) {
 			ctx.pushParameterMap();
 			ParameterMap parameterMap = ctx.getParameterMap();
-			boolean result = testOwner(ctx, ownable.getOwner(), parameterMap);
+			boolean result = testOwner(ctx, traceable.getOwner(), parameterMap);
 			ctx.popParameterMap();
 			return result;
 		}
@@ -44,24 +44,25 @@ public record EntityTameOwnerPredicate(
 	}
 
 	@Override
-	public GamePredicate.Type<EntityTameOwnerPredicate> getType() {
-		return SilicatePredicateTypes.ENTITY_TAME_OWNER;
+	public GamePredicate.Type<EntityProjectileHasOwnerPredicate> getType() {
+		return SilicatePredicateTypes.ENTITY_PROJECTILE_HAS_OWNER;
 	}
 
-	public static final class Type extends GamePredicate.Type<EntityTameOwnerPredicate> {
+	public static final class Type extends GamePredicate.Type<EntityProjectileHasOwnerPredicate> {
 		@Override
-		protected MapCodec<EntityTameOwnerPredicate> createCodec() {
+		protected MapCodec<EntityProjectileHasOwnerPredicate> createCodec() {
 			return this.createBaseCodec()
-					.apply(PredicateCodecBuilder.of(EntityTameOwnerPredicate.class))
+					.apply(PredicateCodecBuilder.of(
+							EntityProjectileHasOwnerPredicate.class))
 					.withParameter(
 							"entity",
 							SilicateValueTypes.ENTITY,
-							EntityTameOwnerPredicate::entity
+							EntityProjectileHasOwnerPredicate::entity
 					)
 					.withValue(
 							"condition",
 							SilicateValueTypes.CONDITION,
-							EntityTameOwnerPredicate::condition
+							EntityProjectileHasOwnerPredicate::condition
 					)
 					.build();
 		}

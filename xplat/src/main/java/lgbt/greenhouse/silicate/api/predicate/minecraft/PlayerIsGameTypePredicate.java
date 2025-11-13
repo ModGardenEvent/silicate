@@ -22,10 +22,10 @@ import java.util.Objects;
  * @param player The player.
  * @param gameTypes The {@link GameType}s to equality against. Tests true if any are equal.
  */
-public record PlayerGameTypePredicate(
+public record PlayerIsGameTypePredicate(
 		ParameterKey<Player> player,
 		Deferred<List<GameType>> gameTypes
-) implements GamePredicate<PlayerGameTypePredicate> {
+) implements GamePredicate<PlayerIsGameTypePredicate> {
 	@Override
 	public boolean test(GameContext ctx) {
 		Entity entity = ctx.getParameter(this.player);
@@ -50,24 +50,24 @@ public record PlayerGameTypePredicate(
 	}
 
 	@Override
-	public GamePredicate.Type<PlayerGameTypePredicate> getType() {
-		return SilicatePredicateTypes.PLAYER_GAME_TYPE;
+	public GamePredicate.Type<PlayerIsGameTypePredicate> getType() {
+		return SilicatePredicateTypes.PLAYER_IS_GAME_TYPE;
 	}
 
-	public static final class Type extends GamePredicate.Type<PlayerGameTypePredicate> {
+	public static final class Type extends GamePredicate.Type<PlayerIsGameTypePredicate> {
 		@Override
-		protected MapCodec<PlayerGameTypePredicate> createCodec() {
+		protected MapCodec<PlayerIsGameTypePredicate> createCodec() {
 			return this.createBaseCodec()
-					.apply(PredicateCodecBuilder.of(PlayerGameTypePredicate.class))
+					.apply(PredicateCodecBuilder.of(PlayerIsGameTypePredicate.class))
 					.withParameter(
 							"player",
 							SilicateValueTypes.PLAYER,
-							PlayerGameTypePredicate::player
+							PlayerIsGameTypePredicate::player
 					)
 					.withValue(
 							"game_type",
 							SilicateValueTypes.LIST_GAME_TYPE,
-							PlayerGameTypePredicate::gameTypes
+							PlayerIsGameTypePredicate::gameTypes
 					)
 					.build();
 		}
