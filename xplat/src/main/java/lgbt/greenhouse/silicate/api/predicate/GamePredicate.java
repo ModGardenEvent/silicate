@@ -53,9 +53,9 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 	/**
 	 * Pushes to the {@link GameContext}, tests this {@link GamePredicate}, then pops.
 	 * <h1 style="color:red;">⚠️ Warning ⚠️</h1>
-	 * <b>Do not use this</b> unless you are iterating! Using this outside iteration
-	 * can cause scope leak. As always, ensure any modification to {@link ParameterMap}
-	 * is inside push-pop calls.
+	 * <b>Do not use this</b> unless you are iterating or immediately returning! Using this
+	 * otherwise can cause scope leak. As always, ensure any modification to
+	 * {@link ParameterMap} is inside push-pop calls.
 	 * @param ctx the current {@link GameContext}
 	 * @return the result of the {@link #test(GameContext)}
 	 */
