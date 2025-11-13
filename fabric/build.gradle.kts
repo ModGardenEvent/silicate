@@ -58,7 +58,9 @@ dependencies {
 
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 	include("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
-	compileOnly("cpw.mods:modlauncher:11.0.5")
+	compileOnly("cpw.mods:modlauncher:${Versions.MODLAUNCHER}") {
+		exclude("org.ow2.asm")
+	}
 }
 
 loom {

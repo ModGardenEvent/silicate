@@ -24,6 +24,9 @@ neoForge {
 	}
 	addModdingDependenciesTo(sourceSets["test"])
 
+	configurations {
+	}
+
 	val at = file("src/main/resources/${Properties.MOD_ID}.cfg")
 	if (at.exists())
 		setAccessTransformers(at)
@@ -40,9 +43,13 @@ repositories {
 dependencies {
 	compileOnly("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
 	annotationProcessor("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
-	compileOnly("net.fabricmc:sponge-mixin:${Versions.FABRIC_MIXIN}")
+	compileOnly("net.fabricmc:sponge-mixin:${Versions.FABRIC_MIXIN}") {
+		exclude("org.ow2.asm")
+	}
 	compileOnly("com.mojang:datafixerupper:${Versions.DFU}")
-	compileOnly("cpw.mods:modlauncher:${Versions.MODLAUNCHER}")
+	compileOnly("cpw.mods:modlauncher:${Versions.MODLAUNCHER}") {
+		exclude("org.ow2.asm")
+	}
 
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 }

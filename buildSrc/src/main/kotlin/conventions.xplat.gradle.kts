@@ -49,6 +49,9 @@ repositories {
 dependencies {
 	implementation("org.jetbrains:annotations:24.1.0")
 	implementation("org.jspecify:jspecify:1.0.0")
+	implementation("org.ow2.asm:asm-commons:9.6")
+	implementation("org.ow2.asm:asm-tree:9.6")
+	implementation("org.ow2.asm:asm-util:9.6")
 }
 
 extraJavaModuleInfo {

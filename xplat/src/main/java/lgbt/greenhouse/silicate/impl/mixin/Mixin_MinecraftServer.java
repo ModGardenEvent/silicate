@@ -4,7 +4,7 @@ import com.mojang.datafixers.DataFixer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.Services;
 import net.minecraft.server.WorldStem;
-import net.minecraft.server.level.progress.ChunkProgressListenerFactory;
+import net.minecraft.server.level.progress.LevelLoadListener;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import lgbt.greenhouse.silicate.impl.Silicate;
@@ -29,7 +29,7 @@ public final class Mixin_MinecraftServer {
 			Proxy proxy,
 			DataFixer fixerUpper,
 			Services services,
-			ChunkProgressListenerFactory progressListenerFactory,
+			LevelLoadListener levelLoadListener,
 			CallbackInfo ci
 	) {
 		Silicate.setServer((MinecraftServer) (Object) this);
