@@ -163,8 +163,6 @@ tasks {
 						val classWriter = ClassWriter(0)
 						classNode.accept(classWriter)
 						jar.plopInZip("module-info-meow.class", classWriter.toByteArray())
-						println(xplat)
-						println(fabric)
 					}
 				}
 				jar.pluckFromZip("xplat-module-info.class")
