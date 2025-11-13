@@ -55,6 +55,7 @@ dependencies {
 }
 
 extraJavaModuleInfo {
+	module("vanilla-${Versions.NEOFORM}-merged.jar", "vanilla")
 	skipLocalJars = true
 }
 
