@@ -1,11 +1,18 @@
 import me.modmuss50.mpp.ReleaseType
 import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
+import org.gradle.kotlin.dsl.support.zipTo
 
 plugins {
 	id("conventions.xplat")
 	id("net.neoforged.moddev")
 	id("me.modmuss50.mod-publish-plugin")
+}
+
+// ugly fucking hack
+if (file("/workspace/Modding/silicate/xplat/").exists()) {
+	zipTo(file("/workspace/Modding/silicate/xplat/build/moddev/artifacts/vanilla-1.21.10-20251010.172816.jar"),
+		file("/workspace/Modding/silicate/xplat/build/generated/"))
 }
 
 sourceSets {
