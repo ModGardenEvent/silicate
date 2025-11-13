@@ -21,7 +21,9 @@ repositories {
 dependencies {
 	// If using multiloader, use each platform as below for silicate in their respective modules
 	// Otherwise, use the jar according to your platform and include/jarJar it
-	modImplementation("lgbt.greenhouse.silicate:silicate-PLATFORM:VERSION")
+	// You will also need to add a compileOnly dependency on "xplat"
+	modCompileOnly("lgbt.greenhouse.silicate:silicate-xplat:VERSION")
+	modRuntimeOnly("lgbt.greenhouse.silicate:silicate-PLATFORM:VERSION")
 	include("lgbt.greenhouse.silicate:silicate-PLATFORM:VERSION")
 	// If using multiloader, put this in your "common"/"xplat" module
 	// compileOnly("lgbt.greenhouse.silicate:silicate-xplat:VERSION")
