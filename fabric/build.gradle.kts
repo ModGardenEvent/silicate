@@ -219,6 +219,7 @@ extraJavaModuleInfo {
 		requires("org.spongepowered.mixin")
 		exportAllPackages()
 	}
+	skipLocalJars = true
 }
 
 fun String.toPath(): java.nio.file.Path {

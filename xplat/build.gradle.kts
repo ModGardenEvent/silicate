@@ -54,6 +54,10 @@ dependencies {
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 }
 
+extraJavaModuleInfo {
+	skipLocalJars = true
+}
+
 try {
 	tasks.withType<JavaCompile> {
 		options.compilerArgs.addAll(listOf(
