@@ -42,9 +42,11 @@ dependencies {
 tasks {
 	named<JavaCompile>("compileJava").configure {
 		dependsOn(configurations.getByName("xplatJava"))
+		source(configurations.getByName("xplatJava"))
 	}
 	named<JavaCompile>("compileTestJava").configure {
 		dependsOn(configurations.getByName("xplatTestJava"))
+		source(configurations.getByName("xplatTestJava"))
 	}
 	named<ProcessResources>("processResources").configure {
 		dependsOn(configurations.getByName("xplatResources"))
@@ -58,6 +60,7 @@ tasks {
 	}
 	named<Javadoc>("javadoc").configure {
 		dependsOn(configurations.getByName("xplatJava"))
+		source(configurations.getByName("xplatJava"))
 	}
 	named<Jar>("sourcesJar").configure {
 		dependsOn(configurations.getByName("xplatJava"))

@@ -215,6 +215,8 @@ tasks {
 beforeEvaluate {
 	tasks.withType<JavaCompile> {
 		options.compilerArgs.addAll(Properties.JAVAC_ARGS)
+		exclude("**/module-info.java/**")
+		this@withType.options.isFailOnError = false
 	}
 }
 

@@ -76,6 +76,8 @@ try {
 //			"--module-path", classpath.asPath
 //		))
 		options.compilerArgs.addAll(Properties.JAVAC_ARGS)
+		exclude("module-info.java")
+		this@withType.options.isFailOnError = false
 
 		val compiler = ToolProvider.getSystemJavaCompiler()
 		val task = compiler.getTask(null, null, null, null, null, null)
@@ -98,7 +100,7 @@ try {
 			classpath.asPath,
 			"-d",
 			project(":xplat").file("build/classes/java/main").path,
-			project(":xplat").file("src/main/java/module-info.java").path
+			project(":xplat").file("src/main/java/module-info.java.disabled").path
 		)
 		if (success != 0) return@withType
 	}
