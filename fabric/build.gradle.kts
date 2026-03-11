@@ -2,17 +2,9 @@ import me.modmuss50.mpp.ReleaseType
 import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
 import org.gradle.jvm.tasks.Jar
-import org.gradlex.javamodule.moduleinfo.ModuleInfo
-import org.objectweb.asm.ClassReader
-import org.objectweb.asm.ClassWriter
-import org.objectweb.asm.Opcodes.*
-import org.objectweb.asm.tree.ClassNode
-import java.lang.NullPointerException
-import java.lang.invoke.MethodHandles
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
-import java.util.zip.ZipFile
 
 evaluationDependsOn(":xplat")
 
@@ -68,9 +60,6 @@ loom {
 	val aw = file("src/main/resources/${Properties.MOD_ID}.accesswidener")
 	if (aw.exists())
 		accessWidenerPath.set(aw)
-	mixin {
-		defaultRefmapName.set("${Properties.MOD_ID}.refmap.json")
-	}
 	interfaceInjection { // off for now to get modules working
 		this.getIsEnabled().set(false)
 		enableDependencyInterfaceInjection = false
@@ -123,21 +112,6 @@ tasks {
 		exclude("${Properties.MOD_ID}.cfg")
 	}
 
-	withType<AbstractArchiveTask> {
-		from(files(project(":xplat").sourceSets["main"].output)) {
-			duplicatesStrategy = DuplicatesStrategy.INCLUDE
-			rename {
-				if (it == "module-info.class") {
-					return@rename "xplat-module-info.class"
-				} else {
-					return@rename it
-				}
-			}
-		}
-		if (this@withType.archiveFile.get().asFile.name.contains("fabric")) {
-			from(files(project(":xplat").sourceSets["main"].output))
-		}
-	}
 
 	withType<Javadoc> {
 		// no javadoc for fabric jar
@@ -145,112 +119,6 @@ tasks {
 			exclude("*")
 		}
 	}
-
-	withType<Jar> {
-		duplicatesStrategy = DuplicatesStrategy.INCLUDE
-		rename {
-			if (it == "module-info.java") {
-				return@rename "xplat-module-info.java"
-			} else {
-				return@rename it
-			}
-		}
-
-		doLast {
-			try {
-				val jar = this@withType.archiveFile.get().asFile
-				val zipFile = ZipFile(jar)
-				if (jar.name.endsWith("-sources.jar")) {
-					val xplatModuleInfo = zipFile.getEntry("xplat-module-info.java")
-					jar.pluckFromZip("module-info.java")
-					zipFile.getInputStream(xplatModuleInfo).use { xplat ->
-						jar.plopInZip("module-info.java", xplat.readAllBytes())
-					}
-					jar.pluckFromZip("xplat-module-info.java")
-				}
-
-				val fabricModuleInfo = zipFile.getEntry("module-info.class") ?: return@doLast
-				val xplatModuleInfo = zipFile.getEntry("xplat-module-info.class") ?: return@doLast
-				zipFile.getInputStream(xplatModuleInfo).use { xplat ->
-					zipFile.getInputStream(fabricModuleInfo).use { fabric ->
-						val classReader = ClassReader(xplat.readBytes())
-						val classNode = ClassNode(ASM9)
-						classReader.accept(classNode, 0)
-
-						val fabricClassReader = ClassReader(fabric.readBytes())
-						val fabricClassNode = ClassNode(ASM9)
-						fabricClassReader.accept(fabricClassNode, 0)
-
-						// remove exports to fabric module
-						classNode.module.exports?.removeIf { exports ->
-							exports.modules.any { it.startsWith(classNode.module.name) }
-						}
-						// only add non-duplicate or non-project requires
-						fabricClassNode.module.requires?.filter {
-							!it.module.startsWith(classNode.module.name) &&
-									!classNode.module.requires?.map { it.module }?.contains(it.module)!!
-						}?.apply { classNode.module.requires?.addAll(this@apply) }
-
-						val classWriter = ClassWriter(0)
-						classNode.accept(classWriter)
-						jar.plopInZip("module-info-meow.class", classWriter.toByteArray())
-					}
-				}
-				jar.pluckFromZip("xplat-module-info.class")
-				jar.pluckFromZip("module-info.class")
-				val newZipFile = ZipFile(jar)
-				newZipFile.getInputStream(newZipFile.getEntry("module-info-meow.class")).use {
-					jar.plopInZip("module-info.class", it.readAllBytes())
-				}
-				jar.pluckFromZip("module-info-meow.class")
-			} catch (_: java.nio.file.NoSuchFileException) {
-			} catch (e: Exception) {
-				logger.error("messing with jpms:")
-				throw e
-			}
-		}
-	}
-}
-
-beforeEvaluate {
-	tasks.withType<JavaCompile> {
-		options.compilerArgs.addAll(Properties.JAVAC_ARGS)
-		exclude("**/module-info.java/**")
-		this@withType.options.isFailOnError = false
-	}
-}
-
-fun fsModule(file: File, identifier: String, moduleName: String, action: Action<ModuleInfo>) {
-	val relativeFile = file.relativeTo(projectDir)
-	val constructor = ModuleInfo::class.java.declaredConstructors[0]
-	constructor.isAccessible = true
-	val methodHandle = MethodHandles.lookup().unreflectConstructor(constructor)
-	val moduleInfo = methodHandle.invoke(identifier, moduleName, null, objects) as ModuleInfo
-	action.execute(moduleInfo)
-	extraJavaModuleInfo.moduleSpecs.put(relativeFile.name, moduleInfo)
-}
-
-extraJavaModuleInfo {
-	afterEvaluate {
-		activate(project.configurations.named("modCompileClasspath"))
-		val mcJars = loom.namedMinecraftJars
-		for (mcJar in mcJars) {
-			fsModule(
-				mcJar,
-				"com.mojang:minecraft-" + mcJars.indexOf(mcJar),
-				"vanilla"
-			) {
-				exportAllPackages()
-			}
-		}
-	}
-	module("lgbt.greenhouse.silicate:xplat", "lgbt.greenhouse.silicate")
-	automaticModule("com.mojang:authlib", "authlib")
-	module("io.github.llamalad7:mixinextras-fabric", "mixinextras.fabric") {
-		requires("org.spongepowered.mixin")
-		exportAllPackages()
-	}
-	skipLocalJars = true
 }
 
 fun String.toPath(): java.nio.file.Path {
@@ -276,68 +144,6 @@ fun File.pluckFromZip(name: String) {
 	FileSystems.newFileSystem(this.path.toPath()).use { fs ->
 		val pluckedFilePath = fs.getPath(name)
 		Files.delete(pluckedFilePath)
-	}
-}
-
-run {
-	val modList = rootDir.run {
-		resolve(".gradle")
-			.resolve("loom-cache")
-			.resolve("remapped_mods")
-	}.walkTopDown().filter {
-		return@filter it.isFile && it.name.endsWith(".jar") && !it.name.endsWith("-sources.jar")
-	}
-
-	for (jar in modList) {
-		if (!jar.name.endsWith(".jar")) continue
-		var name = jar.name
-		repeat(10) {
-			name = name.split("-$it")[0]
-		}
-		val moduleName = name.split("-").joinToString(".")
-
-		// first we find packages in the jar
-		val initialPackages = mutableSetOf<String>()
-		val packages = mutableSetOf<String>()
-		zipTree(jar).visit {
-			if (!this@visit.isDirectory) {
-				if (!this@visit.name.endsWith(".class")) return@visit
-				// do not add impl or mixin packages
-				if (this@visit.path.contains("/impl/")) return@visit
-				if (this@visit.path.contains("/mixin/")) return@visit
-
-				val parentPath = this@visit.relativePath.parent.pathString
-				if (initialPackages.contains(parentPath)) {
-					packages.add(parentPath)
-				}
-
-				return@visit
-			}
-
-			initialPackages.add(this@visit.path)
-		}
-
-		// then we make the module-info.class
-		val classWriter = ClassWriter(0)
-		classWriter.visit(
-			V21,
-			ACC_MODULE,
-			"module-info",
-			null,
-			null,
-			null
-		)
-		val moduleVisitor = classWriter.visitModule(moduleName, 0, null)
-		moduleVisitor.visitRequire("vanilla", 0, null)
-		moduleVisitor.visitRequire("com.mojang.authlib", 0, null)
-		moduleVisitor.visitRequire("com.mojang.datafixerupper", 0, null)
-		moduleVisitor.visitRequire("java.base", 0, null)
-		for (pkg in packages) {
-			moduleVisitor.visitExport(pkg, 0)
-		}
-		moduleVisitor.visitEnd()
-		classWriter.visitEnd()
-		jar.plopInZip("module-info.class", classWriter.toByteArray())
 	}
 }
 

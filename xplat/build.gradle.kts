@@ -26,12 +26,6 @@ sourceSets {
 	}
 }
 
-extraJavaModuleInfo {
-	automaticModule("vanilla-${Versions.NEOFORM}-merged.jar", "vanilla")
-	automaticModule("vanilla-${Versions.NEOFORM}.jar", "vanilla")
-	skipLocalJars = true
-}
-
 neoForge {
 	neoFormVersion = Versions.NEOFORM
 	parchment {
@@ -68,44 +62,6 @@ dependencies {
 	}
 
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
-}
-
-try {
-	tasks.withType<JavaCompile> {
-//		options.compilerArgs.addAll(listOf(
-//			"--module-path", classpath.asPath
-//		))
-		options.compilerArgs.addAll(Properties.JAVAC_ARGS)
-		exclude("module-info.java")
-		this@withType.options.isFailOnError = false
-
-		val compiler = ToolProvider.getSystemJavaCompiler()
-		val task = compiler.getTask(null, null, null, null, null, null)
-		task.addModules(listOf(
-			"vanilla",
-			"authlib",
-			"com.mojang.datafixerupper",
-			"mixinextras.common",
-			"org.jspecify",
-			"jdk.unsupported",
-			"org.jetbrains.annotations",
-			"org.spongepowered.mixin",
-			"dev.lukebemish.codecextras"
-		))
-		val success = compiler.run(
-			null,
-			null,
-			null,
-			"--module-path",
-			classpath.asPath,
-			"-d",
-			project(":xplat").file("build/classes/java/main").path,
-			project(":xplat").file("src/main/java/module-info.java.disabled").path
-		)
-		if (success != 0) return@withType
-	}
-} catch (e: Exception) {
-	logger.error("when configuring javac args: ", e)
 }
 
 tasks {
