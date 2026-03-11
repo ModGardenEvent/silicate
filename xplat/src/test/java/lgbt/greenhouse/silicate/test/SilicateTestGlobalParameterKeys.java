@@ -2,7 +2,7 @@ package lgbt.greenhouse.silicate.test;
 
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.projectile.Projectile;
 import lgbt.greenhouse.silicate.api.SilicateBuiltInRegistries;
 import lgbt.greenhouse.silicate.api.context.parameter.GlobalParameterKey;
@@ -20,7 +20,7 @@ public class SilicateTestGlobalParameterKeys {
 
 	@SuppressWarnings("SameParameterValue") // Shush.
 	private static <T> GlobalParameterKey<T> register(String name, ValueType<T> type) {
-		ResourceLocation id = ResourceLocation.fromNamespaceAndPath(MOD_ID + "_test", name);
+		Identifier id = Identifier.fromNamespaceAndPath(MOD_ID + "_test", name);
 		return Registry.register(
 				SilicateBuiltInRegistries.GLOBAL_PARAMETER_KEY,
 				id,

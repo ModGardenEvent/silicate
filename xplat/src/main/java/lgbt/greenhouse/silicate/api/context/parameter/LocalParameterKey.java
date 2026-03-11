@@ -1,14 +1,14 @@
 package lgbt.greenhouse.silicate.api.context.parameter;
 
 import lgbt.greenhouse.silicate.api.type.ValueType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public final class LocalParameterKey<T> implements ParameterKey<T> {
-	private final ResourceLocation name;
+	private final Identifier name;
 	private final ValueType<T> type;
 
 	public LocalParameterKey(
-			ResourceLocation name,
+			Identifier name,
 			ValueType<T> type
 	) {
 		this.name = name;
@@ -16,7 +16,7 @@ public final class LocalParameterKey<T> implements ParameterKey<T> {
 	}
 
 	@Override
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return this.name;
 	}
 

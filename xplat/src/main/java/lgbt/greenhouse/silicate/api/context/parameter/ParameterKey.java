@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import lgbt.greenhouse.silicate.api.context.GameContext;
 import lgbt.greenhouse.silicate.api.type.ValueType;
 import lgbt.greenhouse.silicate.impl.SilicateConstants;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -23,10 +23,10 @@ public sealed interface ParameterKey<T>
 					template -> new Reference<>(template.id()),
 					key -> new ParameterTemplate(key.getId())
 			);
-	Codec<ParameterKey.Reference<?>> CODEC = ResourceLocation.CODEC
+	Codec<ParameterKey.Reference<?>> CODEC = Identifier.CODEC
 			.xmap(
 					id -> {
-						if (id.getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
+						if (id.getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
 							return new Reference<>(SilicateConstants.id(id.getPath()));
 						} else {
 							return new Reference<>(id);
@@ -39,7 +39,7 @@ public sealed interface ParameterKey<T>
 		return new Direct<>(value);
 	}
 
-	ResourceLocation getId();
+	Identifier getId();
 
 	/**
 	 * @return the {@link ValueType} for this {@link ParameterKey}
@@ -61,14 +61,14 @@ public sealed interface ParameterKey<T>
 	 */
 	final class Reference<T> implements ParameterKey<T> {
 		private static final String NULL_STATIC_PARAMETER_KEY_TYPES = "Static types in non-reference Parameter Keys shall never be null";
-		private final ResourceLocation id;
+		private final Identifier id;
 
-		public Reference(ResourceLocation id) {
+		public Reference(Identifier id) {
 			this.id = id;
 		}
 
 		@Override
-		public ResourceLocation getId() {
+		public Identifier getId() {
 			return this.id;
 		}
 
@@ -91,7 +91,7 @@ public sealed interface ParameterKey<T>
 		}
 
 		@Override
-		public ResourceLocation getId() {
+		public Identifier getId() {
 			return SilicateConstants.id("direct");
 		}
 

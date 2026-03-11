@@ -3,9 +3,9 @@ package lgbt.greenhouse.silicate.api.context.parameter;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import lgbt.greenhouse.silicate.impl.SilicateConstants;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
-public record ParameterTemplate(ResourceLocation id) {
+public record ParameterTemplate(Identifier id) {
 	public static final Codec<ParameterTemplate> CODEC = Codec.STRING
 			.comapFlatMap(string -> {
 				if (string.startsWith("${") && string.endsWith("}")) {
