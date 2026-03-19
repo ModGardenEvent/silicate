@@ -10,7 +10,7 @@ evaluationDependsOn(":xplat")
 
 plugins {
 	id("conventions.loader")
-	id("fabric-loom")
+	id("net.fabricmc.fabric-loom")
 	id("me.modmuss50.mod-publish-plugin")
 }
 
@@ -37,14 +37,10 @@ sourceSets {
 dependencies {
 	runtimeOnly(project(":xplat"))
 	minecraft("com.mojang:minecraft:${Versions.MINECRAFT}")
-	mappings(loom.layered {
-		officialMojangMappings()
-		parchment("org.parchmentmc.data:parchment-${Versions.PARCHMENT_MINECRAFT}:${Versions.PARCHMENT}")
-	})
 
-	modImplementation("net.fabricmc:fabric-loader:${Versions.FABRIC_LOADER}")
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.FABRIC_API}")
-	modLocalRuntime("com.terraformersmc:modmenu:${Versions.MOD_MENU}")
+	implementation("net.fabricmc:fabric-loader:${Versions.FABRIC_LOADER}")
+	implementation("net.fabricmc.fabric-api:fabric-api:${Versions.FABRIC_API}")
+	localRuntime("com.terraformersmc:modmenu:${Versions.MOD_MENU}")
 	compileOnly("io.github.llamalad7:mixinextras-fabric:${Versions.MIXIN_EXTRAS}")
 	annotationProcessor("io.github.llamalad7:mixinextras-fabric:${Versions.MIXIN_EXTRAS}")
 	compileOnly("com.mojang:datafixerupper:${Versions.DFU}")
@@ -107,6 +103,10 @@ loom {
 	}
 }
 
+tasks.withType<AbstractTestTask>().configureEach {
+	failOnNoDiscoveredTests = false
+}
+
 tasks {
 	named<ProcessResources>("processResources").configure {
 		exclude("${Properties.MOD_ID}.cfg")
@@ -148,7 +148,7 @@ fun File.pluckFromZip(name: String) {
 }
 
 publishMods {
-	file.set(tasks.named<Jar>("remapJar").get().archiveFile)
+	file.set(tasks.named<Jar>("jar").get().archiveFile)
 	modLoaders.add("fabric")
 	changelog = rootProject.file("CHANGELOG.md").readText()
 	displayName = "v${Versions.MOD} (Fabric ${Versions.MINECRAFT})"

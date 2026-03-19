@@ -21,7 +21,7 @@ public class ParameterMapTestInstance extends GameTestInstance {
 					.forGetter(ParameterMapTestInstance::info)
 	).apply(inst, ParameterMapTestInstance::new));
 
-	protected ParameterMapTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+	protected ParameterMapTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
 		super(info);
 	}
 

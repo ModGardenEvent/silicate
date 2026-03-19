@@ -46,7 +46,7 @@ public class PredicatesTestInstance extends GameTestInstance {
 	private final List<ExpectedResultCondition> conditions;
 
 	protected PredicatesTestInstance(List<ExpectedResultCondition> conditions,
-									 TestData<Holder<TestEnvironmentDefinition>> info) {
+									 TestData<Holder<TestEnvironmentDefinition<?>>> info) {
 		super(info);
 		this.conditions = conditions;
 	}

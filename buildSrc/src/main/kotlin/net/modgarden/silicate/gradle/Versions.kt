@@ -4,16 +4,16 @@ object Versions {
 	const val MOD = "1.0.0-alpha.1"
 	const val MOD_CHANNEL = "ALPHA"
 
-	const val MINECRAFT = "1.21.11"
+	const val MINECRAFT = "26.1-pre-3"
 	const val PARCHMENT_MINECRAFT = "1.21.11"
-	const val NEOFORM = "$MINECRAFT-20251209.172050"
+	const val NEOFORM = "$MINECRAFT-1"
 	const val PARCHMENT = "2025.12.20"
 
-	const val FABRIC_API = "0.141.3+1.21.11"
+	const val FABRIC_API = "0.143.14+26.1"
 	const val FABRIC_LOADER = "0.18.4"
-	const val MOD_MENU = "17.0.0-beta.2"
+	const val MOD_MENU = "18.0.0-alpha.6"
 	const val FABRIC_LOADER_RANGE = ">=0.17"
-	const val FABRIC_MINECRAFT_RANGE = "1.21.11"
+	const val FABRIC_MINECRAFT_RANGE = ">26"
 
 	const val NEOFORGE = "21.8.32"
 	const val NEOFORGE_LOADER_RANGE = "[4,)"
@@ -28,5 +28,5 @@ object Versions {
 
 	const val MOD_PUBLISH_PLUGIN = "1.0.0-forgejo.1"
 
-	const val JAVA = 21
+	const val JAVA = 25
 }

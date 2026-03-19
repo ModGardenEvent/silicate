@@ -26,12 +26,12 @@ sourceSets {
 	}
 }
 
+tasks.withType<AbstractTestTask>().configureEach {
+	failOnNoDiscoveredTests = false
+}
+
 neoForge {
 	neoFormVersion = Versions.NEOFORM
-	parchment {
-		minecraftVersion = Versions.PARCHMENT_MINECRAFT
-		mappingsVersion = Versions.PARCHMENT
-	}
 	addModdingDependenciesTo(sourceSets["test"])
 
 	configurations {
