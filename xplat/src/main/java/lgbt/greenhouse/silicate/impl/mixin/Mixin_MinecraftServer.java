@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.net.Proxy;
+import java.util.Optional;
 
 @Mixin(MinecraftServer.class)
 public final class Mixin_MinecraftServer {
@@ -26,10 +27,12 @@ public final class Mixin_MinecraftServer {
 			LevelStorageSource.LevelStorageAccess storageSource,
 			PackRepository packRepository,
 			WorldStem worldStem,
+			Optional gameRules,
 			Proxy proxy,
 			DataFixer fixerUpper,
 			Services services,
 			LevelLoadListener levelLoadListener,
+			boolean propagatesCrashes,
 			CallbackInfo ci
 	) {
 		Silicate.setServer((MinecraftServer) (Object) this);

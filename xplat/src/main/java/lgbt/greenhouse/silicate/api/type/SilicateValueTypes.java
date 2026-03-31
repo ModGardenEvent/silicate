@@ -15,7 +15,7 @@ import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -56,7 +56,7 @@ public final class SilicateValueTypes {
 	);
 	public static final ValueType<BlockEntityType<?>> BLOCK_ENTITY_TYPE = register(
 			"block_entity_type",
-			fromResourceLocation(
+			fromIdentifier(
 					BlockEntityType.class, BuiltInRegistries.BLOCK_ENTITY_TYPE)
 	);
 	public static final ValueType<BlockState> BLOCK_STATE = register(
@@ -117,8 +117,8 @@ public final class SilicateValueTypes {
 	}
 
 	@ApiStatus.Experimental
-	public static <T> ValueType<T> fromResourceLocation(Class<? super T> clazz, Registry<T> registry) {
-		Codec<T> codec = ResourceLocation.CODEC
+	public static <T> ValueType<T> fromIdentifier(Class<? super T> clazz, Registry<T> registry) {
+		Codec<T> codec = Identifier.CODEC
 				.comapFlatMap(
 						id -> {
 							try {

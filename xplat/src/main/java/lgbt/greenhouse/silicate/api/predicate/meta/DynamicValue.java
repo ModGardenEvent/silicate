@@ -20,8 +20,7 @@ public record DynamicValue(
 ) {
 	static MapCodec<DynamicValue> createCodec(String dynamicKey, String key) {
 		return new KeyDispatchCodec<>(
-				dynamicKey,
-				ValueType.CODEC,
+				ValueType.CODEC.fieldOf(dynamicKey),
 				value -> DataResult.success(value.type()),
 				valueType1 -> {
 					@SuppressWarnings("unchecked")

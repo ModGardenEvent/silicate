@@ -1,6 +1,6 @@
 package lgbt.greenhouse.silicate.impl;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,15 +13,15 @@ public final class SilicateConstants {
 
 	private SilicateConstants() {}
 
-	public static ResourceLocation id(String name) {
-		return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
+	public static Identifier id(String name) {
+		return Identifier.fromNamespaceAndPath(MOD_ID, name);
 	}
 
-	public static ResourceLocation parseId(String value) {
+	public static Identifier parseId(String value) {
 		if (!value.contains(":")) {
 			return id(value);
 		} else {
-			return ResourceLocation.parse(value);
+			return Identifier.parse(value);
 		}
 	}
 

@@ -1,6 +1,6 @@
 package lgbt.greenhouse.silicate.api.context.parameter;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.Objects;
  * That is, a class representing a map of all present parameters.
  */
 public final class ParameterMap {
-	private final Map<ResourceLocation, ParameterKey<?>> id2Keys;
+	private final Map<Identifier, ParameterKey<?>> id2Keys;
 	private final Map<ParameterKey<?>, Parameter<?>> parameters;
 
 	private ParameterMap(Map<ParameterKey<?>, Parameter<?>> parameters) {

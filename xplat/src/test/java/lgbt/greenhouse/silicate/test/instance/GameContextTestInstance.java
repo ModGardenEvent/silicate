@@ -24,7 +24,7 @@ public class GameContextTestInstance extends GameTestInstance {
 					.forGetter(GameContextTestInstance::info)
 	).apply(inst, GameContextTestInstance::new));
 
-	protected GameContextTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+	protected GameContextTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
 		super(info);
 	}
 

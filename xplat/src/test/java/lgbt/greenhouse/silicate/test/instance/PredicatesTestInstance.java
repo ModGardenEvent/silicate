@@ -14,9 +14,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.horse.SkeletonHorse;
-import net.minecraft.world.entity.monster.Skeleton;
-import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.animal.equine.SkeletonHorse;
+import net.minecraft.world.entity.monster.skeleton.Skeleton;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
@@ -46,7 +46,7 @@ public class PredicatesTestInstance extends GameTestInstance {
 	private final List<ExpectedResultCondition> conditions;
 
 	protected PredicatesTestInstance(List<ExpectedResultCondition> conditions,
-									 TestData<Holder<TestEnvironmentDefinition>> info) {
+									 TestData<Holder<TestEnvironmentDefinition<?>>> info) {
 		super(info);
 		this.conditions = conditions;
 	}

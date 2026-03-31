@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestInstance;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import lgbt.greenhouse.silicate.test.instance.PredicatesTestInstance;
 import lgbt.greenhouse.silicate.test.instance.ParameterMapTestInstance;
 import lgbt.greenhouse.silicate.test.instance.GameContextTestInstance;
@@ -28,7 +28,7 @@ public class SilicateTestInstanceTypes {
 	private static void register(String name, MapCodec<? extends GameTestInstance> codec) {
 		Registry.register(
 				BuiltInRegistries.TEST_INSTANCE_TYPE,
-				ResourceLocation.fromNamespaceAndPath(MOD_ID + "_test", name),
+				Identifier.fromNamespaceAndPath(MOD_ID + "_test", name),
 				codec
 		);
 	}

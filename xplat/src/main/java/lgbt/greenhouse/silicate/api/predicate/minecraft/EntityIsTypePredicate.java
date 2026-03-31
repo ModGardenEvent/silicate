@@ -23,7 +23,6 @@ public record EntityIsTypePredicate(
 	public boolean test(GameContext ctx) {
 		return ctx
 			.getParameter(this.entity)
-			.getType()
 			.is(this.entityTypes.get(ctx));
 	}
 

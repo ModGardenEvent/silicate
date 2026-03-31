@@ -1,7 +1,7 @@
 package lgbt.greenhouse.silicate.api.predicate.minecraft.math;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
