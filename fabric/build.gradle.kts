@@ -2,9 +2,6 @@ import me.modmuss50.mpp.ReleaseType
 import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
 import org.gradle.jvm.tasks.Jar
-import java.nio.file.FileSystems
-import java.nio.file.Files
-import java.nio.file.StandardOpenOption
 
 evaluationDependsOn(":xplat")
 
@@ -106,40 +103,6 @@ tasks.withType<AbstractTestTask>().configureEach {
 tasks {
 	named<ProcessResources>("processResources").configure {
 		exclude("${Properties.MOD_ID}.cfg")
-	}
-
-
-	withType<Javadoc> {
-		// no javadoc for fabric jar
-		if (this@withType.title?.contains("fabric") == true) {
-			exclude("*")
-		}
-	}
-}
-
-fun String.toPath(): java.nio.file.Path {
-	return kotlin.io.path.Path(this)
-}
-
-fun File.plopInZip(name: String, content: ByteArray) {
-	if (!this.isFile) {
-		throw IllegalArgumentException("file is not a zip file ${this.path}")
-	}
-	FileSystems.newFileSystem(this.path.toPath()).use { fs ->
-		val ploppedFilePath = fs.getPath(name)
-		Files.newOutputStream(ploppedFilePath, StandardOpenOption.CREATE).use { outputStream ->
-			outputStream.write(content)
-		}
-	}
-}
-
-fun File.pluckFromZip(name: String) {
-	if (!this.isFile) {
-		throw IllegalArgumentException("file is not a zip file ${this.path}")
-	}
-	FileSystems.newFileSystem(this.path.toPath()).use { fs ->
-		val pluckedFilePath = fs.getPath(name)
-		Files.delete(pluckedFilePath)
 	}
 }
 
