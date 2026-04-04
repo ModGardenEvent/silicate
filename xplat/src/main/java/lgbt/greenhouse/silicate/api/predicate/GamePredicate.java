@@ -50,15 +50,13 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 	@Override
 	boolean test(GameContext ctx);
 
-	/**
-	 * Pushes to the {@link GameContext}, tests this {@link GamePredicate}, then pops.
-	 * <h1 style="color:red;">⚠️ Warning ⚠️</h1>
-	 * <b>Do not use this</b> unless you are iterating or immediately returning! Using this
-	 * otherwise can cause scope leak. As always, ensure any modification to
-	 * {@link ParameterMap} is inside push-pop calls.
-	 * @param ctx the current {@link GameContext}
-	 * @return the result of the {@link #test(GameContext)}
-	 */
+	/// Pushes to the [GameContext], tests this [GamePredicate], then pops.
+	/// # ⚠️ Warning: ⚠️
+	/// **Do not use this** unless you are iterating or immediately returning! Using this
+	/// otherwise can cause scope leak. As always, ensure any modification to
+	/// [ParameterMap] is inside push-pop calls.
+	/// @param ctx the current [GameContext]
+	/// @return the result of the [#test(GameContext)]
 	default boolean pushTestPop(GameContext ctx) {
 		ctx.pushParameterMap();
 		boolean result = this.test(ctx);
@@ -83,69 +81,66 @@ public interface GamePredicate<T extends GamePredicate<T>> extends Predicate<Gam
 	abstract class Type<T extends GamePredicate<T>> {
 		private final MapCodec<T> codec = this.createCodec();
 
-		/**
-		 * Creates a {@link BaseCodec} for inheritors of a predicate to append
-		 * default fields with.
-		 *
-		 * <h1>Usage</h1>
-		 * Return a super-call to this method chained with a call to {@link BaseCodec#andThen(BaseCodec)}, passing your desired {@link BaseCodec}.
-		 * <h2>Example</h2>
-		 * {@snippet lang=java :
-		 * @Override
-		 * BaseCodec<T> createBaseCodec() {
-		 *     return super.createBaseCodec()
-		 *          .andThen(builder -> builder.withField(
-		 * 	                "conditions",
-		 * 	                SilicateValueTypes.LIST_CONDITION,
-		 * 	                Codec.list(GamePredicate.CODEC),
-		 * 	                CompoundPredicate::getConditions
-		 *          ));
-		 * }
-		 * }
-		 */
+		/// Creates a [BaseCodec] for inheritors of a predicate to append
+		/// default fields with.
+		/// # Usage
+		///
+		/// Return a super-call to this method chained with a call to [BaseCodec#andThen(BaseCodec)], passing your desired [BaseCodec].
+		/// ## Example
+		///
+		/// {@snippet lang=java :
+		///  @Override
+		///  BaseCodec<t> createBaseCodec() {
+		///      return super.createBaseCodec()
+		///           .andThen(builder, builder.withField(
+		///  	                "conditions",
+		///  	                SilicateValueTypes.LIST_CONDITION,
+		///  	                Codec.list(GamePredicate.CODEC),
+		///  	                CompoundPredicate::getConditions
+		///           ));
+		///  }
+		///  }</t>
 		protected BaseCodec<T> createBaseCodec() {
 			return builder -> builder;
 		}
 
-		// don't ask why the javadoc snippet is like that - Oliver
-		/**
-		 * The {@link MapCodec} of the {@link GamePredicate}, built with {@link #createBaseCodec()}.
-		 * <h2>Usage</h2>
-		 * Call {@link #createBaseCodec()}, chaining calls to {@link BaseCodec#apply(PredicateCodecBuilder)} and {@link PredicateCodecBuilder#build(MethodHandle)}.
-		 * <h2>Example</h2>
-		 * {@snippet lang = java:
-		 *
-		 * import lgbt.greenhouse.silicate.api.predicate.meta.PredicateCodecBuilder;import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
-		 * @Override
-		 * public MapCodec<AllPredicate> createCodec() {
-		 * return this.createBaseCodec()
-		 * .apply(PredicateCodecBuilder.of(lgbt.greenhouse.silicate.api.predicate.std.AlwaysPredicate.class))
-		 * .withValue(
-		 * "value",
-		 * SilicatePrimitives.BOOLEAN,
-		 * AlwaysPredicate::value
-		 * )
-		 * .build(PredicateCodecBuilder.findConstructor(AlwaysPredicate.class, boolean.class));
-		 * }
-		 *}
-		 * <br>
-		 * If you only have a public constructor, you can just use {@link PredicateCodecBuilder#build()} without any parameters.
-		 * {@snippet lang = java:
-		 * import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
-		 * @Override
-		 * public MapCodec<NotPredicate> createCodec() {
-		 * return createBaseCodec()
-		 * .apply(lgbt.greenhouse.silicate.api.predicate.meta.PredicateCodecBuilder.of(NotPredicate.class))
-		 * .withValue(
-		 * "condition",
-		 * SilicateValueTypes.CONDITION,
-		 * GamePredicate.CODEC,
-		 * NotPredicate::condition
-		 * )
-		 * .build();
-		 * }
-		 *}
-		 */
+		/// The [MapCodec] of the [GamePredicate], built with [#createBaseCodec()].
+		/// ## Usage
+		///
+		/// Call [#createBaseCodec()], chaining calls to [BaseCodec#apply(PredicateCodecBuilder)] and [PredicateCodecBuilder#build(MethodHandle)].
+		/// ## Example
+		///
+		/// {@snippet lang = java:
+		///  import lgbt.greenhouse.silicate.api.predicate.meta.PredicateCodecBuilder;import lgbt.greenhouse.silicate.api.type.SilicatePrimitives;
+		///  @Override
+		///  public MapCodec<allpredicate> createCodec() {
+		///  	return this.createBaseCodec()
+		///  		.apply(PredicateCodecBuilder.of(lgbt.greenhouse.silicate.api.predicate.std.AlwaysPredicate.class))
+		///  		.withValue(
+		///  			"value",
+		///  			SilicatePrimitives.BOOLEAN,
+		///  			AlwaysPredicate::value
+		///  		)
+		///  		.build(PredicateCodecBuilder.findConstructor(AlwaysPredicate.class, boolean.class));
+		///  }
+		/// }
+		/// <br>
+		/// If you only have a public constructor, you can just use [PredicateCodecBuilder#build()] without any parameters.
+		/// {@snippet lang = java:
+		///  import lgbt.greenhouse.silicate.api.type.SilicateValueTypes;
+		///  @Override
+		///  public MapCodec<notpredicate> createCodec() {
+		///  	return createBaseCodec()
+		///  		.apply(lgbt.greenhouse.silicate.api.predicate.meta.PredicateCodecBuilder.of(NotPredicate.class))
+		///  		.withValue(
+		///  			"condition",
+		///  			SilicateValueTypes.CONDITION,
+		///  			GamePredicate.CODEC,
+		///  			NotPredicate::condition
+		///  		)
+		///  		.build();
+		///  }
+		/// }</notpredicate></allpredicate>
 		protected abstract MapCodec<T> createCodec();
 
 		/**

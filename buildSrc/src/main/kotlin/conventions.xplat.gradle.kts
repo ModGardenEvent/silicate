@@ -1,7 +1,5 @@
 import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
-import java.io.ByteArrayOutputStream
-import javax.tools.ToolProvider
 
 plugins {
 	base
@@ -97,12 +95,9 @@ tasks {
 		"mod_id" to Properties.MOD_ID,
 		"mod_license" to Properties.LICENSE,
 		"mod_description" to Properties.DESCRIPTION,
-		"neoforge_version" to Versions.NEOFORGE,
-		"neoforge_minecraft_version_range" to Versions.NEOFORGE_MINECRAFT_RANGE,
-		"neoforge_loader_version_range" to Versions.NEOFORGE_LOADER_RANGE,
 		"java_version" to Versions.JAVA,
 		"modrinth_page" to Properties.MODRINTH_PAGE,
-		"sources" to forgejoHost + Properties.FORGEJO_REPO
+		"sources" to "${Properties.FORGEJO_HOST}/${Properties.FORGEJO_REPO}"
 	)
 
 	val processResourcesTasks = listOf("processResources", "processTestResources", "processDatagenResources")

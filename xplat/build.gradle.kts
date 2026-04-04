@@ -1,21 +1,11 @@
 import me.modmuss50.mpp.ReleaseType
 import net.modgarden.silicate.gradle.Properties
 import net.modgarden.silicate.gradle.Versions
-import org.gradle.kotlin.dsl.support.zipTo
-import javax.tools.ToolProvider
 
 plugins {
 	id("conventions.xplat")
 	id("net.neoforged.moddev")
 	id("me.modmuss50.mod-publish-plugin")
-}
-
-// ugly fucking hack
-if (file("/workspace/Modding/silicate/xplat/").exists()) {
-	mkdir("/workspace/Modding/silicate/xplat/build/moddev/artifacts/")
-	mkdir("/workspace/Modding/silicate/xplat/build/generated/")
-	zipTo(file("/workspace/Modding/silicate/xplat/build/moddev/artifacts/vanilla-1.21.10-20251010.172816.jar"),
-		file("/workspace/Modding/silicate/xplat/build/generated/"))
 }
 
 sourceSets {
@@ -54,10 +44,6 @@ dependencies {
 	compileOnly("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
 	annotationProcessor("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
 	compileOnly("net.fabricmc:sponge-mixin:${Versions.FABRIC_MIXIN}") {
-		exclude("org.ow2.asm")
-	}
-	compileOnly("com.mojang:datafixerupper:${Versions.DFU}")
-	compileOnly("cpw.mods:modlauncher:${Versions.MODLAUNCHER}") {
 		exclude("org.ow2.asm")
 	}
 

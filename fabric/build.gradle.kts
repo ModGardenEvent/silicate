@@ -43,13 +43,9 @@ dependencies {
 	localRuntime("com.terraformersmc:modmenu:${Versions.MOD_MENU}")
 	compileOnly("io.github.llamalad7:mixinextras-fabric:${Versions.MIXIN_EXTRAS}")
 	annotationProcessor("io.github.llamalad7:mixinextras-fabric:${Versions.MIXIN_EXTRAS}")
-	compileOnly("com.mojang:datafixerupper:${Versions.DFU}")
 
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 	include("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
-	compileOnly("cpw.mods:modlauncher:${Versions.MODLAUNCHER}") {
-		exclude("org.ow2.asm")
-	}
 }
 
 loom {
