@@ -50,16 +50,6 @@ dependencies {
 	implementation("dev.lukebemish:codecextras:${Versions.CODEC_EXTRAS}")
 }
 
-tasks {
-	withType<Javadoc> {
-		this@withType.options.modulePath.addAll(classpath)
-		this@withType.isFailOnError = false
-	}
-
-	withType<AbstractArchiveTask> {
-	}
-}
-
 configurations {
 	register("xplatJava") {
 		isCanBeResolved = false
