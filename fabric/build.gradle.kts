@@ -49,10 +49,6 @@ loom {
 	val aw = file("src/main/resources/${Properties.MOD_ID}.accesswidener")
 	if (aw.exists())
 		accessWidenerPath.set(aw)
-	interfaceInjection { // off for now to get modules working
-		this.getIsEnabled().set(false)
-		enableDependencyInterfaceInjection = false
-	}
 	mods {
 		register(Properties.MOD_ID) {
 			sourceSet(sourceSets["main"])
